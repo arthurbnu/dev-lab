@@ -142,8 +142,8 @@ const handleFullScreen = (action) => {
 let defaultImage = 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymous_emblem.svg'
 
 const handleOctant = (response) => {
-    handleApiError(response.data);
-    return response.data.results.bindings.map(a => 
+    handleApiError(response);
+    return response.results.bindings.map(a => 
     {       
         let wikiPage = safeValue(a, 'articleLabel')
         return { 
