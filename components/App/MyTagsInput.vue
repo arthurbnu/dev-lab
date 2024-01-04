@@ -406,7 +406,9 @@ const tag = ref(''),
 
             // axios.get(currentRequestUrl, { headers : header}).then(response => {
                 // instead of axios, use fetch to be able to cancel request
-            fetch(currentRequestUrl, { headers : header}).then(response => {
+            // fetch(currentRequestUrl, { headers : header}).then(response => {
+                // instead of fetch use nuxt $fetch to be able to cancel request
+            $fetch(currentRequestUrl, { headers : header}).then(response => {
                 myLog(response);
                 autocompleteItems.value = props.handleResponse(response)
                 if (! autocompleteItems.value || autocompleteItems.value.length === 0)
