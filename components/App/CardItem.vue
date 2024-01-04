@@ -273,7 +273,8 @@ $primary : #62a9e5;
   
   // carousel  
   .q-carousel{
-    background-color: $grey-9;  /* couleur de q-card dark */
+    // background-color: $grey-9;  /* couleur de q-card dark */
+    background-color: 'black';  /* couleur de q-card dark */
     max-height: 250px;
   }
 

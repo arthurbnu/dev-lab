@@ -605,7 +605,9 @@ div {
 
 // classes vue tags input
 
+// TODO : utiliser les variables de quasar
 $primary : #62a9e5;
+$negative : #ff0000;
 
 .vue-tags-input{
     border: 1px solid transparent;
