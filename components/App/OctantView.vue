@@ -143,6 +143,9 @@ let defaultImage = 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymou
 
 const handleOctant = (response) => {
     handleApiError(response);
+    console.log(response)
+    console.log(response.results)
+    console.log(response.results.bindings)
     return response.results.bindings.map(a => 
     {       
         let wikiPage = safeValue(a, 'articleLabel')
