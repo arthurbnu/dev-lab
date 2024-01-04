@@ -64,5 +64,10 @@ const items = [
     path: "/bookmarks",
     icon: "solar:bookmark-linear",
   },
+  {
+    name: "Sparql",
+    path: "/sparql",
+    icon: "solar:database-search-outline",
+  },
 ];
 </script>
