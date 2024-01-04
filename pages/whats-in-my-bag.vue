@@ -28,9 +28,9 @@
 
 <script setup>
 const description =
-  "Software I use, gadgets I love, and other things I recommend. Here’s a big list of all of my favorite stuff.";
+  "In my bag ... stuff.";
 useSeoMeta({
-  title: "Things I use | Fayaz Ahmed",
+  title: "Things I use | A B",
   description,
 });
 const { data: items } = await useAsyncData("uses", () =>
