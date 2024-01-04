@@ -171,7 +171,8 @@ const handleApiError = (data) => {
 
 </script>
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped> -->
+<style scoped>
 
 .q-separator{
       width : 150px;
