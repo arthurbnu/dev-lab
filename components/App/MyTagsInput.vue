@@ -130,7 +130,7 @@ import { ref, watch, onMounted, inject, computed} from 'vue';
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 import VueTagsInput from "@sipec/vue3-tags-input";
 // import CardUserVue from '@/components/CardUser.vue';
-import axios from 'axios';
+// import axios from ''
 // import useConvert from '@/composables/convertHexa.js';
 // import { useRoute } from 'vue-router';
 // import router from '@/router';
@@ -196,7 +196,7 @@ const deleteUser = user => tags.value = tags.value.filter(tag => tag.value !== u
 // variables non réactives
 const defaultError = {message : '', level : 0};
 let mainInput = null,
-    axiosController = new AbortController(),
+    // axiosController = new AbortController(),
     lastChoiceAutocomplete = null,
     classBtnDeleteCardUser = 'my-btn-close',
     debounce = null;
@@ -366,8 +366,8 @@ const tag = ref(''),
         axiosError.value = defaultError;
         autocompleteItems.value = [];
         loading.value = false;
-        axiosController.abort()
-        axiosController = new AbortController()
+        // axiosController.abort()
+        // axiosController = new AbortController()
     }
 
     const initItems = () => {
@@ -399,14 +399,16 @@ const tag = ref(''),
         clearTimeout(debounce);
         debounce = setTimeout(() => {
             // Annulation de la requête précédente
-            axiosController.abort()
-            axiosController = new AbortController()
+            // axiosController.abort()
+            // axiosController = new AbortController()
 
             let header = {'Accept' : 'application/json'};
             if (props.displayUserItems || result)
                 header = {'Authorization' : 'Bearer ' + result.value.accessToken}
 
-            axios.get(currentRequestUrl, {signal : axiosController.signal, headers : header}).then(response => {
+            // axios.get(currentRequestUrl, { headers : header}).then(response => {
+                // instead of axios, use fetch to be able to cancel request
+            fetch(currentRequestUrl, { headers : header}).then(response => {
                 myLog(response);
                 autocompleteItems.value = props.handleResponse(response)
                 if (! autocompleteItems.value || autocompleteItems.value.length === 0)
@@ -517,7 +519,7 @@ const tag = ref(''),
 
 </script>
 
-
+<!-- 
 <style lang = "scss">
 
 div {
@@ -709,4 +711,4 @@ div {
 
 
 
-</style>
+</style> -->
