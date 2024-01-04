@@ -605,6 +605,8 @@ div {
 
 // classes vue tags input
 
+$primary : #62a9e5;
+
 .vue-tags-input{
     border: 1px solid transparent;
     
@@ -618,6 +620,7 @@ div {
     }
     .ti-tag, .ti-selected-item, .ti-item:hover{
         background-color: $primary !important;
+        // background-color: blue !important;
     }
     .ti-tag.ti-deletion-mark {
         background-color: red !important;

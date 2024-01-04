@@ -185,8 +185,12 @@ const formatHtml = (html: HTMLElement) => {
 </script>
 
 <!-- l'attribut scoped ne permet pas la mise en forme du contenu chargé avec fetch -->
-<style lang ="scss" >
+<style lang ="scss">
 $borderColor : #686868;
+
+// TODO quasar theme
+
+$primary : #62a9e5;
 
 .card-item {
 
