@@ -19,7 +19,7 @@
     "nuxt-quasar-ui": "^2.0.7",
     "prettier": "3.1.1",
     "prettier-plugin-tailwindcss": "0.5.9",
-    "sass": "1.32.12",
+    "sass": "^1.32.12",
     "sass-loader": "^12.0.0",
     "yarn-upgrade-all": "^0.7.2"
   },
@@ -30,6 +30,7 @@
     "@nuxt/ui": "2.11.1",
     "@quasar/extras": "^1.16.9",
     "@sipec/vue3-tags-input": "^3.0.4",
+    "axios": "^1.6.4",
     "quasar": "^2.14.2",
     "vue-use-fixed-header": "^2.0.0"
   }
