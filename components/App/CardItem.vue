@@ -193,7 +193,9 @@ $borderColor : #686868;
   // highlight fast
   .my-highlight-fast{
     .my-main a{
-      color : $primary !important;
+    /*
+      color : $primary !important;*/
+      color : blue !important;
     }
   }
 
