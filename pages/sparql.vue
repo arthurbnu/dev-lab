@@ -6,6 +6,13 @@
         {{ project.title  }}
       </div>
     </div>
+    <!-- quasar qbtn -->
+    <q-btn
+      color="primary"
+      label="Primary"
+      icon-right="send"
+      @click="console.log('clicked')"
+    />
   </main>
 </template>
 
@@ -21,18 +28,9 @@ const random = [
   {
     title: "Sparql",
     id : "1",
-    description: "A B",
-    tags: ["A", "B"],
-    links: [
-      {
-        name: "Github",
-        url: ""
-      },
-    ],
   },
 ];
 
-// const { data: random } = await useAsyncData("random-all", () =>
-//   queryContent("/random").find()
-// );
+
+
 </script>
