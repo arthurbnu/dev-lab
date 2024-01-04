@@ -403,8 +403,6 @@ const tag = ref(''),
             // axiosController = new AbortController()
 
             let header = {'Accept' : 'application/json'};
-            if (props.displayUserItems || result)
-                header = {'Authorization' : 'Bearer ' + result.value.accessToken}
 
             // axios.get(currentRequestUrl, { headers : header}).then(response => {
                 // instead of axios, use fetch to be able to cancel request
