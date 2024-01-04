@@ -8,8 +8,14 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxt/content",
     "@nuxthq/studio",
-    "@vueuse/nuxt"
+    "@vueuse/nuxt",
+
+    // quasar
+    'nuxt-quasar-ui',
+
   ],
+  // quasar: { /* */ },
+
   ui: {
     icons: ["heroicons", "lucide"],
   },
