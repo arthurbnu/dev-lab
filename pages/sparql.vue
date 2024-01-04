@@ -14,6 +14,7 @@ const description = "Sparql | A B";
 useSeoMeta({
   title: "Sparql | A B",
   description,
+  author: "A B",
 });
 
 const random = [

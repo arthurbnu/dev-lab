@@ -67,7 +67,7 @@ const items = [
   {
     name: "Sparql",
     path: "/sparql",
-    icon: "solar:database-search-outline",
+    icon: "solar:star-bold-duotone",
   },
 ];
 </script>
