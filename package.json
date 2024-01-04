@@ -22,10 +22,12 @@
     "yarn-upgrade-all": "^0.7.2"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^1.0.0-beta.5",
     "@iconify-json/lucide": "1.1.145",
     "@nuxt/image": "1.1.0",
     "@nuxt/ui": "2.11.1",
     "@quasar/extras": "^1.16.9",
+    "@sipec/vue3-tags-input": "^3.0.4",
     "quasar": "^2.14.2",
     "vue-use-fixed-header": "^2.0.0"
   }

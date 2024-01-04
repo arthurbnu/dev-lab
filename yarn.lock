@@ -393,6 +393,11 @@
   "resolved" "https://registry.npmjs.org/@fastify/busboy/-/busboy-2.0.0.tgz"
   "version" "2.0.0"
 
+"@formkit/auto-animate@^1.0.0-beta.5":
+  "integrity" "sha512-lMVZ3LFUIu0RIxCEwmV8nUUJQ46M2bv2NDU3hrhZivViuR1EheC8Mj5sx/ACqK5QLK8XB8z7GDIZBUGdU/9OZQ=="
+  "resolved" "https://registry.npmjs.org/@formkit/auto-animate/-/auto-animate-1.0.0-pre-alpha.3.tgz"
+  "version" "1.0.0-pre-alpha.3"
+
 "@headlessui/tailwindcss@^0.2.0":
   "integrity" "sha512-fpL830Fln1SykOCboExsWr3JIVeQKieLJ3XytLe/tt1A0XzqUthOftDmjcCYLW62w7mQI7wXcoPXr3tZ9QfGxw=="
   "resolved" "https://registry.npmjs.org/@headlessui/tailwindcss/-/tailwindcss-0.2.0.tgz"
@@ -1200,6 +1205,13 @@
   "integrity" "sha512-rUV5WyJrJLoloD4NDN1V1+LDMDWOa4OTsT4yYJwQNpTU6FWxkxHpL7eu4w+DmiH8x/EAM1otkPE1+LaspIbplw=="
   "resolved" "https://registry.npmjs.org/@sindresorhus/merge-streams/-/merge-streams-1.0.0.tgz"
   "version" "1.0.0"
+
+"@sipec/vue3-tags-input@^3.0.4":
+  "integrity" "sha512-zE4OiFkWvlvvGT3FZQ9hRrvJW935VPW0fe4K03SxM5Q/UQZMqph763UHXTuyK1orWNQMTbDx9tKPLIMZTiDXLA=="
+  "resolved" "https://registry.npmjs.org/@sipec/vue3-tags-input/-/vue3-tags-input-3.0.4.tgz"
+  "version" "3.0.4"
+  dependencies:
+    "vue" "^3.0.0-beta.1"
 
 "@socket.io/component-emitter@~3.1.0":
   "integrity" "sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg=="
@@ -8498,7 +8510,7 @@
   "resolved" "https://registry.npmjs.org/vue-use-fixed-header/-/vue-use-fixed-header-2.0.0.tgz"
   "version" "2.0.0"
 
-"vue@^2.7.0 || ^3.2.25", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.3.4", "vue@^3.3.8", "vue@>=2.7 || >=3", "vue@>=3", "vue@3.4.4":
+"vue@^2.7.0 || ^3.2.25", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.0-beta.1", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.3.4", "vue@^3.3.8", "vue@>=2.7 || >=3", "vue@>=3", "vue@3.4.4":
   "integrity" "sha512-suZXgDVT8lRNhKmxdkwOsR0oyUi8is7mtqI18qW97JLoyorEbE9B2Sb4Ws/mR/+0AgA/JUtsv1ytlRSH3/pDIA=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.4.4.tgz"
   "version" "3.4.4"
