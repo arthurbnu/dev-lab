@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   quasar: { 
     config: {
       brand: {
-        primary: '#027be3',
+        primary: 'red',
         secondary: '#26a69a',
         accent: '#9c27b0',
 
