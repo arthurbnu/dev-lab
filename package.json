@@ -29,6 +29,8 @@
     "@quasar/extras": "^1.16.9",
     "@sipec/vue3-tags-input": "^3.0.4",
     "quasar": "^2.14.2",
+    "sass": "^1.69.7",
+    "sass-loader": "^10.1.1",
     "vue-use-fixed-header": "^2.0.0"
   }
 }

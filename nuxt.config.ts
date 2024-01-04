@@ -57,4 +57,12 @@ export default defineNuxtConfig({
       Inter: [400, 500, 600, 700, 800, 900],
     },
   },
+
+  // sass and scss
+  // css : [
+  //   '@/assets/css/main.scss'
+  // ],
+
+
+  
 });

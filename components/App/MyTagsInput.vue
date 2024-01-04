@@ -287,16 +287,16 @@ const tag = ref(''),
 
         if (! props.filterOptions) 
             return startUrl + props.endUrl + exactSearch;
-        let formatFunction = props.filterOptions.find(it => it.value === modelSelect.value).function;
-        if ( ! searchVal.includes('@')) // Recherche par nom d'utilisateur
-            switch (formatFunction){
-                // case 'syncDec' :
-                //     searchVal = syncDec(searchVal);
-                //     break;
-                // case 'syncHex' :
-                //     searchVal = syncHex(searchVal);
-                //     break;
-            }
+        // let formatFunction = props.filterOptions.find(it => it.value === modelSelect.value).function;
+        // if ( ! searchVal.includes('@')) // Recherche par nom d'utilisateur
+        //     switch (formatFunction){
+        //         case 'syncDec' :
+        //             searchVal = syncDec(searchVal);
+        //             break;
+        //         case 'syncHex' :
+        //             searchVal = syncHex(searchVal);
+        //             break;
+        //     }
 
         return startUrl + props.endUrl + exactSearch;
     });
