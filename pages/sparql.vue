@@ -31,10 +31,6 @@ const tags = [
   "dbpedia",
   "wikidata api",
   "sparql query",
-  "sparql query wikidata",
-  "sparql query dbpedia",
-  "sparql query wikidata api",
-  "sparql query vuejs",
 ];
 
 
