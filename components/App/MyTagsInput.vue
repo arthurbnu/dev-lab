@@ -78,8 +78,6 @@
             class = "row inline q-pl-md q-pr-md"
         >
             {{ fetchError.message }}
-            <!-- lien pour rafraichir la page si token invalide ... rarement utile car token chargé au focus -->
-            <a v-if = "fetchError.message.includes(expiredTokenError)" href = "" class = "q-ml-md">Actualiser</a>
         </div>
         <div  class="hidden config q-pt-md">
            <p>{{ url }} | {{ actualPlaceHolder }}</p>
@@ -207,7 +205,7 @@ let mainInput = null,
 
 const tag = ref(''),
 
-    tags = inject('tags ' + props.api),
+    tags = ! props.displayUserItems ? inject('tags ' + props.api) : ref(props.tags ?? []),
     autocompleteItems = ref([]),
     actualUrl = ref(props.filterOptions ? props.url + props.filterOptions.find(it => it.default).url : props.url),
     actualPlaceHolder = ref(props.placeHolder),
@@ -625,6 +623,7 @@ $negative : #ff0000;
     }
     input{
         background: white;
+        color: black;
     }
 
 }
