@@ -1,9 +1,9 @@
 <template>
   <main class="min-h-screen">
-    <AppHeader class="mb-2 text-center" :title="title" :description="description" />
+    <AppHeader class="mb-1 text-center" :title="title" :description="description" />
 
     <div class="space-y-4">
-      <AppTag v-for="(tag, id) in tags" :key="id" :tag="tag" />
+      <span v-for="(tag, id) in tags" :key="id" class = "bg-teal-600 text-white mix-blend-soft-light mr-1 inline-block" >{{ tag }}</span>
     </div>
 
     <OctantView />
