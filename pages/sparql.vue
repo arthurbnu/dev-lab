@@ -3,7 +3,10 @@
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
 
     <div class="space-y-4">
-      <span v-for="(tag, id) in tags" :key="id" class = "bg-teal-600 text-white mix-blend-soft-light mr-1 inline-block" >{{ tag }}</span>
+      <!-- tailwind effect shadow bkg hover would be : hover:shadow-lg hover:bg-gray-100 -->
+      <span v-for="(tag, id) in tags" :key="id" class = "bg-teal-600 text-white py-2 mr-1 inline-block hover:bg-teal-800 transition-all" >
+        {{ tag }}
+      </span>
     </div>
 
     <OctantView />
@@ -14,7 +17,7 @@
 import OctantView from '~/components/App/OctantView.vue';
 
 const description = "Sparql | Langage de requête pour les données liées rdf." +
-" Les données de la requête sont issues de wikidata, et complétées par des données de dbpedia et l'api wikidata.";
+" Les données de la requête sont issues de wikidata, et complétées par des données de dbpedia et l'api wikipedia.";
 const title  = "Recherche sparql wikidata avec VueJs";
 
 useSeoMeta({
