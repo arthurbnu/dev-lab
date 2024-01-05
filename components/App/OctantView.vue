@@ -35,7 +35,7 @@ import CardItem from '@/components/App/CardItem.vue';
 
 // const
 const   animTime = 400,
-        defaultClass = 'my-row';
+        defaultClass = 'my-row-1';
 
 const sparqlQuery = `SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescription
     (SAMPLE(?image) as ?image) # on peut avoir +eurs images (évite les doublons dans les résultats) 
