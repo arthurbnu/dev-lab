@@ -1,6 +1,6 @@
 <template>
     <MyTagsInput
-        api = "Recherche-Sparql-Wikidata"
+        :api = "apiName"
         :url = "'https://query.wikidata.org/sparql?query=' + encodeURIComponent(sparqlQuery)" 
         replace-search-in-url="__REPLACE__"
         :displayUserItems="false"
@@ -108,7 +108,8 @@ const sparqlQuery = `SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescrip
 const rowClass = ref(defaultClass)
 const _tags = ref([])
 const listItems = ref([]);
-provide('tags Octant', _tags)
+const apiName = 'Recherche-Sparql-Wikidata'
+provide('tags '+ apiName, _tags)
 
 // emitted
 const tagsUpdate = (newTags) => {
