@@ -1,6 +1,6 @@
 
-<template>
-    <div class = "template col-6 q-pa-md" 
+<template>  
+    <div class = "template col-6 q-pa-md text-center" 
     @contextmenu = "handleRightClick"
 
     :class = "{'template_loading' : loading, 'invalidInput' : invalidInput}" 
@@ -56,10 +56,7 @@
             :class = "{'sticky' : stickySearch && !autocompleteItems.length && !tag.length }"      
         >
             <!--  slot  au dessus des résultats de recherche - Export csv-->
-            <template v-slot:autocomplete-header v-if =     " 
-                                                            displayUserItems && 
-                                                            !loading &&
-                                                            autocompleteItems.length">
+            <template v-slot:autocomplete-header v-if = " ! loading && autocompleteItems.length">
                 <q-btn
                     @click = "exportCSV"
                     class = "q-ml-md"
@@ -76,15 +73,15 @@
         </vue-tags-input>
         <!-- position sticky possible uniquement si pas de recherche en cours pour éviter dépassement de résultats  -->
         <div    
-            v-if = "axiosError.message && ! loading" 
-            :class="'axios-error level_' + [axiosError.level]"
+            v-if = "fetchError.message && ! loading" 
+            :class="'axios-error level_' + [fetchError.level]"
             class = "row inline q-pl-md q-pr-md"
         >
-            {{ axiosError.message }}
+            {{ fetchError.message }}
             <!-- lien pour rafraichir la page si token invalide ... rarement utile car token chargé au focus -->
-            <a v-if = "axiosError.message.includes(expiredTokenError)" href = "" class = "q-ml-md">Actualiser</a>
+            <a v-if = "fetchError.message.includes(expiredTokenError)" href = "" class = "q-ml-md">Actualiser</a>
         </div>
-        <div  class="config q-pt-md">
+        <div  class="hidden config q-pt-md">
            <p>{{ url }} | {{ actualPlaceHolder }}</p>
         </div>
         <slot name = "items-list"></slot>
@@ -129,14 +126,10 @@ import { ref, watch, onMounted, inject, computed} from 'vue';
 
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 import VueTagsInput from "@sipec/vue3-tags-input";
-// import CardUserVue from '@/components/CardUser.vue';
-// import axios from ''
-// import useConvert from '@/composables/convertHexa.js';
 // import { useRoute } from 'vue-router';
 // import router from '@/router';
 
 // const route = useRoute();
-// const {hex, syncHex, dec, syncDec} = useConvert();
 
 // props
 const props = defineProps({
@@ -213,16 +206,14 @@ let mainInput = null,
     const disableAutoComplete = ref (false);
 
 const tag = ref(''),
-    // actionTracker = inject('state ' + props.api),   // injection de var transmise par parent pour modifier frère
-    // actionSender = inject('state ' + props.matchedApi),
 
-    tags = ! props.displayUserItems ? inject('tags ' + props.api) : ref(props.tags ?? []),
+    tags = inject('tags ' + props.api),
     autocompleteItems = ref([]),
     actualUrl = ref(props.filterOptions ? props.url + props.filterOptions.find(it => it.default).url : props.url),
     actualPlaceHolder = ref(props.placeHolder),
     modelAutoComplete = ref(props.autoComplete),
     modelSelect = ref(props.filterOptions ? props.filterOptions.find(it => it.default).value : props.placeHolder),
-    axiosError = ref(defaultError),
+    fetchError = ref(defaultError),
     loading = ref(false),
     currentTemplate = ref(null),        // défini dans le template
     tagsInputContainer = ref(null),     // défini dans le template
@@ -240,16 +231,17 @@ const tag = ref(''),
     });
 
     // export des résultats de recherche en CSV (autocompleteItems) - pour la config de recherche d'utilisateurs displayUserItems
-    const exportColumns = ['Nom', 'Prénom', 'Code', 'Code Hexa', 'Mail', 'uid']
-    const getExportValues = item => [addQuotes(item.name), addQuotes(item.firstName), 
-                                    addQuotes(item.code ?? syncDec(item.codeHexa)), item.codeHexa ?? syncHex(item.code), 
-                                    addQuotes(item.mail ?? ''), item.value]
+    // const exportColumns = ['Nom', 'Prénom', 'Code', 'Code Hexa', 'Mail', 'uid']
+    const getExportValues = item => [addQuotes(item.name), addQuotes(item.firstName)]
     const addQuotes = str => `"${str}"`;
 
     const exportCSV = () => {   // todo : composable
+        // get csv columns from the first item
+        const exportColumns = Object.keys(autocompleteItems.value[0])
         let csvContent = "data:text/csv;charset=utf-8,";
         csvContent +=       exportColumns.join(";") + "\n" +
-                            autocompleteItems.value.map(item => getExportValues(item).join(";")).join("\n");
+                            autocompleteItems.value.map(item => exportColumns.map(col => addQuotes(item[col])).join(";")).join("\n");
+                            // autocompleteItems.value.map(item => getExportValues(item).join(";")).join("\n");
         let encodedUri = encodeURI(csvContent);
         let link = document.querySelector('a.export_csv') 
         if (! link){
@@ -363,7 +355,7 @@ const tag = ref(''),
     const mustResetSearch = computed(() => tag.value === '' || invalidInput.value)
 
     const resetValues = () => {
-        axiosError.value = defaultError;
+        fetchError.value = defaultError;
         autocompleteItems.value = [];
         loading.value = false;
         fetchController.abort()
@@ -372,7 +364,7 @@ const tag = ref(''),
 
     const initItems = () => {
         if (mustResetSearch.value) return resetValues()
-        axiosError.value = defaultError;
+        fetchError.value = defaultError;
         scrollTop()
         loading.value = true;
         handleApi(lastRequestUrl.value);
@@ -412,10 +404,10 @@ const tag = ref(''),
                 myLog(response);
                 autocompleteItems.value = props.handleResponse(response)
                 if (! autocompleteItems.value || autocompleteItems.value.length === 0)
-                    axiosError.value = noResultMessage.value
+                    fetchError.value = noResultMessage.value
                 else {
                     autocompleteItems.value.sort((it, it2) => it.text > it2.text ? 1 : -1)
-                    axiosError.value = defaultError
+                    fetchError.value = defaultError
                 }
             })
             .catch( e => catchErrorRequests(e)) 
@@ -449,7 +441,7 @@ const tag = ref(''),
                 errorMessage += ' La recherche avec le caractère * est limitée pour des raisons de performance.'
                 break;
         }
-        axiosError.value = {message : errorMessage, level : 1} 
+        fetchError.value = {message : errorMessage, level : 1} 
         autocompleteItems.value = [];   // si erreur, on réinitialise la liste de résultats
 
         console.warn('Erreur handleApi : '); 
@@ -530,7 +522,11 @@ div {
     opacity: 0 !important;
     font-size: small;
     font-weight: bold;
-    color: rgb(0, 0, 0);
+    // color: rgb(0, 0, 0);
+}
+
+.ti-autocomplete{
+    color: black;
 }
 
 .template_loading{
@@ -582,7 +578,7 @@ div {
     transition: all .8s ease;
 
     &:hover{
-        background-color: rgb(248, 248, 248);
+        // background-color: rgb(248, 248, 248);
     }
 }
 
@@ -626,6 +622,9 @@ $negative : #ff0000;
     }
     .ti-tag.ti-deletion-mark {
         background-color: red !important;
+    }
+    input{
+        background: white;
     }
 
 }
@@ -683,35 +682,35 @@ $negative : #ff0000;
     margin: 0 5px 0 7px;
 }
 
-// agent bnu
-.my-ti-bnu-agent > div:first-child::before{
-    content: "👮";
-    font-size: 1.2em;
-    margin: 0 5px 0 7px;
-}
+// agent 
+// .my-ti--agent > div:first-child::before{
+//     content: "👮";
+//     font-size: 1.2em;
+//     margin: 0 5px 0 7px;
+// }
 
 // Autres groupes
-// 2   UsagerN2
-// 3   Agents BNU
-// 4   ACCES LAB
+// 2   
+// 3   Agents 
+// 4    LAB
 // 5  | TECHNIQUE 24-24
-// 6  | JOFFRE ACCES EXT
+// 6  |  ACCES EXT
 
 // LAB
-.my-ti-group- {
-    &4 {
-        & > div:first-child::before{
-            content : "🍔";
-            font-size: 1.2em;
-            margin: 0 5px 0 7px;
-        }
+// .my-ti-group- {
+//     &4 {
+//         & > div:first-child::before{
+//             content : "🍔";
+//             font-size: 1.2em;
+//             margin: 0 5px 0 7px;
+//         }
 
-        &.my-ti-group-3 > div:first-child::before{
-            content : "🍔 👮";
-        }
-    }
+//         &.my-ti-group-3 > div:first-child::before{
+//             content : "🍔 👮";
+//         }
+//     }
 
-}
+// }
 
 
 

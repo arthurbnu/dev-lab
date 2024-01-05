@@ -1,6 +1,6 @@
 <template>
     <MyTagsInput
-        api = "Octant"
+        api = "Recherche Sparql Wikidata"
         :url = "'https://query.wikidata.org/sparql?query=' + encodeURIComponent(sparqlQuery)" 
         replace-search-in-url="__REPLACE__"
         :displayUserItems="false"
