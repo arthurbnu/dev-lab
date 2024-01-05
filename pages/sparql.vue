@@ -1,6 +1,6 @@
 <template>
   <main class="min-h-screen">
-    <AppHeader class="mb-12" title="Sparql" :description="description" />
+    <AppHeader class="mb-12 text-center" title="Sparql" :description="description" />
     <!-- <div class="space-y-4">
       <div v-for="(project, id) in random" :key="id">
         {{ project.title  }}

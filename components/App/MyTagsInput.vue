@@ -205,7 +205,7 @@ let mainInput = null,
 
 const tag = ref(''),
 
-    tags = ! props.displayUserItems ? inject('tags ' + props.api) : ref(props.tags ?? []),
+    tags = inject('tags ' + props.api),
     autocompleteItems = ref([]),
     actualUrl = ref(props.filterOptions ? props.url + props.filterOptions.find(it => it.default).url : props.url),
     actualPlaceHolder = ref(props.placeHolder),
