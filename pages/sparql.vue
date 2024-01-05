@@ -5,7 +5,7 @@
     <div class="space-y-4">
       <!-- tailwind effect shadow bkg hover would be : hover:shadow-lg hover:bg-gray-100 -->
       <span v-for="(tag, id) in tags" :key="id" 
-      class = "bg-teal-600 text-white py-2 mr-1 inline-block hover:bg-teal-800 transition-all" >
+      class = "bg-teal-600 text-white px-1 mr-1 inline-block hover:bg-teal-800 transition-all" >
         {{ tag }}
       </span>
     </div>
