@@ -17,17 +17,16 @@
             </ul>
         </template>
     </MyTagsInput>
-    
 </template>
 
-<script setup >
+<script setup>
 
 import {ref, provide, watch} from 'vue'
 import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
 
-// import { useFocus} from 'composables/use-focus'
+import { useFocus} from 'composables/use-focus'
 // import { useFocus } from '@vueuse/core';
 
 // import useKeyDown from '@/composables/use-keydown';
@@ -113,8 +112,8 @@ provide('tags Octant', _tags)
 
 // emitted
 const tagsUpdate = (newTags) => {
-    let suffix = newTags.length > 2 ? '3' : newTags.length
-    rowClass.value = defaultClass + '-' + suffix
+    // let suffix = newTags.length > 2 ? '3' : newTags.length
+    // rowClass.value = defaultClass + '-' + suffix
 }
 
 // useKeyDown([
@@ -174,8 +173,8 @@ const handleApiError = (data) => {
 
 </script>
 
-<!-- <style lang="scss" scoped> -->
-<style scoped>
+<style lang="scss" scoped>
+// <!-- <style scoped> -->
 
 .q-separator{
       width : 150px;

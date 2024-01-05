@@ -196,7 +196,7 @@ const deleteUser = user => tags.value = tags.value.filter(tag => tag.value !== u
 // variables non réactives
 const defaultError = {message : '', level : 0};
 let mainInput = null,
-    axiosController = new AbortController(),
+    fetchController = new AbortController(),
     lastChoiceAutocomplete = null,
     classBtnDeleteCardUser = 'my-btn-close',
     debounce = null;
@@ -366,8 +366,8 @@ const tag = ref(''),
         axiosError.value = defaultError;
         autocompleteItems.value = [];
         loading.value = false;
-        axiosController.abort()
-        axiosController = new AbortController()
+        fetchController.abort()
+        fetchController = new AbortController()
     }
 
     const initItems = () => {
@@ -399,8 +399,8 @@ const tag = ref(''),
         clearTimeout(debounce);
         debounce = setTimeout(() => {
             // Annulation de la requête précédente
-            axiosController.abort()
-            axiosController = new AbortController()
+            fetchController.abort()
+            fetchController = new AbortController()
 
             let header = {'Accept' : 'application/json'};
 
@@ -437,7 +437,7 @@ const tag = ref(''),
     }
 
     const catchErrorRequests = (e) => {
-        if (e.name === 'CanceledError') return // requête annulée volontairement (axiosController) par nouvelle saisie de l'utilisateur
+        if (e.name === 'CanceledError') return // requête annulée volontairement (fetchController) par nouvelle saisie de l'utilisateur
         let errorMessage = e.message
         switch(e.code){
             case 'ERR_NETWORK' : 
