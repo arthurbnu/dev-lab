@@ -1,6 +1,6 @@
 <template>
   <main class="min-h-screen">
-    <AppHeader class="mb-12 text-center" title="Sparql" :description="description" />
+    <AppHeader class="mb-4 text-center" :title="title" :description="description" />
     <!-- <div class="space-y-4">
       <div v-for="(project, id) in random" :key="id">
         {{ project.title  }}
@@ -20,8 +20,9 @@
 import OctantView from '~/components/App/OctantView.vue';
 
 const description = "Sparql | A B";
+const title  = "Recherche sparql - wikidata ";
 useSeoMeta({
-  title: "Sparql | A B",
+  title: title,
   description,
   author: "A B",
 });

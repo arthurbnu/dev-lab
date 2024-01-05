@@ -9,9 +9,10 @@
     <span class = "row inline items-center">
         <img v-if = "image" class = "my-api-img" :alt="api">
         <!-- <img v-if = "image" class = "my-api-img" :src='getImageUrl(image)' :alt="api"> -->
-        <h5 class="title q-ma-xs q-pa-xs q-pb-sm">
+        <!-- <h5 class="title q-ma-xs q-pa-xs q-pb-sm">
             {{ api }}         
-        </h5>
+        </h5> -->
+
         <q-radio v-for = "option in filterOptions" 
             size="xs" 
             v-model="modelSelect" 
@@ -79,8 +80,8 @@
         >
             {{ fetchError.message }}
         </div>
-        <div  class="hidden config q-pt-md">
-           <p>{{ url }} | {{ actualPlaceHolder }}</p>
+        <div  class="config q-pt-md">
+           <p class = "hidden">{{ url }} | {{ actualPlaceHolder }}</p>
         </div>
         <slot name = "items-list"></slot>
         <!-- config par défaut du composant : displayUserItems (possibilité d'utiliser le slot items-list dans le parent sinon) -->
