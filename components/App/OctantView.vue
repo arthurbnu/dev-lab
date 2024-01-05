@@ -26,7 +26,8 @@ import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
 
-// import { useFocus} from 'composables/use-focus'
+import { useFocus} from '~/composables/focus';
+
 // import { useFocus } from '@vueuse/core';
 
 // import useKeyDown from '@/composables/use-keydown';
