@@ -65,6 +65,12 @@ export default defineNuxtConfig({
   plugins: [
     { src: '@/plugins/vue3-tags-input.ts', mode: 'client' },
     // '@/plugins/vue3-tags-input.ts',
-]
+],
+ build : {
+  transpile: [
+    '@sipec/vue3-tags-input'
+  ]
+
+}
   
 });
