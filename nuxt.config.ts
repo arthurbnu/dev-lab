@@ -63,8 +63,8 @@ export default defineNuxtConfig({
 
 // in nuxt 3, all plugins are automatically loaded from folder /plugins
   plugins: [
-    // { src: '@/plugins/vue3-tags-input.ts', mode: 'client' },
-    '@/plugins/vue3-tags-input.ts',
+    { src: '@/plugins/vue3-tags-input.ts', mode: 'client' },
+    // '@/plugins/vue3-tags-input.ts',
 ]
   
 });
