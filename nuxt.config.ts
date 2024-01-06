@@ -62,18 +62,18 @@ export default defineNuxtConfig({
   // problem to solve : componant module vue tags input not working on server side
 
 // in nuxt 3, all plugins are automatically loaded from folder /plugins
-  plugins: [
-    { src: '@/plugins/vue3-tags-input.ts', mode: 'client' },
-    // '@/plugins/vue3-tags-input.ts',
-],
- build : {
-  transpile: [
-    '@sipec/vue3-tags-input'
-  ],
-  vendor : [
-    '@sipec/vue3-tags-input'
-  ],
+//   plugins: [
+//     { src: '@/plugins/vue3-tags-input.ts', mode: 'client' },
+//     // '@/plugins/vue3-tags-input.ts',
+// ],
+//  build : {
+//   transpile: [
+//     '@sipec/vue3-tags-input'
+//   ],
+//   vendor : [
+//     '@sipec/vue3-tags-input'
+//   ],
 
-}
+// }
   
 });
