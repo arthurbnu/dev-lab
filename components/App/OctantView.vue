@@ -33,6 +33,7 @@ import useKeyDown from '~/composables/use-keydown';
 // to avoid error 500 Window is not defined, we use watchEffect like this :
 watchEffect(() => {
     if (process.client) {
+        console.log('process client')
         useFocus()
         useKeyDown([
             {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
@@ -41,8 +42,6 @@ watchEffect(() => {
         ]);
     }
 })
-
-
 
 
 // const

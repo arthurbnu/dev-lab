@@ -301,6 +301,8 @@ const tag = ref(''),
     // Scroll si l'item sélecté n'est plus visible
     // Améliore la gestion du scroll de vue-tags-input
     const scrollSelect = (e) => {
+        // window not defined on server side
+        if (typeof window === 'undefined') return
         if (e.ctrlKey) return   // pas de scroll désiré si ctrl + up/down - gestion de l'historique de recherche
         let selected = tagsInputContainer.value.querySelector('.ti-selected-item')
         if (! selected) return
@@ -369,6 +371,8 @@ const tag = ref(''),
     // Remonte jusqu'à la barre de recherche si trop éloigné
     let destinationScrollPosition = 0;
     const scrollTop = () => {
+        if (typeof window === 'undefined') return
+
         let distance = Math.abs(window.scrollY - destinationScrollPosition);
         if (distance > 150) {
             currentTemplate.value.scrollIntoView();             // nécessaire pour le scroll smooth qui suit
