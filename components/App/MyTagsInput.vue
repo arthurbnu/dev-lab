@@ -139,7 +139,7 @@ import { ref, watch, onMounted, inject, computed} from 'vue';
 // import VueTagsInput from "@sipec/vue3-tags-input";
 
 // vue3-tags-input has been added to nuxt.config.js in plugins, so we can use it on server side like this
-import VueTagsInput from 'vue3-tags-input';
+// import VueTagsInput from 'vue3-tags-input';
 
 
 // import type { ClientOnly } from '#build/components';
