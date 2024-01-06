@@ -40,8 +40,7 @@
             />
             Chargement
         </div>
-        <ClientOnly >
-          
+        <client-only >
         <vue-tags-input
             v-model="tag" 
             :tags="tags" 
@@ -74,7 +73,7 @@
                 </q-btn>
             </template>
         </vue-tags-input>
-        </ClientOnly>
+        </client-only>
         <!-- position sticky possible uniquement si pas de recherche en cours pour éviter dépassement de résultats  -->
         <div    
             v-if = "fetchError.message && ! loading" 
