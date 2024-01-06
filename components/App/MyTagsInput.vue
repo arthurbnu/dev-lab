@@ -40,8 +40,14 @@
             />
             Chargement
         </div>
-        <!-- <client-only > -->
-            <div v-if = "window">
+        <ClientOnly >
+
+            <!-- to have this working we need to add the following to nuxt.config.js
+            plugins: [
+                { src: '~/plugins/vue-tags-input', mode: 'client' }
+            ] -->
+            <!--  or we must add placeholder manually -->
+
 
         <vue-tags-input
             v-model="tag" 
@@ -75,9 +81,7 @@
                 </q-btn>
             </template>
         </vue-tags-input>
-    </div>
-
-        <!-- </client-only> -->
+        </ClientOnly>
         <!-- position sticky possible uniquement si pas de recherche en cours pour éviter dépassement de résultats  -->
         <div    
             v-if = "fetchError.message && ! loading" 
@@ -132,7 +136,11 @@ import { ref, watch, onMounted, inject, computed} from 'vue';
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 // problem to solve : vue3-tags-input is client side only, so we can't use it on server side
 // to fix this, we can tell nuxt to ignore this component on server side rendering
-import VueTagsInput from "@sipec/vue3-tags-input";
+// import VueTagsInput from "@sipec/vue3-tags-input";
+
+
+
+// import type { ClientOnly } from '#build/components';
 // import { useRoute } from 'vue-router';
 // import router from '@/router';
 
