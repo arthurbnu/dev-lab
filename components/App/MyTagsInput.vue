@@ -243,7 +243,8 @@ const tag = ref(''),
     
     onMounted(() => {
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
-        mainInput.setAttribute('tabIndex', props.tIndex);
+        if (mainInput)
+            mainInput.setAttribute('tabIndex', props.tIndex);
         lastChoiceAutocomplete = props.autoComplete;
     });
 
