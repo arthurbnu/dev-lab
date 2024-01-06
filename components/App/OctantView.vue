@@ -28,7 +28,16 @@ import CardItem from '@/components/App/CardItem.vue';
 // import { useFocus } from '@vueuse/core';
 import { useFocus} from '~/composables/focus';
 import useKeyDown from '~/composables/use-keydown';
-useFocus()
+// useFocus()
+// when using nuxt, this is called on server side, and window is not defined
+// to avoid this, we use watchEffect like this :
+watchEffect(() => {
+    if (process.client) {
+        useFocus()
+    }
+})
+
+
 useKeyDown([
     {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
     {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
