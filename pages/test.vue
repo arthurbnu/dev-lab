@@ -15,7 +15,7 @@
 
 <script setup>
 import OctantView from '~/components/App/OctantView.vue';
-
+const show= ref(false)
 
 
 const title  = "Recherche sparql avec VueJs";
