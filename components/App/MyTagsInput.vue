@@ -136,7 +136,7 @@ import { ref, watch, onMounted, inject, computed} from 'vue';
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 // problem to solve : vue3-tags-input is client side only, so we can't use it on server side
 // to fix this, we can tell nuxt to ignore this component on server side rendering
-// import VueTagsInput from "@sipec/vue3-tags-input";
+import VueTagsInput from "@sipec/vue3-tags-input";
 
 // vue3-tags-input has been added to nuxt.config.js in plugins, so we can use it on server side like this
 // import VueTagsInput from 'vue3-tags-input';
