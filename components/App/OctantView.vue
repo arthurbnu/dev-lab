@@ -30,19 +30,19 @@ import { useFocus} from '~/composables/focus';
 import useKeyDown from '~/composables/use-keydown';
 // useFocus()
 // when using nuxt, this is called on server side, and window is not defined
-// to avoid this, we use watchEffect like this :
+// to avoid error 500 Window is not defined, we use watchEffect like this :
 watchEffect(() => {
     if (process.client) {
         useFocus()
+        useKeyDown([
+            {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
+            {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
+            {'key': 'ArrowLeft', 'fn': () => handleFullScreen('prev')},
+        ]);
     }
 })
 
 
-useKeyDown([
-    {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
-    {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
-    {'key': 'ArrowLeft', 'fn': () => handleFullScreen('prev')},
-]);
 
 
 // const
