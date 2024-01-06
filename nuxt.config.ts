@@ -69,7 +69,10 @@ export default defineNuxtConfig({
  build : {
   transpile: [
     '@sipec/vue3-tags-input'
-  ]
+  ],
+  vendor : [
+    '@sipec/vue3-tags-input'
+  ],
 
 }
   
