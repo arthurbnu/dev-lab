@@ -40,7 +40,7 @@
             />
             Chargement
         </div>
-        <ClientOnly >
+        <!-- <ClientOnly > -->
 
             <!-- to have this working we need to add the following to nuxt.config.js
             plugins: [
@@ -81,7 +81,7 @@
                 </q-btn>
             </template>
         </vue-tags-input>
-        </ClientOnly>
+        <!-- </ClientOnly> -->
         <!-- position sticky possible uniquement si pas de recherche en cours pour éviter dépassement de résultats  -->
         <div    
             v-if = "fetchError.message && ! loading" 
