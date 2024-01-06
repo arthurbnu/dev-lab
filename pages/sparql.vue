@@ -16,9 +16,9 @@
 <script setup>
 import OctantView from '~/components/App/OctantView.vue';
 
+const title  = "Recherche sparql avec VueJs";
 const description = "Sparql | Langage de requête pour les données liées rdf." +
 " Les données de la requête sont issues de wikidata, et complétées par des données de dbpedia et l'api wikipedia.";
-const title  = "Recherche sparql wikidata avec VueJs";
 
 useSeoMeta({
   title: title,
@@ -27,13 +27,14 @@ useSeoMeta({
 });
 
 const tags = [
-  "vuejs",
   "sparql",
   "wikipedia",
-  "rdf",
   "dbpedia",
   "wikidata", 
+  "rdf",
   "api",
+  "vuejs",
+  "nuxt",
 ];
 
 

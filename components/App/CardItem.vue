@@ -78,7 +78,6 @@ const wikiFilePath = wikiFrontUrl + 'wiki/Special:FilePath/'
 
 // refs
 const infobox = ref('<div>InfoBox non trouvée...</div>')
-// const images:Ref<Image[]> = ref([])
 // simpler
 const images = ref<Image[]>([])
 const slides = ref(0)
@@ -140,8 +139,6 @@ const fetchImages = async (wikiUrl: string) => {
     })
 }
 
-// const formatImageName = (imageUrl: string) => decodeURIComponent(imageUrl.split('/').pop() as string).toLowerCase().replace(/\s/g, '') 
-// simpler (avoid as string) 
 const formatImageName = (imageUrl: string) => decodeURIComponent(imageUrl.split('/').pop()!).toLowerCase().replace(/\s/g, '').replaceAll('fichier:', '')
 const sameImage = (image1: Image, image2: Image) => formatImageName(image1.src) === formatImageName(image2.src)
 

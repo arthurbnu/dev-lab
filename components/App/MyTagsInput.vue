@@ -40,6 +40,8 @@
             />
             Chargement
         </div>
+        <ClientOnly >
+          
         <vue-tags-input
             v-model="tag" 
             :tags="tags" 
@@ -72,6 +74,7 @@
                 </q-btn>
             </template>
         </vue-tags-input>
+        </ClientOnly>
         <!-- position sticky possible uniquement si pas de recherche en cours pour éviter dépassement de résultats  -->
         <div    
             v-if = "fetchError.message && ! loading" 
@@ -124,6 +127,8 @@
 import { ref, watch, onMounted, inject, computed} from 'vue';
 
 // La version de base de vue tags input n'est plus maintenue.. V2 only
+// problem to solve : vue3-tags-input is client side only, so we can't use it on server side
+// to fix this, we can tell nuxt to ignore this component on server side rendering
 import VueTagsInput from "@sipec/vue3-tags-input";
 // import { useRoute } from 'vue-router';
 // import router from '@/router';
@@ -232,7 +237,7 @@ const tag = ref(''),
     // export des résultats de recherche en CSV (autocompleteItems) - TODO : composable
     const addQuotes = str => `"${str}"`;
 
-    const exportCSV = () => {   // todo : composable
+    const exportCSV = () => {
         // get csv columns from the first item
         const exportColumns = Object.keys(autocompleteItems.value[0])
         let csvContent = "data:text/csv;charset=utf-8,";
