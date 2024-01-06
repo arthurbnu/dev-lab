@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 
     // quasar
     'nuxt-quasar-ui',
-    '@formkit/auto-animate/nuxt',
+    '@formkit/auto-animate',
 
   ],
   quasar: { 
