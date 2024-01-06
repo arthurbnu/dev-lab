@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 
-import { ref, onMounted, Ref } from 'vue'
+import { ref, onMounted } from 'vue'
 // import q card quasar typescipt 
 import { QCard } from 'quasar'
 

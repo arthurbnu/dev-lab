@@ -4,12 +4,12 @@
         :url = "'https://query.wikidata.org/sparql?query=' + encodeURIComponent(sparqlQuery)" 
         replace-search-in-url="__REPLACE__"
         :displayUserItems="false"
-        placeHolder="Recherche"
+        placeHolder="Rechercher une personne sur wikipedia"
         :handleResponse="handleOctant"
         :tags = _tags
         @tags-update = "tagsUpdate"
     >
-        <template v-slot:items-list>
+        <template v-slot:items-list> <!-- auto animate ne marche pas ici avec nuxt  -->
             <ul v-auto-animate = "{duration : animTime}" id = "my-items-list" :class = "rowClass">
                 <li v-for = "item in _tags.slice().reverse()" :key="item.id"> <!-- reverse() peut se faire avec flex -->
                     <CardItem :item = item  ref = "listItems"/>
@@ -25,14 +25,16 @@ import {ref, provide, watch} from 'vue'
 import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
-
-import { useFocus} from '~/composables/focus';
-
 // import { useFocus } from '@vueuse/core';
+import { useFocus} from '~/composables/focus';
+import useKeyDown from '~/composables/use-keydown';
+useFocus()
+useKeyDown([
+    {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
+    {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
+    {'key': 'ArrowLeft', 'fn': () => handleFullScreen('prev')},
+]);
 
-// import useKeyDown from '@/composables/use-keydown';
-
-// useFocus()
 
 // const
 const   animTime = 400,
@@ -112,17 +114,11 @@ const listItems = ref([]);
 const apiName = 'Recherche-Sparql-Wikidata'
 provide('tags '+ apiName, _tags)
 
-// emitted
+// emitted - gestion flex row - 1, 2 ou 3 colonnes
 const tagsUpdate = (newTags) => {
     // let suffix = newTags.length > 2 ? '3' : newTags.length
     // rowClass.value = defaultClass + '-' + suffix
 }
-
-// useKeyDown([
-//     {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
-//     {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
-//     {'key': 'ArrowLeft', 'fn': () => handleFullScreen('prev')},
-// ]);
 
 const handleFullScreen = (action) => {
     let componentFullScreen = listItems.value.find(item => item.fullscreen)

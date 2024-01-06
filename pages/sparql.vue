@@ -4,7 +4,7 @@
 
     <div class="space-y-4 text-center">
       <span v-for="(tag, id) in tags" :key="id" 
-      class = "bg-teal-800 text-white px-1 mr-2 inline-block hover:bg-teal-600 transition-all" >
+      class = "bg-teal-800 text-white px-1 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950" >
         {{ tag }}
       </span>
     </div>
@@ -34,7 +34,6 @@ const tags = [
   "dbpedia",
   "wikidata", 
   "api",
-  "sparql query",
 ];
 
 

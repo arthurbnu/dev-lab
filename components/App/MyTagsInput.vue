@@ -229,9 +229,7 @@ const tag = ref(''),
         lastChoiceAutocomplete = props.autoComplete;
     });
 
-    // export des résultats de recherche en CSV (autocompleteItems) - pour la config de recherche d'utilisateurs displayUserItems
-    // const exportColumns = ['Nom', 'Prénom', 'Code', 'Code Hexa', 'Mail', 'uid']
-    const getExportValues = item => [addQuotes(item.name), addQuotes(item.firstName)]
+    // export des résultats de recherche en CSV (autocompleteItems) - TODO : composable
     const addQuotes = str => `"${str}"`;
 
     const exportCSV = () => {   // todo : composable
@@ -240,7 +238,6 @@ const tag = ref(''),
         let csvContent = "data:text/csv;charset=utf-8,";
         csvContent +=       exportColumns.join(";") + "\n" +
                             autocompleteItems.value.map(item => exportColumns.map(col => addQuotes(item[col])).join(";")).join("\n");
-                            // autocompleteItems.value.map(item => getExportValues(item).join(";")).join("\n");
         let encodedUri = encodeURI(csvContent);
         let link = document.querySelector('a.export_csv') 
         if (! link){
@@ -393,13 +390,7 @@ const tag = ref(''),
             fetchController.abort()
             fetchController = new AbortController()
 
-            let header = {'Accept' : 'application/json'};
-
-            // axios.get(currentRequestUrl, { headers : header}).then(response => {
-                // instead of axios, use fetch to be able to cancel request
-            // fetch(currentRequestUrl, { headers : header}).then(response => {
-                // instead of fetch use nuxt $fetch to be able to cancel request
-            $fetch(currentRequestUrl, { headers : header}).then(response => {
+            $fetch(currentRequestUrl, { headers : {'Accept' : 'application/json'}}).then(response => {
                 myLog(response);
                 autocompleteItems.value = props.handleResponse(response)
                 if (! autocompleteItems.value || autocompleteItems.value.length === 0)
@@ -471,7 +462,6 @@ const tag = ref(''),
 
     // Vérifie l'existence de l'user pour l'api de recherche correspondante matchedApi
     const checkMatchedApi = (uid, option) => { 
-        // if (props.filterOptions) modelSelect.value = option  (// on force la recherche avec UID)
         tag.value = '@' + uid 
         currentTemplate.value.scrollIntoView({block: "start"});
     }
@@ -490,12 +480,11 @@ const tag = ref(''),
         search();
     }
     
-    // Utile juste une fois au chargement de la page quand le token MSAL est reçu.
-    let userSearchedFromParam = false;
+    
+    let userSearchedFromParam = false;      // Utile juste une fois au chargement de la page quand le token MSAL est reçu.
     const loadUsersFromUrl = () => {
         if (userSearchedFromParam || ! route.params.user || ! result.value ) return
         tag.value= '@' + route.params.user.split(separatorUsersUrl).pop()   // pour le moment, on ne prend que le dernier user de la liste
-        // tag.value= '@' + route.params.user
         userSearchedFromParam = true;
     }
 

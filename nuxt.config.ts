@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 
     // quasar
     'nuxt-quasar-ui',
+    '@formkit/auto-animate/nuxt',
 
   ],
   quasar: { 
@@ -38,7 +39,7 @@ export default defineNuxtConfig({
     pageTransition: { name: "page", mode: "out-in" },
     head: {
       htmlAttrs: {
-        lang: "en",
+        lang: "fr",
         class: "h-full",
       },
       bodyAttrs: {
@@ -57,12 +58,5 @@ export default defineNuxtConfig({
       Inter: [400, 500, 600, 700, 800, 900],
     },
   },
-
-  // sass and scss
-  // css : [
-  //   '@/assets/css/main.scss'
-  // ],
-
-
   
 });
