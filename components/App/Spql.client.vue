@@ -32,7 +32,7 @@ import useKeyDown from '~/composables/use-keydown';
 // when using nuxt, this is called on server side, and window is not defined
 // to avoid error 500 Window is not defined, we use watchEffect like this :
 watchEffect(() => {
-    if (process.client) {
+    if (process.client && ready) {
         console.log('process client')
         useFocus()
         useKeyDown([
@@ -42,7 +42,12 @@ watchEffect(() => {
         ]);
     }
 })
+const ready= false 
+    onMounted(async() => {
 
+await nextTick()
+        ready=true
+    });
 
 // const
 const   animTime = 400,
@@ -180,7 +185,6 @@ const handleApiError = (data) => {
 </script>
 
 <style lang="scss" scoped>
-// <!-- <style scoped> -->
 
 .q-separator{
       width : 150px;
