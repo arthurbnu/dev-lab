@@ -36,7 +36,7 @@ watchEffect(() => {
   const inputLines = inputText.value.split("\n")
   // remove 10 first characters
   const outputLines = inputLines.map(line => line.substring(line.indexOf("]") + 1))
-  outputText.value = outputLines.join("\n")
+  outputText.value = outputLines.join("")
 })
 
 const title  = "Transformation de texte";
