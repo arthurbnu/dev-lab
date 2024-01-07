@@ -9,12 +9,12 @@
       </span>
     </div>
 <button v-if="!show" @click="show = true">Click to lazy load Octant component</button>
-    <LazyOctantView v-if="show"/>
+    <LazyAppOctantView v-if="show"/>
   </main>
 </template>
 
 <script setup>
-import OctantView from '~/components/App/OctantView.vue';
+
 const show= ref(false)
 
 
