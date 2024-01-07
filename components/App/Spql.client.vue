@@ -25,6 +25,8 @@ import {ref, provide, watch} from 'vue'
 import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
+const ready= ref(false)
+
 // import { useFocus } from '@vueuse/core';
 import { useFocus} from '~/composables/focus';
 import useKeyDown from '~/composables/use-keydown';
@@ -42,7 +44,7 @@ watchEffect(() => {
         ]);
     }
 })
-const ready= ref(false)
+
     onMounted(async() => {
 
 await nextTick()
