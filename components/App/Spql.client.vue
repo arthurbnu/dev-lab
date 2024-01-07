@@ -46,7 +46,7 @@ const ready= false
     onMounted(async() => {
 
 await nextTick()
-        ready=true
+        ready.value=true
     });
 
 // const
