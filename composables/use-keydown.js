@@ -8,7 +8,7 @@ let useKeyDown = (keyCombos) => {
             kc.fn();
         }
     }
-    OnMounted(async () => {
+    onMounted(async () => {
         await nextTick();   // pour les composants .client.vue
         window.addEventListener('keydown', onKeyDown);
     });
