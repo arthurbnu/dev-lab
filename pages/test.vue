@@ -15,17 +15,22 @@
 
 <script setup>
 
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
 
 const ready= ref(false)
+const mounted= ref(false)
 
 watchEffect(() => {
-  if (process.client) {
+  if (process.client && mounted.value) {
     console.log('client')
     ready.value = true
   }
 })
 
+    onMounted(async() => {
+        await nextTick()
+mounted.value=true
+    });
 
 const title  = "Recherche sparql avec VueJs";
 const description = "Sparql | Langage de requête pour les données liées rdf." +
