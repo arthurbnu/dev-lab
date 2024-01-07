@@ -240,7 +240,7 @@ const tag = ref(''),
 
     // Fonctions ---------------------------------------------------------------------------------------------
     
-    onMounted(() => {
+    onMounted(async() => {
 
 await nextTick()
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
