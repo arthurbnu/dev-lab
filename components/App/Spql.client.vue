@@ -32,7 +32,7 @@ import useKeyDown from '~/composables/use-keydown';
 // when using nuxt, this is called on server side, and window is not defined
 // to avoid error 500 Window is not defined, we use watchEffect like this :
 watchEffect(() => {
-    if (process.client && ready) {
+    if (process.client && ready.value) {
         console.log('process client')
         useFocus()
         useKeyDown([
