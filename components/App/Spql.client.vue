@@ -30,13 +30,13 @@ const ready= ref(false)
 // import { useFocus } from '@vueuse/core';
 import { useFocus} from '~/composables/focus';
 import useKeyDown from '~/composables/use-keydown';
-// useFocus()
+ useFocus()
 // when using nuxt, this is called on server side, and window is not defined
 // to avoid error 500 Window is not defined, we use watchEffect like this :
 watchEffect(() => {
     if (ready.value) {
         console.log('process client')
-        useFocus()
+       // useFocus()
         useKeyDown([
             {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
             {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
@@ -45,11 +45,7 @@ watchEffect(() => {
     }
 })
 
-    onMounted(async() => {
-
-await nextTick()
-        ready.value=true
-    });
+    
 
 // const
 const   animTime = 400,
