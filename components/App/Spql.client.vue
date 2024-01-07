@@ -42,7 +42,7 @@ watchEffect(() => {
         ]);
     }
 })
-const ready= false 
+const ready= ref(false)
     onMounted(async() => {
 
 await nextTick()
