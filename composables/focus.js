@@ -18,7 +18,7 @@ export function useFocus(selector = defaultSelector) {
     let mountedFocus = ref(false)
 
     onMounted(async () => {
-await nextTick()
+        await nextTick()    // pour les composants .client.vue
         mountedFocus = focusEl(selector)
     })
 

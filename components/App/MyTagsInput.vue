@@ -241,8 +241,6 @@ const tag = ref(''),
     // Fonctions ---------------------------------------------------------------------------------------------
     
     onMounted(async() => {
-
-await nextTick()
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
         if (mainInput)
             mainInput.setAttribute('tabIndex', props.tIndex);

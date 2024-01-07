@@ -1,4 +1,4 @@
-import {onBeforeUnmount} from "vue";
+import {onBeforeUnmount, onMounted} from "vue";
 
 let useKeyDown = (keyCombos) => {
     let onKeyDown = (event) => {
@@ -8,8 +8,10 @@ let useKeyDown = (keyCombos) => {
             kc.fn();
         }
     }
-
-    window.addEventListener('keydown', onKeyDown);
+    OnMounted(async () => {
+        await nextTick();   // pour les composants .client.vue
+        window.addEventListener('keydown', onKeyDown);
+    });
     onBeforeUnmount(() => {
         window.removeEventListener('keydown', onKeyDown);
     });

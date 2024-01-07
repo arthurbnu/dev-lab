@@ -9,14 +9,12 @@
       </span>
     </div>
 
-    <OctantView />
+    <AppOctantView />
   </main>
 </template>
 
 <script setup>
-import OctantView from '~/components/App/OctantView.vue';
-
-const title  = "Recherche sparql avec VueJs";
+const title  = "Recherche sparql avec Vuejs";
 const description = "Sparql | Langage de requête pour les données liées rdf." +
 " Les données de la requête sont issues de wikidata, et complétées par des données de dbpedia et l'api wikipedia.";
 

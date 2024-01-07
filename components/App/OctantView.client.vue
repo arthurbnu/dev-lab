@@ -25,23 +25,17 @@ import {ref, provide, watch} from 'vue'
 import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
+const ready= ref(false)
+
 // import { useFocus } from '@vueuse/core';
-import { useFocus} from '~/composables/focus';
+import { useFocus} from '~/composables/focus';      // ces 2 composables appellent nextTick car composant client - cf doc nuxt
 import useKeyDown from '~/composables/use-keydown';
-// useFocus()
-// when using nuxt, this is called on server side, and window is not defined
-// to avoid error 500 Window is not defined, we use watchEffect like this :
-watchEffect(() => {
-    if (process.client) {
-        console.log('process client')
-        useFocus()
-        useKeyDown([
-            {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
-            {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
-            {'key': 'ArrowLeft', 'fn': () => handleFullScreen('prev')},
-        ]);
-    }
-})
+useFocus()
+useKeyDown([
+    {'key': 'Escape', 'fn': () => handleFullScreen('exit')},
+    {'key': 'ArrowRight', 'fn': () => handleFullScreen('next') },
+    {'key': 'ArrowLeft', 'fn': () => handleFullScreen('prev')},
+]);
 
 
 // const
@@ -107,7 +101,7 @@ const sparqlQuery = `SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescrip
       # article wikipédia français associé
       ?article schema:about ?item .
       ?article schema:inLanguage "fr" .
-      ?article schema:isPartOf <https://fr.wikipedia.org/>.	
+      ?article schema:isPartOf <https://fr.wikipedia.org/>.        
       
       OPTIONAL { ?item wdt:P18 ?image }
       
@@ -180,7 +174,6 @@ const handleApiError = (data) => {
 </script>
 
 <style lang="scss" scoped>
-// <!-- <style scoped> -->
 
 .q-separator{
       width : 150px;
