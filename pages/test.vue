@@ -8,14 +8,23 @@
         {{ tag }}
       </span>
     </div>
-<button v-if="!show" @click="show = true">Click to lazy load Octant component</button>
-    <LazyAppOctantView v-if="show"/>
+    <button v-if="!ready" @click="ready = true">Click to lazy load Octant component</button>
+    <LazyAppOctantView v-if="ready"/>
   </main>
 </template>
 
 <script setup>
 
-const show= ref(false)
+import { ref, watchEffect } from 'vue'
+
+const ready= ref(false)
+
+watchEffect(() => {
+  if (process.client) {
+    console.log('client')
+    ready.value = true
+  }
+})
 
 
 const title  = "Recherche sparql avec VueJs";
