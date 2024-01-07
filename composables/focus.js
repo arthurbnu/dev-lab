@@ -17,7 +17,8 @@ export function useFocus(selector = defaultSelector) {
     
     let mountedFocus = ref(false)
 
-    onMounted(() => {
+    onMounted(async () => {
+await nextTick()
         mountedFocus = focusEl(selector)
     })
 
