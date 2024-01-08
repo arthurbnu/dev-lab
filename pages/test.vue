@@ -27,7 +27,7 @@
 import { ref, watchEffect, onMounted } from 'vue'
 
 // test v auto animate
-const items = ref(["😏","😐","😑","😒","😕", ... ])
+const items = ref(["😏","😐","😑","😒","😕" ])
 function removeItem(toRemove) {
   items.value = items.value.filter((item) => item !== toRemove)
 }
