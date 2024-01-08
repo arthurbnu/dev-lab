@@ -10,12 +10,27 @@
     </div>
     <button v-if="!ready" @click="ready = true">Click to lazy load Octant component</button>
     <LazyAppOctantView v-if="ready"/>
+<ul v-auto-animate>
+    <li
+      v-for="item in items"
+      :key="item"
+      @click="removeItem(item)"
+    >
+      {{ item }}
+    </li>
+  </ul>
   </main>
 </template>
 
 <script setup>
 
 import { ref, watchEffect, onMounted } from 'vue'
+
+// test v auto animate
+const items = ref(["😏","😐","😑","😒","😕", ... ])
+function removeItem(toRemove) {
+  items.value = items.value.filter((item) => item !== toRemove)
+}
 
 const ready= ref(false)
 const mounted= ref(false)
