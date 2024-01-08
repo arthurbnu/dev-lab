@@ -10,7 +10,7 @@
     </div>
     <button v-if="!ready" @click="ready = true">Click to lazy load Octant component</button>
     <LazyAppOctantView v-if="ready"/>
-<ul v-auto-animate>
+<ul >
     <li
       v-for="item in items"
       :key="item"
