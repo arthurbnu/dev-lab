@@ -23,6 +23,12 @@ useSeoMeta({
   description,
   author: "A B",
   ogImage: "https://dev-lab-one.vercel.app/sparql/sparql-vuejs-personnes-wikipedia.png",
+  ogUrl: "https://dev-lab-one.vercel.app/sparql",
+  ogType: "website",
+  ogTitle: title,
+  ogDescription: description,
+  robots: "index, follow",
+  themeColor: "teal",
 });
 
 const tags = [

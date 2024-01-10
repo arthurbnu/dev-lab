@@ -25,3 +25,30 @@
   transform: translateY(5px);
 }
 </style>
+
+
+<script setup lang="ts">
+useHead({
+  title: 'Portfolio Dev',
+  meta: [
+    { name: 'description', content: 'Portfolio Dev incroyable...' },
+    { name : 'theme-color', content : 'teal'},
+    { name : 'robots', content : 'index, follow'},
+    { name : 'author', content : 'A B'},
+    { name : 'og:image', content : 'https://dev-lab-one.vercel.app/sparql/sparql-vuejs-personnes-wikipedia.png'},
+    { name : 'og:url', content : 'https://dev-lab-one.vercel.app/'},
+    { name : 'og:type', content : 'website'},
+    { name : 'og:title', content : 'Portfolio Dev'},
+    { name : 'og:description', content : 'Portfolio Dev'},
+    { name : 'google-site-verification', content : 'PHAJkMWsS9my1gW-Q8KTd-WvO2UHfAoMBNZGr7e1L10'} // google search console
+  ],
+  bodyAttrs: {
+    class: "antialiased bg-gray-50 dark:bg-black min-h-screen",
+  },
+  htmlAttrs: {
+    lang: "fr",
+    class : 'dark h-full'
+  },
+  // script: [ { innerHTML: 'console.log(\'Hello world\')' } ]
+})
+</script>

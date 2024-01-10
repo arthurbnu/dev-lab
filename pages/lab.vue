@@ -2,6 +2,7 @@
   <main class="min-h-screen">
     <AppHeader class="mb-12" title="Lab" :description="description" />
     <div class="space-y-24">
+      <!-- <AppAscii></AppAscii> -->
       <ContentList path="/lab" v-slot="{ list }">
         <ContentQuery
           v-for="item in list"
@@ -20,7 +21,7 @@
 </template>
 
 <script setup>
-const description = "Some random experiments with UI I do in my free time.";
+const description = "Expériences ...";
 useSeoMeta({
   title: "Lab | A B",
   description,

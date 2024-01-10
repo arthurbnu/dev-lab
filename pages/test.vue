@@ -17,7 +17,6 @@
       :key="item"
       @click="removeItem(item)"
     >
-
       {{ item }}
     </li>
   </transition-fade>
@@ -55,8 +54,8 @@ const description = "Sparql | Langage de requête pour les données liées rdf."
 " Les données de la requête sont issues de wikidata, et complétées par des données de dbpedia et l'api wikipedia.";
 
 useSeoMeta({
-  title: title,
-  description,
+  // title: title,
+  // description,
   author: "A B",
 });
 

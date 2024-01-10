@@ -67,7 +67,7 @@
         >
             <!--  slot  au dessus des résultats de recherche - Export csv-->
             <template v-slot:autocomplete-header v-if = " ! loading && autocompleteItems.length">
-                <q-btn
+                    <q-btn
                     @click = "exportCSV"
                     class = "q-ml-md"
                     color = "primary"
