@@ -11,13 +11,16 @@
     <button v-if="!ready" @click="ready = true">Click to lazy load Octant component</button>
     <LazyAppOctantView v-if="ready"/>
 <ul >
+  <transition-fade group>
     <li
       v-for="item in items"
       :key="item"
       @click="removeItem(item)"
     >
+
       {{ item }}
     </li>
+  </transition-fade>
   </ul>
   </main>
 </template>

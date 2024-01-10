@@ -22,6 +22,7 @@ useSeoMeta({
   title: title,
   description,
   author: "A B",
+  ogImage: "https://dev-lab-one.vercel.app/sparql/sparql-vuejs-personnes-wikipedia.png",
 });
 
 const tags = [

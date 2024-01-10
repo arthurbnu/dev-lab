@@ -24,8 +24,9 @@
     "yarn-upgrade-all": "^0.7.2"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^1.0.0-beta.5",
+    "@formkit/auto-animate": "^0.8.1",
     "@iconify-json/lucide": "1.1.145",
+    "@morev/vue-transitions": "^2.3.6",
     "@nuxt/image": "1.1.0",
     "@nuxt/ui": "2.11.1",
     "@quasar/extras": "^1.16.9",

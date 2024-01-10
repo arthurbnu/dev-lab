@@ -313,29 +313,9 @@ body:has(.card-item) .fullscreen .q-carousel__slide {
   display: flex;
   max-width: 80%;
   margin: auto;
-  
-  li{
-    flex-basis: 33%;
+  li.li_item{
+    flex-basis: 100%;
   }
-    // 1 colonne
-    &.my-row-1{
-      li{
-        flex-basis: 100%;
-      }
-    }
-    // // 2 colonnes
-    &.my-row-2{
-      li{
-        flex-basis: 50%;
-      }
-    }
-    // // 3 colonnes
-    &.my-row-3{
-      li{
-        flex-basis: 33%;
-      }
-    }
-
 }
 
 

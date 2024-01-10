@@ -6,14 +6,17 @@
         :displayUserItems="false"
         placeHolder="Rechercher une personne sur wikipedia"
         :handleResponse="handleOctant"
-        :tags = _tags
+        :tags = tags
         @tags-update = "tagsUpdate"
     >
-        <template v-slot:items-list> <!-- auto animate ne marche pas ici avec nuxt  -->
-            <ul v-auto-animate = "{duration : animTime}" id = "my-items-list" :class = "rowClass">
-                <li v-for = "item in _tags.slice().reverse()" :key="item.id"> <!-- reverse() peut se faire avec flex -->
-                    <CardItem :item = item  ref = "listItems"/>
-                </li>
+        <template v-slot:items-list> <!-- soit auto animate soit vue-transition group w-full  -->
+            <ul v-auto-animate = "{duration : 400}" id = "my-items-list">
+            <!-- <ul  id = "my-items-list"> -->
+                <!-- <transition-scale group class = "w-full"> -->
+                    <li v-for = "item in tags.slice().reverse()" :key="item.id" class = "li_item"> <!-- reverse() peut se faire avec flex -->
+                        <CardItem :item = item  ref = "listItems"/>
+                    </li>
+                <!-- </transition-scale> -->
             </ul>
         </template>
     </MyTagsInput>
@@ -37,11 +40,6 @@ useKeyDown([
     {'key': 'ArrowLeft', 'fn': () => handleFullScreen('prev')},
 ]);
 
-
-// const
-const   animTime = 400,
-        defaultClass = 'my-row-1';
-
 const sparqlQuery = `SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescription
     (SAMPLE(?image) as ?image) # on peut avoir +eurs images (évite les doublons dans les résultats) 
     WITH {
@@ -49,7 +47,6 @@ const sparqlQuery = `SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescrip
         BIND (LCASE("__REPLACE__") AS ?searchfor1) 
         BIND (REPLACE(?searchfor1, "[àâä]", "a") AS ?searchfor2)
         BIND (REPLACE(?searchfor2, "[éèêë]", "e") AS ?searchfor)
-          
       }
     } AS %p
     WITH {
@@ -110,11 +107,10 @@ const sparqlQuery = `SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescrip
     GROUP BY ?item ?itemLabel ?articleLabel ?itemDescription`;
 
 // refs
-const rowClass = ref(defaultClass)
-const _tags = ref([])
+const tags = ref([])
 const listItems = ref([]);
 const apiName = 'Recherche-Sparql-Wikidata'
-provide('tags '+ apiName, _tags)
+provide('tags '+ apiName, tags)
 
 // emitted - gestion flex row - 1, 2 ou 3 colonnes
 const tagsUpdate = (newTags) => {
@@ -155,7 +151,7 @@ const handleOctant = (response) => {
             image : safeValue(a, 'image', defaultImage),
             wikiPage : wikiPage,
             itemDescription : safeValue(a, 'itemDescription'),
-            id : wikiPage + '-' + _tags.value.length,
+            id : wikiPage + '-' + tags.value.length,
         }
     });
 }
