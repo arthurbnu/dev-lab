@@ -7743,6 +7743,11 @@ socks@^2.7.1:
     ip "^2.0.0"
     smart-buffer "^4.2.0"
 
+sortablejs@*, sortablejs@^1.14.0:
+  version "1.15.1"
+  resolved "https://registry.npmjs.org/sortablejs/-/sortablejs-1.15.1.tgz"
+  integrity sha512-P5Cjvb0UG1ZVNiDPj/n4V+DinttXG6K8n7vM/HQf0C25K3YKQTQY6fsr/sEGsJGpQ9exmPxluHxKBc0mLKU1lQ==
+
 source-map-js@^1.0.1, source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz"
@@ -8873,6 +8878,11 @@ vue-devtools-stub@^0.1.0:
   resolved "https://registry.npmjs.org/vue-devtools-stub/-/vue-devtools-stub-0.1.0.tgz"
   integrity sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==
 
+vue-draggable-next@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.npmjs.org/vue-draggable-next/-/vue-draggable-next-2.2.1.tgz"
+  integrity sha512-EAMS1IRHF0kZO0o5PMOinsQsXIqsrKT1hKmbICxG3UEtn7zLFkLxlAtajcCcUTisNvQ6TtCB5COjD9a1raNADw==
+
 vue-router@^4.1.0, vue-router@^4.2.5:
   version "4.2.5"
   resolved "https://registry.npmjs.org/vue-router/-/vue-router-4.2.5.tgz"
@@ -8893,7 +8903,7 @@ vue-use-fixed-header@^2.0.0:
   resolved "https://registry.npmjs.org/vue-use-fixed-header/-/vue-use-fixed-header-2.0.0.tgz"
   integrity sha512-N4vWhTZpTaY5uWXIoUAXrmMR2tBQuIPf+mT+jx/ayk2eSZNCcNy0J52uJ7Dvf8St1vSmkdYdH3K/WwuV+dTQDA==
 
-"vue@^2.6.14 || >=3", "vue@^2.7.0 || ^3.2.25", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", vue@^3.0.0-beta.1, vue@^3.2.0, vue@^3.2.25, vue@^3.3.4, vue@^3.3.8, "vue@>=2.7 || >=3", vue@>=3, vue@3.4.4:
+"vue@^2.6.14 || >=3", "vue@^2.7.0 || ^3.2.25", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", vue@^3.0.0-beta.1, vue@^3.2.0, vue@^3.2.2, vue@^3.2.25, vue@^3.3.4, vue@^3.3.8, "vue@>=2.7 || >=3", vue@>=3, vue@3.4.4:
   version "3.4.4"
   resolved "https://registry.npmjs.org/vue/-/vue-3.4.4.tgz"
   integrity sha512-suZXgDVT8lRNhKmxdkwOsR0oyUi8is7mtqI18qW97JLoyorEbE9B2Sb4Ws/mR/+0AgA/JUtsv1ytlRSH3/pDIA==
