@@ -1,7 +1,6 @@
 
 <template>
   <div class=" h-80 shadow-lg m-5 max-w-full">
-
     <ul class="flex flex-nowrap space-x-2">
       <li v-for="(picture, id) in pictures" :key="id">
         <img :src="picture" @click="selectedPicture = id" 
@@ -12,8 +11,6 @@
         </div>
       </li>
     </ul>
-
-
   </div>
 </template>
 
