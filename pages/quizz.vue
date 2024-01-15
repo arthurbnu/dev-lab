@@ -1,11 +1,13 @@
 
 <template>
-  <div class=" h-80 bg-slate-100 shadow-lg m-5 max-w-full">
+  <div class=" h-80 shadow-lg m-5 max-w-full">
 
     <ul class="flex flex-nowrap space-x-2">
       <li v-for="(picture, id) in pictures" :key="id">
-        <img :src="picture" @click="selectedPicture = id" class="cursor-pointer" :class="{'border-2 border-teal-500': selectedPicture === id}">
-        <div class="text-center bg-teal-100 mt-3" @click="selectedAnswer = id" :class="{'bg-teal-500 text-white': selectedAnswer === id}">
+        <img :src="picture" @click="selectedPicture = id" 
+        class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid" :class="{'border-teal-500': selectedPicture === id}">
+        <div class="text-center cursor-pointer hover:opacity-90 transition-all bg-teal-100 mt-3" 
+        @click="selectedAnswer = id" :class="{'bg-teal-500 text-white': selectedAnswer === id}">
           {{ answers[id] }}
         </div>
       </li>
@@ -46,6 +48,7 @@ const combinations = [
 ]
 
 watchEffect(() => {
+  console.log(selectedPicture.value, selectedAnswer.value)
   if (combinations.includes([selectedPicture.value, selectedAnswer.value])) {
     console.log('correct')
   } else {
