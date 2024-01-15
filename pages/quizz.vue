@@ -22,13 +22,7 @@ import {ref, watchEffect} from 'vue'
 const selectedPicture = ref(-1)
 const selectedAnswer = ref(-1)
 
-watchEffect(() => {
-  if (combinations.includes([selectedPicture.value, selectedAnswer.value])) {
-    console.log('correct')
-  } else {
-    console.log('wrong')
-  }
-})
+
 
 const pictures = [
 'https://via.placeholder.com/150x150',
@@ -50,5 +44,13 @@ const combinations = [
   [2, 0],
   [3, 2],
 ]
+
+watchEffect(() => {
+  if (combinations.includes([selectedPicture.value, selectedAnswer.value])) {
+    console.log('correct')
+  } else {
+    console.log('wrong')
+  }
+})
 
 </script>
