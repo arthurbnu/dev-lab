@@ -24,10 +24,10 @@ const selectedAnswer = ref(-1)
 
 
 const pictures = ref([
-  { src : 'https://via.placeholder.com/150x150', answer : '150' },
+  { src : 'https://via.placeholder.com/180x150', answer : '150' },
   { src : 'https://via.placeholder.com/160x150', answer : '160' },
   { src : 'https://via.placeholder.com/170x150', answer : '170' },
-  { src : 'https://via.placeholder.com/180x150', answer : '180' },
+  { src : 'https://via.placeholder.com/150x150', answer : '180' },
 ])
 
 const answers = ref([
@@ -40,7 +40,7 @@ const answers = ref([
 const checkAnswer = () => {
   if (answers.value[selectedAnswer.value] === pictures.value[selectedPicture.value].answer) {
    // alert('Good answer')
-answers.value.sort()
+pictures.value.sort()
   } else {
     alert('Bad answer')
   }
