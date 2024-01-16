@@ -1,7 +1,7 @@
 
 <template>
   <div class=" h-80 shadow-lg m-5 max-w-full">
-    <ul class="flex flex-nowrap space-x-2">
+    <ul v-auto-animate class="flex flex-nowrap space-x-2">
       <li v-for="(picture, id) in pictures" :key="id">
         <img :src="picture.src" @click="selectedPicture = id" 
         class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid" :class="{'border-teal-500': selectedPicture === id}">
