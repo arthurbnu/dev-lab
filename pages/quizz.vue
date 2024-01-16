@@ -9,7 +9,7 @@
           :class="{ 'border-teal-500': selectedPicture === picture.src }">
       </li>
     </ul>
-    <ul v-auto-animate class="flex space-x-2">
+    <ul v-auto-animate class="flex flex-nowrap space-x-2">
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
         class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 basis-1 border-2 border-solid"
         :class="[{ 'border-teal-500': selectedAnswer === answer }]"
@@ -89,3 +89,9 @@ watchEffect(() => {
 })
 
 </script>
+
+<style scoped lang = "scss">
+  .my-override-container{   // classe ajoutée dans le container Container.vue
+    max-width: 100%;
+  }
+</style>
