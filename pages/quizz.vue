@@ -85,7 +85,7 @@ const checkAnswer = async () => {
       picture: selectedPicture.value,
       answer: selectedAnswer.value
     }
-    await nextTick()
+    await new Promise(resolve => setTimeout(resolve, 500))  // on attend la classe my-error
   }
   selectedPicture.value = ''
   selectedAnswer.value = ''
