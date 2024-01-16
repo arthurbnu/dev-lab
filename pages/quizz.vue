@@ -6,13 +6,13 @@
         <span v-if = "picture.found" class = "absolute w-full h-full bg-teal-700/40 z-10 transition-all"></span> <!-- empeche le click si deja ok -->
         <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
-          :class="{ 'border-teal-500': selectedPicture === picture.src }">
+          :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
       </li>
     </ul>
     <ul v-auto-animate class="flex flex-nowrap space-x-2">
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
         class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 basis-1 border-2 border-solid"
-        :class="[{ 'border-teal-500': selectedAnswer === answer }]"
+        :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
         :style = "basisStyle">
         <span class = 'text-sm'>
           {{ answer }}
@@ -24,10 +24,14 @@
 
 <script setup lang = "ts">
 
-import { ref, watchEffect, computed } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const selectedPicture = ref('')
 const selectedAnswer = ref('')
+const lastError = ref({
+  picture : '',
+  answer : ''
+})
 
 interface Picture {
   src: string
@@ -75,7 +79,11 @@ const checkAnswer = async () => {
     await new Promise(resolve => setTimeout(resolve, 300))
     pic.found = true
   } else {
-    alert('Bad answer')
+    // alert('Bad answer')
+    lastError.value = {
+      picture : selectedPicture.value,
+      answer : selectedAnswer.value
+    }
   }
   selectedPicture.value = ''
   selectedAnswer.value = ''
@@ -90,8 +98,33 @@ watchEffect(() => {
 
 </script>
 
-<style scoped lang = "scss">
+<style lang = "scss">
   .my-override-container{   // classe ajoutée dans le container Container.vue
     max-width: 100vw;
   }
+</style>
+
+<style scoped lang="scss">
+
+// animation for error
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.my-error{
+  animation: shake 0.5s;
+}
+
+
 </style>
