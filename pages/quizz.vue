@@ -4,7 +4,9 @@
     <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
       <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
         <!-- span de fond - empeche le click si deja ok -->
-        <span v-if="picture.found" class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height"></span>
+        <span v-if="picture.found" class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl">
+          🥇
+        </span>
         <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
           :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
@@ -70,19 +72,19 @@ const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
 const checkAnswer = async () => {
   const pic = pictures.value.find(picture => picture.src === selectedPicture.value)
-  if (!pic) return
-  if (selectedAnswer.value === pic.answer) {
+  if (!pic) return  // ts error
+  lastError.value = {
+      picture: '',
+      answer: ''
+  }
+  if (selectedAnswer.value === pic.answer) {  // bonne réponse
     // replace l'element trouvé en premier
     pictures.value = [pic, ...pictures.value.filter(picture => picture.src !== selectedPicture.value)]
     answers.value = [selectedAnswer.value, ...answers.value.filter(answer => answer !== selectedAnswer.value)]
     // pause avant animation 
     await new Promise(resolve => setTimeout(resolve, 300))
     pic.found = true
-    lastError.value = {
-      picture: '',
-      answer: ''
-    }
-  } else {
+  } else {    // mauvaise réponse
     lastError.value = {
       picture: selectedPicture.value,
       answer: selectedAnswer.value
@@ -93,15 +95,14 @@ const checkAnswer = async () => {
 }
 
 watchEffect(() => {
-  if (selectedPicture.value && selectedAnswer.value) {
+  if (selectedPicture.value && selectedAnswer.value) 
     checkAnswer()
-  }
 })
 
 </script>
 
-<style lang = "scss">
-.my-override-container {    // classe ajoutée dans le container Container.vue
+<style>
+.my-override-container {   
   max-width: 100vw;
 }
 </style>
@@ -150,4 +151,5 @@ watchEffect(() => {
 
 .my-error {
   animation: shake 0.5s;
-}</style>
+}
+</style>
