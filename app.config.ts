@@ -25,7 +25,7 @@ export default defineAppConfig({
       },
     },
     container: {
-      constrained: "max-w-2xl",
+      constrained: "max-w-2xl my-override-container",
     },
   },
 });

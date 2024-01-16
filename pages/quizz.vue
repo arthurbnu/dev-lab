@@ -92,6 +92,6 @@ watchEffect(() => {
 
 <style scoped lang = "scss">
   .my-override-container{   // classe ajoutée dans le container Container.vue
-    max-width: 100%;
+    max-width: 100vw;
   }
 </style>
