@@ -77,7 +77,6 @@ const checkAnswer = async () => {
       picture: '',
       answer: ''
   }
-  await nextTick()
   if (selectedAnswer.value === pic.answer) {  // bonne réponse
     // replace l'element trouvé en premier
     pictures.value = [pic, ...pictures.value.filter(picture => picture.src !== selectedPicture.value)]
@@ -86,6 +85,7 @@ const checkAnswer = async () => {
     await new Promise(resolve => setTimeout(resolve, 300))
     pic.found = true
   } else {    // mauvaise réponse
+    await nextTick()  // on attend la suppression de la classe my-error au cas ou choix identique au précédent
     lastError.value = {
       picture: selectedPicture.value,
       answer: selectedAnswer.value
