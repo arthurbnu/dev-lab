@@ -4,7 +4,7 @@
     <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
       <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
         <!-- span de fond - empeche le click si deja ok -->
-        <span v-if="picture.found" class="absolute w-full h-full bg-teal-700/40 z-10 transition-all"></span>
+        <span v-if="picture.found" class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height"></span>
         <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
           :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
@@ -54,16 +54,16 @@ const pictures = ref([
 ])
 
 const answers = ref([
-  'Arthur',
-  'Christophe',
-  'Madeleine',
-  'Ferdi',
   'Elisa',
-  'Kevin',
+  'Christophe',
   'Maël',
+  'Kevin',
+  'Arthur',
+  'Mathilde',
+  'Ferdi',
+  'Madeleine',
   'François',
   'Jimmy',
-  'Mathilde',
 ])
 
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
@@ -101,54 +101,48 @@ watchEffect(() => {
 </script>
 
 <style lang = "scss">
-.my-override-container {
-  // classe ajoutée dans le container Container.vue
+.my-override-container {    // classe ajoutée dans le container Container.vue
   max-width: 100vw;
 }
 </style>
 
 <style scoped lang="scss">
+
+.my-height {
+  height: calc(100% + 110px);
+}
+
 @keyframes shake {
   0% {
     transform: translate(1px, 1px) rotate(0deg);
   }
-
   10% {
     transform: translate(-1px, -2px) rotate(-1deg);
   }
-
   20% {
     transform: translate(-3px, 0px) rotate(1deg);
   }
-
   30% {
     transform: translate(3px, 2px) rotate(0deg);
   }
-
   40% {
     transform: translate(1px, -1px) rotate(1deg);
   }
-
   50% {
     transform: translate(-1px, 2px) rotate(-1deg);
   }
-
   60% {
     transform: translate(-3px, 1px) rotate(0deg);
   }
-
   70% {
     transform: translate(3px, 1px) rotate(-1deg);
   }
-
   80% {
     transform: translate(-1px, -1px) rotate(1deg);
   }
-
   90% {
     transform: translate(1px, 2px) rotate(0deg);
   }
-
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
