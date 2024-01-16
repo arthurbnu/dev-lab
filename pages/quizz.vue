@@ -37,12 +37,18 @@ const answers = [
   '160',
 ]
 
-
-watchEffect(() => {
+const checkAnswer = () => {
   if (answers[selectedAnswer.value] === pictures[selectedPicture.value].answer) {
     alert('Good answer')
   } else {
     alert('Bad answer')
+  }
+}
+
+
+watchEffect(() => {
+  if (selectedPicture.value !== -1 && selectedAnswer.value !== -1) {
+    checkAnswer()
   }
 })
 
