@@ -1,7 +1,7 @@
 
 <template>
   <div class=" h-80 shadow-lg m-5 max-w-full">
-    <ul v-auto-animate class="flex space-x-2 mb-4">
+    <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
       <li v-for="picture in pictures" :key="picture.src" class = "relative" :class = "basisClass">
         <span v-if = "picture.found" class = "absolute w-full h-full bg-teal-700/40 z-10 transition-all"></span> <!-- empeche le click si deja ok -->
         <img :src="picture.src" @click="selectedPicture = picture.src"
@@ -12,7 +12,7 @@
     <ul v-auto-animate class="flex space-x-2">
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
         class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-800 "
-        :class="{ 'bg-teal-500': selectedAnswer === answer, basisClass }"> <!-- empeche le click si deja ok -->
+        :class="{ 'bg-teal-500': selectedAnswer === answer, basisClass : true }"> <!-- empeche le click si deja ok -->
         <span>
           {{ answer }}
         </span>
@@ -35,17 +35,29 @@ interface Picture {
 }
 
 const pictures = ref([
-  { src: 'https://via.placeholder.com/180x150', answer: '180', found : false },
-  { src: 'https://via.placeholder.com/160x150', answer: '160', found : false },
-  { src: 'https://via.placeholder.com/170x150', answer: '170', found : false },
-  { src: 'https://via.placeholder.com/150x150', answer: '150', found : false },
+  { src: 'art1.png', answer: 'Arthur', found : false },
+  {src: 'art2.png', answer: 'Christophe', found : false },
+  {src: 'art3.png', answer: 'Madeleine', found : false },
+  {src: 'art4.png', answer: 'Ferdi', found : false },
+  {src: 'art5.png', answer: 'Elisa', found : false },
+  {src: 'art6.png', answer: 'Kevin', found : false },
+  {src: 'art7.png', answer: 'Maël', found : false },
+  {src: 'art8.png', answer: 'François', found : false },
+  {src: 'art9.png', answer: 'Jimmy', found : false },
+  {src: 'art10.png', answer: 'Mathilde', found : false },
 ])
 
 const answers = ref([
-  '170',
-  '150',
-  '180',
-  '160',
+  'Arthur',
+  'Christophe',
+  'Madeleine',
+  'Ferdi',
+  'Elisa',
+  'Kevin',
+  'Maël',
+  'François',
+  'Jimmy',
+  'Mathilde',
 ])
 
 const basisClass = computed(() => 'basis-1/' + pictures.value.length)
