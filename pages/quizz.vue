@@ -1,20 +1,21 @@
 
 <template>
   <div class=" h-80 shadow-lg m-5 max-w-full">
-    <ul v-auto-animate class="flex flex-nowrap space-x-2">
-      <li v-for="picture in pictures" :key="picture.src" class = "relative">
-        <span v-if = "picture.found" class = "absolute w-full h-full bg-teal-700/40 z-10"></span> <!-- rep OK - empeche le click -->
+    <ul v-auto-animate class="flex space-x-2 mb-4">
+      <li v-for="picture in pictures" :key="picture.src" class = "relative" :class = "basisClass">
+        <span v-if = "picture.found" class = "absolute w-full h-full bg-teal-700/40 z-10 transition-all"></span> <!-- empeche le click si deja ok -->
         <img :src="picture.src" @click="selectedPicture = picture.src"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
           :class="{ 'border-teal-500': selectedPicture === picture.src }">
       </li>
     </ul>
-    <ul v-auto-animate class="flex flex-nowrap space-x-2">
+    <ul v-auto-animate class="flex space-x-2">
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
-        :class="{ 'bg-teal-500': selectedAnswer === answer }">
-        <div class="text-center cursor-pointer hover:opacity-90 transition-all bg-teal-800 mt-3">
+        class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-800 "
+        :class="{ 'bg-teal-500': selectedAnswer === answer, basisClass }"> <!-- empeche le click si deja ok -->
+        <span>
           {{ answer }}
-        </div>
+        </span>
       </li>
     </ul>
   </div>
@@ -22,14 +23,15 @@
 
 <script setup lang = "ts">
 
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 
 const selectedPicture = ref('')
 const selectedAnswer = ref('')
 
 interface Picture {
   src: string
-  answer: string
+  answer: string,
+  found: boolean
 }
 
 const pictures = ref([
@@ -45,6 +47,8 @@ const answers = ref([
   '180',
   '160',
 ])
+
+const basisClass = computed(() => 'basis-1/' + pictures.value.length)
 
 const checkAnswer = async () => {
   // for ts, check if selectedPicture.value is in pictures.value
