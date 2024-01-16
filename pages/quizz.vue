@@ -39,7 +39,7 @@ const answers = ref([
 
 const checkAnswer = () => {
   if (answers.value[selectedAnswer.value] === pictures.value[selectedPicture.value].answer) {
-    alert('Good answer')
+   // alert('Good answer')
 answers.value.sort()
   } else {
     alert('Bad answer')
