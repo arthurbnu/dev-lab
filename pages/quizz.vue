@@ -4,15 +4,15 @@
     <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
       <li v-for="picture in pictures" :key="picture.src" class = "relative" :class = "basisClass">
         <span v-if = "picture.found" class = "absolute w-full h-full bg-teal-700/40 z-10 transition-all"></span> <!-- empeche le click si deja ok -->
-        <img :src="picture.src" @click="selectedPicture = picture.src"
+        <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
           :class="{ 'border-teal-500': selectedPicture === picture.src }">
       </li>
     </ul>
     <ul v-auto-animate class="flex space-x-2">
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
-        class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-800 "
-        :class="{ 'bg-teal-500': selectedAnswer === answer, basisClass : true }"> <!-- empeche le click si deja ok -->
+        class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-800 h-20"
+        :class="[{ 'bg-teal-500': selectedAnswer === answer }, basisClass]"> <!-- empeche le click si deja ok -->
         <span>
           {{ answer }}
         </span>
@@ -69,6 +69,7 @@ const checkAnswer = async () => {
   if (selectedAnswer.value === pictures.value.find(picture => picture.src === selectedPicture.value)?.answer) {
     // set this picture to the beginning of the array
     pictures.value = [pic, ...pictures.value.filter(picture => picture.src !== selectedPicture.value)]
+    answers.value = [selectedAnswer.value, ...answers.value.filter(answer => answer !== selectedAnswer.value)]
     // wait for 300ms - to see the green overlay
     await new Promise(resolve => setTimeout(resolve, 300))
     pic.found = true
