@@ -2,7 +2,7 @@
 <template>
   <div class=" h-80 shadow-lg m-5 max-w-full">
     <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
-      <li v-for="picture in pictures" :key="picture.src" class = "relative" :class = "basisClass">
+      <li v-for="picture in pictures" :key="picture.src" class = "relative" :style = "basisStyle">
         <span v-if = "picture.found" class = "absolute w-full h-full bg-teal-700/40 z-10 transition-all"></span> <!-- empeche le click si deja ok -->
         <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
@@ -11,9 +11,10 @@
     </ul>
     <ul v-auto-animate class="flex space-x-2">
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
-        class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-800 h-20"
-        :class="[{ 'bg-teal-500': selectedAnswer === answer }, basisClass]"> <!-- empeche le click si deja ok -->
-        <span>
+        class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 basis-1 border-2 border-solid"
+        :class="[{ 'border-teal-500': selectedAnswer === answer }]"
+        :style = "basisStyle">
+        <span class = 'text-sm'>
           {{ answer }}
         </span>
       </li>
@@ -60,7 +61,7 @@ const answers = ref([
   'Mathilde',
 ])
 
-const basisClass = computed(() => 'basis-1/' + pictures.value.length)
+const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
 const checkAnswer = async () => {
   // for ts, check if selectedPicture.value is in pictures.value
