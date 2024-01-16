@@ -77,6 +77,7 @@ const checkAnswer = async () => {
       picture: '',
       answer: ''
   }
+  await nextTick()
   if (selectedAnswer.value === pic.answer) {  // bonne réponse
     // replace l'element trouvé en premier
     pictures.value = [pic, ...pictures.value.filter(picture => picture.src !== selectedPicture.value)]
