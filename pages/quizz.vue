@@ -10,7 +10,7 @@
         <span v-if="picture.found" class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl">
           🥇
         </span>
-        <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src"
+        <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src" :data-src="picture.src"
           draggable="true" @dragstart="dragStart"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
           :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
@@ -20,6 +20,7 @@
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
         class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 basis-1 border-2 border-solid"
         :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
+        :data-answer="answer"
         @dragover="dragOver" @drop="drop"
         :style="basisStyle">
         <span class='text-sm'>
@@ -58,6 +59,10 @@ const dragged = ref(null) as Ref<HTMLElement | null>
   const drop = (e: DragEvent) => {
     e.preventDefault()
     console.log('drop', 'drop target is ', e.target, 'dragged is ', dragged.value)
+    if (!dragged.value) return
+    selectedPicture.value = dragged.value.getAttribute('data-src') as string
+    selectedAnswer.value = e.target?.getAttribute('data-answer') as string
+    
   }
 
 
