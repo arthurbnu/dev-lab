@@ -1,5 +1,8 @@
 
 <template>
+    <main class="min-h-screen">
+    <AppHeader class="mb-1 text-center" :title="title" :description="description" />
+
   <div class=" h-80 shadow-lg m-5 max-w-full">
     <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
       <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
@@ -23,11 +26,32 @@
       </li>
     </ul>
   </div>
+  <!-- <div class="text-center">
+    <button @click="pictures.value = pictures.value.sort(() => Math.random() - 0.5)" class="bg-teal-900 text-white px-4 py-2 rounded-full hover:bg-teal-700 transition-all">
+      Mélanger
+    </button>
+  </div> -->
+</main>
 </template>
 
 <script setup lang = "ts">
 
 import { ref, watchEffect } from 'vue'
+
+const title  = "L'IPNI selon par l'Intelligence Artificielle";
+const description = "Essaye d'associer chaque photo au bon informaticien.";
+
+useSeoMeta({
+  title: title,
+  description,
+  author: "A B",
+  ogImage: "https://dev-lab-one.vercel.app/quizz/quizz-ipni.png",
+  ogUrl: "https://dev-lab-one.vercel.app/quizz",
+  ogType: "website",
+  ogTitle: title,
+  ogDescription: description,
+  themeColor: "teal",
+});
 
 const selectedPicture = ref('')
 const selectedAnswer = ref('')
@@ -114,6 +138,10 @@ watchEffect(() => {
   height: calc(100% + 110px);
 }
 
+.my-error {
+  animation: shake 0.5s;
+}
+
 @keyframes shake {
   0% {
     transform: translate(1px, 1px) rotate(0deg);
@@ -148,9 +176,5 @@ watchEffect(() => {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
-}
-
-.my-error {
-  animation: shake 0.5s;
 }
 </style>
