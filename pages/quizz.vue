@@ -11,6 +11,7 @@
           🥇
         </span>
         <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src"
+          draggable="true" @dragstart="dragStart"
           class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
           :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
       </li>
@@ -19,6 +20,7 @@
       <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
         class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 basis-1 border-2 border-solid"
         :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
+        @dragover="dragOver" @drop="drop"
         :style="basisStyle">
         <span class='text-sm'>
           {{ answer }}
@@ -37,10 +39,27 @@
 <script setup lang = "ts">
 
 import { ref, watchEffect } from 'vue'
-import { Fireworks} from '@fireworks-js/vue'
+// import { Fireworks} from '@fireworks-js/vue'
 
 const title  = "L'IPNI selon l'Intelligence Artificielle";
 const description = "Essaye d'associer chaque image au bon informaticien.";
+
+const dragged = ref(null) as Ref<HTMLElement | null>
+
+  const dragStart = (e: DragEvent) => {
+    console.log('dragStart', e.target)
+    dragged.value = e.target as HTMLElement
+  }
+
+  const dragOver = (e: DragEvent) => {
+    e.preventDefault()
+  }
+
+  const drop = (e: DragEvent) => {
+    e.preventDefault()
+    console.log('drop', 'drop target is ', e.target, 'dragged is ', dragged.value)
+  }
+
 
 useSeoMeta({
   title: title,
