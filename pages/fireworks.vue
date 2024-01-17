@@ -6,10 +6,10 @@
       <button @click="startFireworks">Start</button>
     </div>
     <Fireworks
-      ref="fw"
-      v-if="mounted"
-      :autostart="false"
-      :options="options"
+    ref="fw"
+    v-if="mounted"
+    :autostart="false"
+    :options="options"
       :style="{
         top: 0,
         left: 0,
@@ -23,7 +23,9 @@
   
   <script lang="ts" setup>
   import { ref, watch } from 'vue'
-  import { Fireworks } from '@fireworks-js/vue'
+//   import { Fireworks } from '@fireworks-js/vue'
+// import from plugin
+import { Fireworks } from 'fireworks-js'
   import type { FireworksOptions } from '@fireworks-js/vue'
   
   const fw = ref<InstanceType<typeof Fireworks>>()
