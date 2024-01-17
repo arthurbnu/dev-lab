@@ -38,8 +38,8 @@
 
 import { ref, watchEffect } from 'vue'
 
-const title  = "L'IPNI selon par l'Intelligence Artificielle";
-const description = "Essaye d'associer chaque photo au bon informaticien.";
+const title  = "L'IPNI selon l'Intelligence Artificielle";
+const description = "Essaye d'associer chaque image au bon informaticien.";
 
 useSeoMeta({
   title: title,

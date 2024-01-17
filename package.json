@@ -24,6 +24,7 @@
     "yarn-upgrade-all": "^0.7.2"
   },
   "dependencies": {
+    "@fireworks-js/vue": "^2.10.7",
     "@formkit/auto-animate": "^0.8.1",
     "@iconify-json/lucide": "1.1.145",
     "@morev/vue-transitions": "^2.3.6",
