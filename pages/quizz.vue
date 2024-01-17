@@ -105,7 +105,8 @@ const checkAnswer = async () => {
     // pause avant animation 
     await new Promise(resolve => setTimeout(resolve, 300))
     pic.found = true
-  } else {    // mauvaise réponse
+  } 
+  else {    // mauvaise réponse
     lastError.value = {
       picture: selectedPicture.value,
       answer: selectedAnswer.value
@@ -159,7 +160,6 @@ watchEffect(() => {
     checkAnswer()
   if (pictures.value.every(picture => picture.found)) 
     launchFireworks()
-
 })
 
 </script>
