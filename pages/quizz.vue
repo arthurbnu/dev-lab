@@ -37,6 +37,7 @@
 <script setup lang = "ts">
 
 import { ref, watchEffect } from 'vue'
+import { Fireworks} from '@fireworks-js/vue'
 
 const title  = "L'IPNI selon l'Intelligence Artificielle";
 const description = "Essaye d'associer chaque image au bon informaticien.";
@@ -119,9 +120,46 @@ const checkAnswer = async () => {
   }
 }
 
+const launchFireworks = () =>{
+  const fireworks = new Fireworks({
+    target: document?.querySelector('.my-override-container'),
+    hue: 120,
+    startDelay: 1,
+    minDelay: 20,
+    maxDelay: 30,
+    speed: 2,
+    acceleration: 1.05,
+    friction: 0.98,
+    gravity: 1,
+    particles: 100,
+    trace: 3,
+    explosion: 5,
+    boundaries: {
+      top: 50,
+      bottom: 500,
+      left: 50,
+      right: 500
+    },
+    sound: {
+      enable: true,
+      // list: ['https://s3-us-west-2.amazonaws.com/s.cdpn.io/85280/rock.mp3', 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/85280/firework.mp3', 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/85280/firework.mp3', 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/85280/firework.mp3', 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/85280/firework.mp3']
+    },
+    mouse: {
+      click: true,
+      move: true,
+      max: 3
+    }
+  })
+  fireworks.start()
+
+}
+
 watchEffect(() => {
   if (selectedPicture.value && selectedAnswer.value) 
     checkAnswer()
+  if (pictures.value.every(picture => picture.found)) 
+    launchFireworks()
+
 })
 
 </script>

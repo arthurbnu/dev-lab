@@ -13,7 +13,7 @@ export default defineNuxtConfig({
    '@formkit/auto-animate/nuxt',
    "@morev/vue-transitions/nuxt",
    // fireworks npm install @fireworks-js/vue
-   "@fireworks-js/vue"
+  //  "@fireworks-js/vue"
   ],
 
   quasar: { 
