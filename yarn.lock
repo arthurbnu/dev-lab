@@ -3458,7 +3458,7 @@
     "locate-path" "^6.0.0"
     "path-exists" "^4.0.0"
 
-"fireworks-js@2.10.7":
+"fireworks-js@^2.10.7", "fireworks-js@2.10.7":
   "integrity" "sha512-FyRNiqlgu9ZeFCjfN0UiGUlj5dUWNYLyFaWN/Q8sOMf0E+KGA4dMROaBZpCtym85fChgCspoa3jHoLTRZiy74A=="
   "resolved" "https://registry.npmjs.org/fireworks-js/-/fireworks-js-2.10.7.tgz"
   "version" "2.10.7"
