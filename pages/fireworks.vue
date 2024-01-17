@@ -22,8 +22,8 @@
   </template>
   
   <script lang="ts" setup>
-  import { Fireworks } from '@fireworks-js/vue'
   import { ref, watch } from 'vue'
+  import { Fireworks } from '@fireworks-js/vue'
   import type { FireworksOptions } from '@fireworks-js/vue'
   
   const fw = ref<InstanceType<typeof Fireworks>>()
