@@ -4,6 +4,8 @@
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
+        <VueDraggableNext :list="pictures" @change = "console.log" animation="500">
+      <transition-group>
         <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
           <!-- span de fond - empeche le click si deja ok -->
           <span v-if="picture.found"
@@ -15,6 +17,8 @@
             class="cursor-pointer hover:opacity-90 transition-all border-4 border-solid"
             :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
         </li>
+      </transition-group>
+    </VueDraggableNext>
       </ul>
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
         <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
