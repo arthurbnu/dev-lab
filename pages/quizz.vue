@@ -21,7 +21,7 @@
         <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
           class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-2 border-solid text-sm"
           :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
-          :data-answer="answer" @dragover="dragOver" @drop.prevent="drop" @dragenter="dragEnter" @dragLeave.prevent="dragLeave" 
+          :data-answer="answer" @dragover.prevent="dragOver" @drop.prevent="drop" @dragLeave.prevent="dragLeave" 
           :style="basisStyle">
             {{ answer }}
         </li>
@@ -33,9 +33,9 @@
 
 <script setup lang = "ts">
 
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 
-const startFireWorks = ref(false)
+const startFireWorks = computed(() => pictures.value.every(picture => picture.found))
 const test = ref(false)
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
@@ -45,8 +45,9 @@ const description = "Essaye de retrouver qui est qui !";
   // type DragElt = DragEvent & { target: HTMLElement }
 const dragged = ref() as Ref<HTMLElement>
 const dragStart = (e: DragEvent) => dragged.value = e.target as HTMLElement
-const dragOver = (e: DragEvent) => e.preventDefault()
-const dragEnter = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
+// const dragOver = (e: DragEvent) => e.preventDefault()
+const dragOver = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
+// const dragEnter = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
 const dragLeave = (e: DragEvent) => (e.target as HTMLElement).classList.remove('border-teal-500')
 
 const drop = (e: DragEvent) => {
@@ -139,8 +140,6 @@ const checkAnswer = async () => {
 watchEffect(() => {
   if (selectedPicture.value && selectedAnswer.value)
     checkAnswer()
-  if (pictures.value.every(picture => picture.found))
-    startFireWorks.value = true
 })
 
 </script>
