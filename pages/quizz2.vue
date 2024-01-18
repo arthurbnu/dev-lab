@@ -72,8 +72,8 @@ const handleChange = (e: any) => {
   console.log(e)
   console.log('src', e.moved.element.src, 'answer', answers.value[e.moved.newIndex])
   // set selected picture and answer from e.moved.oldIndex and e.moved.newIndex
-  selectedPicture.value = e.moved.element.src
-  selectedAnswer.value = answers.value[e.moved.newIndex]
+  // selectedPicture.value = e.moved.element.src
+  // selectedAnswer.value = answers.value[e.moved.newIndex]
 }
 
 // const dragged = ref() as Ref<HTMLImageElement>
@@ -86,10 +86,10 @@ const dragEnter = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.a
 const dragLeave = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.remove('border-teal-500')
 
 const drop = (e: DragEvent) => {
-  if (!dragged.value) return
-  selectedAnswer.value = (e.target as HTMLElement).dataset.answer as string
-  selectedPicture.value = dragged.value.dataset.src as string
-  (e.target as HTMLElement).classList.remove('border-teal-500')
+  // if (!dragged.value) return
+  // selectedAnswer.value = (e.target as HTMLElement).dataset.answer as string
+  // selectedPicture.value = dragged.value.dataset.src as string
+  // (e.target as HTMLElement).classList.remove('border-teal-500')
 }
 
 const pictures = ref([
@@ -128,34 +128,42 @@ const answers = ref([
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
 const checkAnswer = async () => {
-  const pic = pictures.value.find(picture => picture.src === selectedPicture.value)
-  if (!pic) return  // ts error
-  if (selectedAnswer.value === pic.answer) {  // bonne réponse
-    // replace l'element trouvé en premier
-    pictures.value = [pic, ...pictures.value.filter(picture => picture.src !== selectedPicture.value)]
-    answers.value = [selectedAnswer.value, ...answers.value.filter(answer => answer !== selectedAnswer.value)]
-    // pause avant animation 
-    await new Promise(resolve => setTimeout(resolve, 300))
-    pic.found = true
-    test.value = true
-  }
-  else {    // mauvaise réponse
-    lastError.value = {
-      picture: selectedPicture.value,
-      answer: selectedAnswer.value
-    }
-    await new Promise(resolve => setTimeout(resolve, 500))  // on attend la classe my-error
-  }
-  selectedPicture.value = ''
-  selectedAnswer.value = ''
-  lastError.value = {
-    picture: '',
-    answer: ''
+  // const pic = pictures.value.find(picture => picture.src === selectedPicture.value)
+  // if (!pic) return  // ts error
+  // if (selectedAnswer.value === pic.answer) {  // bonne réponse
+  //   // replace l'element trouvé en premier
+  //   pictures.value = [pic, ...pictures.value.filter(picture => picture.src !== selectedPicture.value)]
+  //   answers.value = [selectedAnswer.value, ...answers.value.filter(answer => answer !== selectedAnswer.value)]
+  //   // pause avant animation 
+  //   await new Promise(resolve => setTimeout(resolve, 300))
+  //   pic.found = true
+  //   test.value = true
+  // }
+  // else {    // mauvaise réponse
+  //   lastError.value = {
+  //     picture: selectedPicture.value,
+  //     answer: selectedAnswer.value
+  //   }
+  //   await new Promise(resolve => setTimeout(resolve, 500))  // on attend la classe my-error
+  // }
+  // selectedPicture.value = ''
+  // selectedAnswer.value = ''
+  // lastError.value = {
+  //   picture: '',
+  //   answer: ''
+  // }
+
+  // every picture must be checked, accrording to answers order
+  for (let i = 0; i < pictures.value.length; i++) {
+    const pic = pictures.value[i]
+    // check each pic found according to answers order
+    pic.found =  pic.answer === answers.value[i]
+
   }
 }
 
 watchEffect(() => {
-  if (selectedPicture.value && selectedAnswer.value)
+  // if (selectedPicture.value && selectedAnswer.value)
     checkAnswer()
 })
 
