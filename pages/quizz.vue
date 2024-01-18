@@ -21,7 +21,7 @@
         <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
           class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-2 border-solid text-sm"
           :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
-          :data-answer="answer" @dragover="dragOver" @drop.prevent="drop" @dragenter="dragOver" @dragLeave.prevent="dragLeave" 
+          :data-answer="answer" @dragover="dragOver" @drop.prevent="drop" @dragenter="dragEnter" @dragLeave.prevent="dragLeave" 
           :style="basisStyle">
             {{ answer }}
         </li>
