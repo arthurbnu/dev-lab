@@ -34,6 +34,7 @@
     "@sipec/vue3-tags-input": "^3.0.4",
     "fireworks-js": "^2.10.7",
     "quasar": "^2.14.2",
+    "vue-draggable-next": "^2.2.1",
     "vue-use-fixed-header": "^2.0.0"
   }
 }

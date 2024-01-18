@@ -7755,6 +7755,11 @@
     "ip" "^2.0.0"
     "smart-buffer" "^4.2.0"
 
+"sortablejs@*", "sortablejs@^1.14.0":
+  "integrity" "sha512-FJF5jgdfvoKn1MAKSdGs33bIqLi3LmsgVTliuX6iITj834F+JRQZN90Z93yql8h0K2t0RwDPBmxwlbZfDcxNZA=="
+  "resolved" "https://registry.npmjs.org/sortablejs/-/sortablejs-1.15.2.tgz"
+  "version" "1.15.2"
+
 "source-map-js@^1.0.1", "source-map-js@^1.0.2":
   "integrity" "sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw=="
   "resolved" "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz"
@@ -8885,6 +8890,11 @@
   "resolved" "https://registry.npmjs.org/vue-devtools-stub/-/vue-devtools-stub-0.1.0.tgz"
   "version" "0.1.0"
 
+"vue-draggable-next@^2.2.1":
+  "integrity" "sha512-EAMS1IRHF0kZO0o5PMOinsQsXIqsrKT1hKmbICxG3UEtn7zLFkLxlAtajcCcUTisNvQ6TtCB5COjD9a1raNADw=="
+  "resolved" "https://registry.npmjs.org/vue-draggable-next/-/vue-draggable-next-2.2.1.tgz"
+  "version" "2.2.1"
+
 "vue-router@^4.1.0", "vue-router@^4.2.5":
   "integrity" "sha512-DIUpKcyg4+PTQKfFPX88UWhlagBEBEfJ5A8XDXRJLUnZOvcpMF8o/dnL90vpVkGaPbjvXazV/rC1qBKrZlFugw=="
   "resolved" "https://registry.npmjs.org/vue-router/-/vue-router-4.2.5.tgz"
@@ -8905,7 +8915,7 @@
   "resolved" "https://registry.npmjs.org/vue-use-fixed-header/-/vue-use-fixed-header-2.0.0.tgz"
   "version" "2.0.0"
 
-"vue@^2.6.14 || >=3", "vue@^2.7.0 || ^3.2.25", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.0-beta.1", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.3.4", "vue@^3.3.8", "vue@>=2.7 || >=3", "vue@>=3", "vue@>=3.0.0", "vue@3.4.4":
+"vue@^2.6.14 || >=3", "vue@^2.7.0 || ^3.2.25", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.0-beta.1", "vue@^3.2.0", "vue@^3.2.2", "vue@^3.2.25", "vue@^3.3.4", "vue@^3.3.8", "vue@>=2.7 || >=3", "vue@>=3", "vue@>=3.0.0", "vue@3.4.4":
   "integrity" "sha512-suZXgDVT8lRNhKmxdkwOsR0oyUi8is7mtqI18qW97JLoyorEbE9B2Sb4Ws/mR/+0AgA/JUtsv1ytlRSH3/pDIA=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.4.4.tgz"
   "version" "3.4.4"
