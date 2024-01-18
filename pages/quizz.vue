@@ -85,24 +85,24 @@ const pictures = ref([
   { src: 'art10.png', answer: 'Mathilde', found: false },
 ])
 
-const answers = ref(pictures.value.map(picture => picture.answer))
+// const answers = ref(pictures.value.map(picture => picture.answer))
 
 // shuffle
 pictures.value.sort(() => Math.random() - 0.5)
-answers.value.sort(() => Math.random() - 0.5)
 
-// const answers = ref([
-//   'Elisa',
-//   'Christophe',
-//   'Maël',
-//   'Kevin',
-//   'Arthur',
-//   'Mathilde',
-//   'Ferdi',
-//   'Madeleine',
-//   'François',
-//   'Jimmy',
-// ])
+const answers = ref([
+  'Elisa',
+  'Christophe',
+  'Maël',
+  'Kevin',
+  'Arthur',
+  'Mathilde',
+  'Ferdi',
+  'Madeleine',
+  'François',
+  'Jimmy',
+])
+answers.value.sort(() => Math.random() - 0.5)
 
 // instead get answer from picture
 
