@@ -3,8 +3,8 @@
   <main class="min-h-screen opacity-0 transition-all duration-700" ref = "main">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
-      <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
-        <VueDraggableNext :list="pictures" @change = "console.log" animation="500">
+      <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
+        <VueDraggableNext :list="pictures" @change = "console.log" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4" direction = "horizontal">
       <transition-group>
         <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
           <!-- span de fond - empeche le click si deja ok -->
@@ -19,7 +19,7 @@
         </li>
       </transition-group>
     </VueDraggableNext>
-      </ul>
+      <!-- </ul> -->
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
         <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
           class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
