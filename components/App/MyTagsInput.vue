@@ -412,7 +412,10 @@ const tag = ref(''),
             fetchController.abort()
             fetchController = new AbortController()
 
-            $fetch(currentRequestUrl, { headers : {'Accept' : 'application/json'}}).then(response => {
+
+// {signal : axiosController.signal, headers : header
+
+            $fetch(currentRequestUrl, { signal : fetchController.signal, headers : {'Accept' : 'application/json'}}).then(response => {
                 myLog(response);
                 autocompleteItems.value = props.handleResponse(response)
                 if (! autocompleteItems.value || autocompleteItems.value.length === 0)
