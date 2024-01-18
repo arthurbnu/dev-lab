@@ -1,7 +1,8 @@
 
 <template>
-  <main class="min-h-screen opacity-0 transition-all" ref = "main">
+  <main class="min-h-screen opacity-0 transition-all duration-700" ref = "main">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
+    <p>Fais glisser l'image sur le bon prénom ou clique sur l'image et le prénom</p>
 
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
@@ -60,6 +61,7 @@ const main = ref() as Ref<HTMLElement>
 onMounted(async() => {
   await nextTick()
   main.value.classList.remove('opacity-0')
+  document.querySelector('nav')?.classList.add('opacity-0')
 });
 
 // const dragged = ref() as Ref<HTMLImageElement>
