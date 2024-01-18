@@ -1,7 +1,6 @@
 <template>
     <Fireworks
     ref="fw"
-    v-if="mounted"
     :autostart="false"
     :options="options"
       :style="{
