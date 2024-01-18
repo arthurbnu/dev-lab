@@ -4,7 +4,7 @@
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
-        <VueDraggableNext :list="pictures" @change = "console.log" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4" direction = "horizontal">
+        <VueDraggableNext :list="pictures" @change = "handleChange" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4" direction = "horizontal">
       <transition-group>
         <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
           <!-- span de fond - empeche le click si deja ok -->
@@ -30,19 +30,6 @@
         </li>
       </ul>
     </div>
-    <!--  test draggable -->
-    <VueDraggableNext :list="pictures" @change = "console.log" animation="500">
-      <transition-group>
-
-      <div
-        class="list-group-item bg-gray-300 m-1 p-3 rounded-md text-center"
-        v-for="element in pictures"
-        :key="element.answer"
-      >
-        {{ element.answer }}
-      </div>
-      </transition-group>
-    </VueDraggableNext>
   </main>
   <AppFires v-if="startFireWorks" class="opacity-60"/>
 </template>
@@ -80,6 +67,14 @@ onMounted(async() => {
   main.value.classList.remove('opacity-0')
   document.querySelector('nav')?.classList.add('opacity-0')
 });
+
+const handleChange = (e: any) => {
+  console.log(e)
+  console.log('src', e.moved.element.src, 'answer', answers.value[e.moved.newIndex])
+  // set selected picture and answer from e.moved.oldIndex and e.moved.newIndex
+  selectedPicture.value = e.moved.element.src
+  selectedAnswer.value = answers.value[e.moved.newIndex]
+}
 
 // const dragged = ref() as Ref<HTMLImageElement>
   // type DragElt = DragEvent & { target: HTMLElement }
