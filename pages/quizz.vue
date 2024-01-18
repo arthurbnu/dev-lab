@@ -1,6 +1,6 @@
 
 <template>
-  <main class="min-h-screen opacity-0" ref = "main">
+  <main class="min-h-screen opacity-0 transition-all" ref = "main">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
 
     <div class=" h-80 shadow-lg m-5 max-w-full">
@@ -36,7 +36,7 @@
 import { ref, watchEffect, computed, onMounted } from 'vue'
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
-const description = "Essaye de retrouver qui est qui !";
+const description = "Tout est dans le désordre.. Essaye de retrouver qui est qui !";
 
 useSeoMeta({
   title: title,
@@ -68,14 +68,14 @@ const dragged = ref() as Ref<HTMLElement>
 const dragStart = (e: DragEvent) => dragged.value = e.target as HTMLElement
 const dragOver = (e: DragEvent) => e.preventDefault()
 // const dragOver = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
-const dragEnter = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.add('border-teal-500')
-const dragLeave = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.remove('border-teal-500')
+const dragEnter = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.add('!border-teal-500')
+const dragLeave = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.remove('!border-teal-500')
 
 const drop = (e: DragEvent) => {
   if (!dragged.value) return
   selectedAnswer.value = (e.target as HTMLElement).dataset.answer as string
   selectedPicture.value = dragged.value.dataset.src as string
-  (e.target as HTMLElement).classList.remove('border-teal-500')
+  (e.target as HTMLElement).classList.remove('!border-teal-500')
 }
 
 const pictures = ref([
