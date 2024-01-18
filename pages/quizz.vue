@@ -1,6 +1,6 @@
 
 <template>
-  <main class="min-h-screen">
+  <main class="min-h-screen opacity-0" ref = "main">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
 
     <div class=" h-80 shadow-lg m-5 max-w-full">
@@ -33,7 +33,7 @@
 
 <script setup lang = "ts">
 
-import { ref, watchEffect, computed } from 'vue'
+import { ref, watchEffect, computed, onMounted } from 'vue'
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
 const description = "Essaye de retrouver qui est qui !";
@@ -55,6 +55,12 @@ const test = ref(false)
 const selectedPicture = ref('')
 const selectedAnswer = ref('')
 const lastError = ref( {picture: '', answer: ''} )
+const main = ref() as Ref<HTMLElement>
+
+onMounted(async() => {
+  await nextTick()
+  main.value.classList.remove('opacity-0')
+});
 
 // const dragged = ref() as Ref<HTMLImageElement>
   // type DragElt = DragEvent & { target: HTMLElement }
