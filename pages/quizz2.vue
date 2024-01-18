@@ -27,9 +27,20 @@
       </ul>
     </div>
     <!--  test draggable -->
-    <VueDraggableNext v-model="pictures" @dragstart="dragStart" @dragover="dragOver" @dragenter="dragEnter" @dragleave="dragLeave" @drop="drop" />
+    <VueDraggableNext :list="pictures" @change = "console.log" animation="500">
+      <transition-group>
+
+      <div
+        class="list-group-item bg-gray-300 m-1 p-3 rounded-md text-center"
+        v-for="element in pictures"
+        :key="element.answer"
+      >
+        {{ element.answer }}
+      </div>
+      </transition-group>
+    </VueDraggableNext>
   </main>
-  <AppFires v-if="startFireWorks" class = "opacity-60"/>
+  <AppFires v-if="startFireWorks" class="opacity-60"/>
 </template>
 
 <script setup lang = "ts">
