@@ -8,7 +8,7 @@
         <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
           <!-- span de fond - empeche le click si deja ok -->
           <span v-if="picture.found"
-            class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl">
+            class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
             🥇
           </span>
           <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src" :data-src="picture.src"
