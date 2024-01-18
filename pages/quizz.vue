@@ -35,11 +35,26 @@
 
 import { ref, watchEffect, computed } from 'vue'
 
-const startFireWorks = computed(() => pictures.value.every(picture => picture.found))
-const test = ref(false)
-
 const title = "L'IPNI selon l'Intelligence Artificielle";
 const description = "Essaye de retrouver qui est qui !";
+
+useSeoMeta({
+  title: title,
+  description,
+  author: "A B",
+  ogImage: "https://dev-lab-one.vercel.app/quizz/quizz-ipni.png",
+  ogUrl: "https://dev-lab-one.vercel.app/quizz",
+  ogType: "website",
+  ogTitle: title,
+  ogDescription: description,
+  themeColor: "teal",
+});
+
+const startFireWorks = computed(() => pictures.value.every(picture => picture.found))
+const test = ref(false)
+const selectedPicture = ref('')
+const selectedAnswer = ref('')
+const lastError = ref( {picture: '', answer: ''} )
 
 // const dragged = ref() as Ref<HTMLImageElement>
   // type DragElt = DragEvent & { target: HTMLElement }
@@ -57,31 +72,6 @@ const drop = (e: DragEvent) => {
   (e.target as HTMLElement).classList.remove('border-teal-500')
 }
 
-useSeoMeta({
-  title: title,
-  description,
-  author: "A B",
-  ogImage: "https://dev-lab-one.vercel.app/quizz/quizz-ipni.png",
-  ogUrl: "https://dev-lab-one.vercel.app/quizz",
-  ogType: "website",
-  ogTitle: title,
-  ogDescription: description,
-  themeColor: "teal",
-});
-
-const selectedPicture = ref('')
-const selectedAnswer = ref('')
-const lastError = ref({
-  picture: '',
-  answer: ''
-})
-
-interface Picture {
-  src: string
-  answer: string,
-  found: boolean
-}
-
 const pictures = ref([
   { src: 'art1.png', answer: 'Arthur', found: false },
   { src: 'art2.png', answer: 'Christophe', found: false },
@@ -95,18 +85,26 @@ const pictures = ref([
   { src: 'art10.png', answer: 'Mathilde', found: false },
 ])
 
-const answers = ref([
-  'Elisa',
-  'Christophe',
-  'Maël',
-  'Kevin',
-  'Arthur',
-  'Mathilde',
-  'Ferdi',
-  'Madeleine',
-  'François',
-  'Jimmy',
-])
+const answers = ref(pictures.value.map(picture => picture.answer))
+
+// shuffle
+pictures.value.sort(() => Math.random() - 0.5)
+answers.value.sort(() => Math.random() - 0.5)
+
+// const answers = ref([
+//   'Elisa',
+//   'Christophe',
+//   'Maël',
+//   'Kevin',
+//   'Arthur',
+//   'Mathilde',
+//   'Ferdi',
+//   'Madeleine',
+//   'François',
+//   'Jimmy',
+// ])
+
+// instead get answer from picture
 
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
