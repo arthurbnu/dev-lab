@@ -35,7 +35,7 @@
     </button>
   </div> -->
 </main>
-<AppFires v-if = "startFireWorks || test" \>
+<AppFires v-if = "startFireWorks || test" />
 </template>
 
 <script setup lang = "ts">
