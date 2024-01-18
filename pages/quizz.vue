@@ -20,7 +20,7 @@
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
         <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
           class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
-          :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
+          :class="{ '!border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
           :data-answer="answer" @dragover.prevent @drop.prevent="drop" @dragLeave="dragLeave" @dragenter="dragEnter"
           :style="basisStyle">
             {{ answer }}
