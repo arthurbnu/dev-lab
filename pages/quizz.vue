@@ -85,10 +85,8 @@ const pictures = ref([
   { src: 'art10.png', answer: 'Mathilde', found: false },
 ])
 
+// instead get answer from picture
 // const answers = ref(pictures.value.map(picture => picture.answer))
-
-// shuffle
-pictures.value.sort(() => Math.random() - 0.5)
 
 const answers = ref([
   'Elisa',
@@ -102,9 +100,10 @@ const answers = ref([
   'François',
   'Jimmy',
 ])
-answers.value.sort(() => Math.random() - 0.5)
 
-// instead get answer from picture
+// shuffle
+// pictures.value.sort(() => Math.random() - 0.5)
+// answers.value.sort(() => Math.random() - 0.5)
 
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
