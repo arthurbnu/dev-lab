@@ -28,7 +28,7 @@
       </ul>
     </div>
   </main>
-  <AppFires v-if="startFireWorks || test" class = "opacity-60"/>
+  <AppFires v-if="startFireWorks" class = "opacity-60"/>
 </template>
 
 <script setup lang = "ts">
@@ -68,14 +68,14 @@ const dragged = ref() as Ref<HTMLElement>
 const dragStart = (e: DragEvent) => dragged.value = e.target as HTMLElement
 const dragOver = (e: DragEvent) => e.preventDefault()
 // const dragOver = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
-const dragEnter = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.add('!border-teal-500')
-const dragLeave = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.remove('!border-teal-500')
+const dragEnter = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.add('border-teal-500')
+const dragLeave = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.remove('border-teal-500')
 
 const drop = (e: DragEvent) => {
   if (!dragged.value) return
   selectedAnswer.value = (e.target as HTMLElement).dataset.answer as string
   selectedPicture.value = dragged.value.dataset.src as string
-  (e.target as HTMLElement).classList.remove('!border-teal-500')
+  (e.target as HTMLElement).classList.remove('border-teal-500')
 }
 
 const pictures = ref([
