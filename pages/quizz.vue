@@ -21,7 +21,7 @@
         <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
           class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-2 border-solid text-sm"
           :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
-          :data-answer="answer" @dragover.prevent="dragOver" @drop.prevent="drop" @dragLeave.prevent="dragLeave" 
+          :data-answer="answer" @dragover.prevent="" @drop.prevent="drop" @dragLeave.prevent="dragLeave" @dragenter="dragEnter"
           :style="basisStyle">
             {{ answer }}
         </li>
@@ -60,10 +60,10 @@ const lastError = ref( {picture: '', answer: ''} )
   // type DragElt = DragEvent & { target: HTMLElement }
 const dragged = ref() as Ref<HTMLElement>
 const dragStart = (e: DragEvent) => dragged.value = e.target as HTMLElement
-// const dragOver = (e: DragEvent) => e.preventDefault()
-const dragOver = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
-// const dragEnter = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
-const dragLeave = (e: DragEvent) => (e.target as HTMLElement).classList.remove('border-teal-500')
+const dragOver = (e: DragEvent) => e.preventDefault()
+// const dragOver = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
+const dragEnter = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.add('border-teal-500')
+const dragLeave = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.remove('border-teal-500')
 
 const drop = (e: DragEvent) => {
   if (!dragged.value) return
