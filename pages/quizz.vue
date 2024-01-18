@@ -12,16 +12,16 @@
             🥇
           </span>
           <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src" :data-src="picture.src"
-            draggable="true" @dragstart="dragStart"
-            class="cursor-pointer hover:opacity-90 transition-all border-2 border-solid"
+            draggable @dragstart="dragStart"
+            class="cursor-pointer hover:opacity-90 transition-all border-4 border-solid"
             :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
         </li>
       </ul>
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
         <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
-          class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-2 border-solid text-sm"
+          class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
           :class="{ 'border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
-          :data-answer="answer" @dragover.prevent="" @drop.prevent="drop" @dragLeave.prevent="dragLeave" @dragenter="dragEnter"
+          :data-answer="answer" @dragover.prevent @drop.prevent="drop" @dragLeave="dragLeave" @dragenter="dragEnter"
           :style="basisStyle">
             {{ answer }}
         </li>
