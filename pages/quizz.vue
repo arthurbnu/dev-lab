@@ -2,8 +2,6 @@
 <template>
   <main class="min-h-screen opacity-0 transition-all duration-700" ref = "main">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
-    <p>Fais glisser l'image sur le bon prénom ou clique sur l'image et le prénom</p>
-
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
         <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
@@ -37,7 +35,7 @@
 import { ref, watchEffect, computed, onMounted } from 'vue'
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
-const description = "Tout est dans le désordre.. Essaye de retrouver qui est qui !";
+const description = "Tout est dans le désordre.. Clique sur les bonnes paires (image et prénom) ou fais glisser l'image vers le bon prénom !";
 
 useSeoMeta({
   title: title,
