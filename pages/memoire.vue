@@ -24,7 +24,7 @@
         <span class="text-2xl font-bold">soit</span>
         <span class="text-2xl font-bold">{{ motsParJour }}</span>
         <span class="text-2xl font-bold">mots par jour</span>
-        
+
       </label>
     </div>
 
@@ -46,6 +46,20 @@ const nbJours = daysBetween(new Date(), new Date(2024, 4, 15))
 const motsParJour = Math.round(nbMots / nbJours)
 
 
+function daysBetween(date1, date2) {
+  // Get 1 day in milliseconds
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  // Convert both dates to milliseconds
+  const date1Ms = date1.getTime();
+  const date2Ms = date2.getTime();
+
+  // Calculate the difference in milliseconds
+  const differenceMs = date2Ms - date1Ms;
+
+  // Convert back to days and return
+  return Math.round(differenceMs / oneDay);
+}
 
 useSeoMeta({
   title: title,
