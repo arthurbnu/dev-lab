@@ -4,7 +4,7 @@
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
-        <VueDraggableNext :list="pictures" @end = "handleChange" 
+        <VueDraggableNext :list="pictures" @end = "handleEnd" 
         animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4" direction = "horizontal">
       <transition-group>
         <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
