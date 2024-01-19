@@ -19,7 +19,10 @@
         </li>
       </transition-group>
     </VueDraggableNext>
-      <ul v-auto-animate class="flex flex-nowrap space-x-2">
+    <VueDraggableNext :list="answers" 
+        animation="500" tag="ul" class="flex flex-nowrap space-x-2" direction = "horizontal">
+        <transition-group>
+      <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2"> -->
         <li v-for="answer in answers" :key="answer"
           class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
           :class="{ 'my-error': lastError.answer === answer }"
@@ -27,7 +30,9 @@
           :style="basisStyle">
             {{ answer }}
         </li>
-      </ul>
+      </transition-group>
+    </VueDraggableNext>
+      <!-- </ul> -->
     </div>
   </main>
   <AppFires v-if="startFireWorks" class="opacity-60"/>
