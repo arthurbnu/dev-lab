@@ -88,8 +88,7 @@ const nbSemaines = weeksBetween(new Date(), new Date(2024, 3, 15))
 const motsParJour = Math.round(nbMots / nbJours)
 const motsParSemaine = Math.round(nbMots / nbSemaines)
 
-
-function daysBetween(date1, date2) {
+const daysBetween = (date1, date2) => {
   // Get 1 day in milliseconds
   const oneDay = 1000 * 60 * 60 * 24;
 
