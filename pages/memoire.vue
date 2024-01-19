@@ -2,17 +2,17 @@
   <main class="min-h-screen">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
 
-    <div class="space-y-4 text-center">
-      <span v-for="(tag, id) in tags" :key="id" 
-      class = "bg-teal-800 text-white px-1 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950" >
+    <div class="space-y-4 text-center mb-5">
+      <span v-for="(tag, id) in tags" :key="id"
+        class="bg-teal-800 text-white px-1 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
         {{ tag }}
       </span>
     </div>
 
     <!-- show nbMots, nbJours and motsParjours in a beautiful nuxt ui way -->
-    <div >
+    <div>
 
-      <label for="">
+      <!-- <label for="">
         <span class="text-2xl font-bold">Objectif : </span>
         <span class="text-2xl font-bold">{{ nbMots }}</span>
         <span class="text-2xl font-bold">mots</span>
@@ -25,14 +25,68 @@
         <span class="text-2xl font-bold">{{ motsParJour }}</span>
         <span class="text-2xl font-bold">mots par jour</span>
 
-      </label>
+      </label> -->
+      <!-- same but with a nuxi ui table -->
+      <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <!-- <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      Objectif
+                    </th> -->
+                    <th scope="col"
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      Objectif
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      Nombre de mots
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      Nombre de jours
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      Mots par jour
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <!-- <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">Objectif</div>
+                    </td> -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">Objectif</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ nbMots }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ nbJours }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ motsParJour }}</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </main>
 </template>
 
 <script setup>
-const title  = "Objectif mémoire";
+const title = "Objectif mémoire";
 const description = "Mémoire | Objectif : 20/20 | 2024 ";
 
 // crée des objets pour faire un tableau avec : nombre de mots total pour le mémoire (15000), nombre de jours restant avant mi - avril 2024, nombre de mots à écrire par jour pour atteindre l'objectif de 15000 mots.
@@ -61,6 +115,10 @@ function daysBetween(date1, date2) {
   return Math.round(differenceMs / oneDay);
 }
 
+const weeksBetween = (date1, date2) => {
+  return daysBetween(date1, date2) / 7;
+};
+
 useSeoMeta({
   title: title,
   description,
@@ -78,7 +136,7 @@ const tags = [
   "trop forte",
   "intelligente",
   "douée",
-  "lâche rien", 
+  "lâche rien",
   "bientôt le mariage",
 ];
 
