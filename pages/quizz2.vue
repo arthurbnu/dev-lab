@@ -75,6 +75,19 @@ const handleChange = (e: any) => {
   }
 }
 
+const handleEnd = (e: any) => {
+  console.log(e)
+  const [oldIndex, newIndex] = [e.oldIndex, e.newIndex]
+  console.log('oldIndex', oldIndex, 'newIndex', newIndex)
+  // set last error if not found
+  const chosenAnswer = answers.value[newIndex]
+  const chosenPicture = pictures.value[oldIndex]
+  console.log('chosenAnswer', chosenAnswer, 'chosenPicture', chosenPicture, 'picture new', pictures.value[newIndex])
+  if (chosenAnswer !== chosenPicture.answer) {
+    lastError.value = { picture: chosenPicture.src, answer: chosenAnswer }
+  }
+}
+
 const pictures = ref([
   { src: 'art1.png', answer: 'Arthur', found: false },
   { src: 'art2.png', answer: 'Christophe', found: false },
