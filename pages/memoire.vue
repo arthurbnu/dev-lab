@@ -76,18 +76,6 @@
 const title = "Objectif mémoire";
 const description = "Mémoire | Objectif : 20/20 | 2024 ";
 
-// crée des objets pour faire un tableau avec : nombre de mots total pour le mémoire (15000), nombre de jours restant avant mi - avril 2024, nombre de mots à écrire par jour pour atteindre l'objectif de 15000 mots.
-// const objectif = {
-//   mots: 15000,
-//   jours: 1120,
-//   motsParJour: 13.4,
-// };
-const nbMots = 15000
-const nbJours = daysBetween(new Date(), new Date(2024, 3, 15))
-const nbSemaines = weeksBetween(new Date(), new Date(2024, 3, 15))
-const motsParJour = Math.round(nbMots / nbJours)
-const motsParSemaine = Math.round(nbMots / nbSemaines)
-
 const daysBetween = (date1, date2) => {
   // Get 1 day in milliseconds
   const oneDay = 1000 * 60 * 60 * 24;
@@ -106,6 +94,12 @@ const daysBetween = (date1, date2) => {
 const weeksBetween = (date1, date2) => {
   return daysBetween(date1, date2) / 7;
 };
+
+const nbMots = 15000
+const nbJours = daysBetween(new Date(), new Date(2024, 3, 15))
+const nbSemaines = weeksBetween(new Date(), new Date(2024, 3, 15))
+const motsParJour = Math.round(nbMots / nbJours)
+const motsParSemaine = Math.round(nbMots / nbSemaines)
 
 useSeoMeta({
   title: title,
