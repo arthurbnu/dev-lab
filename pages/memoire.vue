@@ -97,7 +97,7 @@ const weeksBetween = (date1, date2) => {
 
 const nbMots = 15000
 const nbJours = daysBetween(new Date(), new Date(2024, 3, 15))
-const nbSemaines = weeksBetween(new Date(), new Date(2024, 3, 15))
+const nbSemaines = Math.round(weeksBetween(new Date(), new Date(2024, 3, 15)))
 const motsParJour = Math.round(nbMots / nbJours)
 const motsParSemaine = Math.round(nbMots / nbSemaines)
 
