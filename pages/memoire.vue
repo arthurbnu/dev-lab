@@ -31,7 +31,7 @@
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200 text-lg">
+              <table class="min-w-full divide-y divide-gray-200 ">
                 <thead class="bg-teal-200 text-black">
                   <tr>
                     <th scope="col"
@@ -58,7 +58,7 @@
                       <div class="text-sm text-gray-900">{{ nbMots }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <input type="number" v-model="words" class=" text-gray-900" />
+                      <input type="number" v-model="words" class=" text-white" />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900">{{ nbSemaines }}</div>
