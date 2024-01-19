@@ -9,13 +9,43 @@
       </span>
     </div>
 
-    
+    <!-- show nbMots, nbJours and motsParjours in a beautiful nuxt ui way -->
+    <div >
+
+      <label for="">
+        <span class="text-2xl font-bold">Objectif : </span>
+        <span class="text-2xl font-bold">{{ nbMots }}</span>
+        <span class="text-2xl font-bold">mots</span>
+
+        <span class="text-2xl font-bold">en</span>
+        <span class="text-2xl font-bold">{{ nbJours }}</span>
+        <span class="text-2xl font-bold">jours</span>
+
+        <span class="text-2xl font-bold">soit</span>
+        <span class="text-2xl font-bold">{{ motsParJour }}</span>
+        <span class="text-2xl font-bold">mots par jour</span>
+        
+      </label>
+    </div>
+
   </main>
 </template>
 
 <script setup>
 const title  = "Objectif mémoire";
 const description = "Mémoire | Objectif : 20/20 | 2024 ";
+
+// crée des objets pour faire un tableau avec : nombre de mots total pour le mémoire (15000), nombre de jours restant avant mi - avril 2024, nombre de mots à écrire par jour pour atteindre l'objectif de 15000 mots.
+// const objectif = {
+//   mots: 15000,
+//   jours: 1120,
+//   motsParJour: 13.4,
+// };
+const nbMots = 15000
+const nbJours = daysBetween(new Date(), new Date(2024, 4, 15))
+const motsParJour = Math.round(nbMots / nbJours)
+
+
 
 useSeoMeta({
   title: title,
