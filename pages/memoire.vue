@@ -31,46 +31,33 @@
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+              <table class="min-w-full divide-y divide-gray-200 text-lg">
+                <thead class="bg-teal-300">
                   <tr>
-                    <!-- <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                      Objectif
-                    </th> -->
-                    <th scope="col"
-                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                      Objectif
-                    </th>
                     <th scope="col"
                       class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                       Nombre de mots
                     </th>
                     <th scope="col"
                       class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                      Nombre de jours
+                      Nombre de semaines
                     </th>
                     <th scope="col"
                       class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                      Mots par jour
+                      Mots par semaine
                     </th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                   <tr>
-                    <!-- <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">Objectif</div>
-                    </td> -->
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">Objectif</div>
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900">{{ nbMots }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ nbJours }}</div>
+                      <div class="text-sm text-gray-900">{{ nbSemaines }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ motsParJour }}</div>
+                      <div class="text-sm text-gray-900">{{ motsParSemaine }}</div>
                     </td>
                   </tr>
                 </tbody>
@@ -96,8 +83,10 @@ const description = "Mémoire | Objectif : 20/20 | 2024 ";
 //   motsParJour: 13.4,
 // };
 const nbMots = 15000
-const nbJours = daysBetween(new Date(), new Date(2024, 4, 15))
+const nbJours = daysBetween(new Date(), new Date(2024, 3, 15))
+const nbSemaines = weeksBetween(new Date(), new Date(2024, 3, 15))
 const motsParJour = Math.round(nbMots / nbJours)
+const motsParSemaine = Math.round(nbMots / nbSemaines)
 
 
 function daysBetween(date1, date2) {
