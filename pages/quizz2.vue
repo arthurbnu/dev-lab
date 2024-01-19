@@ -81,7 +81,7 @@ const handleEnd = (e: any) => {
   console.log('oldIndex', oldIndex, 'newIndex', newIndex)
   // set last error if not found
   const chosenAnswer = answers.value[newIndex]
-  const chosenPicture = pictures.value[oldIndex]
+  const chosenPicture = pictures.value[newIndex]
   console.log('chosenAnswer', chosenAnswer, 'chosenPicture', chosenPicture, 'picture new', pictures.value[newIndex])
   if (chosenAnswer !== chosenPicture.answer) {
     lastError.value = { picture: chosenPicture.src, answer: chosenAnswer }

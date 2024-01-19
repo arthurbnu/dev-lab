@@ -32,7 +32,7 @@
           <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
               <table class="min-w-full divide-y divide-gray-200 text-lg">
-                <thead class="bg-teal-300">
+                <thead class="bg-teal-200 text-black">
                   <tr>
                     <th scope="col"
                       class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
