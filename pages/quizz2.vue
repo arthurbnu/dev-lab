@@ -13,6 +13,7 @@
             🥇
           </span>
           <img :src="'quizz/' + picture.src" :data-src="picture.src"
+            :class="{ 'my-error': lastError.picture === picture.src }"
             class="cursor-pointer hover:opacity-90 transition-all border-4 border-solid">
         </li>
       </transition-group>
@@ -20,6 +21,7 @@
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
         <li v-for="answer in answers" :key="answer"
           class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
+          :class="{ 'my-error': lastError.answer === answer }"
           :data-answer="answer"
           :style="basisStyle">
             {{ answer }}
@@ -53,6 +55,7 @@ useSeoMeta({
 
 const startFireWorks = computed(() => pictures.value.every(picture => picture.found))
 const main = ref() as Ref<HTMLElement>
+const lastError = ref( {picture: '', answer: ''} )
 
 onMounted(async() => {
   await nextTick()
@@ -63,6 +66,10 @@ onMounted(async() => {
 const handleChange = (e: any) => {
   console.log(e)
   console.log('src', e.moved.element.src, 'answer', answers.value[e.moved.newIndex])
+  // set last error if not found
+  if (e.moved.element.src.split('/').pop() !== answers.value[e.moved.newIndex]) {
+    lastError.value = { picture: e.moved.element.src.split('/').pop(), answer: answers.value[e.moved.newIndex] }
+  }
 }
 
 const pictures = ref([
