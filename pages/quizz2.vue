@@ -65,10 +65,12 @@ onMounted(async() => {
 
 const handleChange = (e: any) => {
   console.log(e)
-  console.log('src', e.moved.element.src, 'answer', answers.value[e.moved.newIndex])
+  const movedSrc = e.moved.element.src
+  console.log('src', movedSrc, 'answer should be ', pictures.value.find(p=> p.src == movedSrc)?.answer,
+   'current answer is ', answers.value[e.moved.newIndex])
   // set last error if not found
-  if (e.moved.element.src.split('/').pop() !== answers.value[e.moved.newIndex]) {
-    lastError.value = { picture: e.moved.element.src.split('/').pop(), answer: answers.value[e.moved.newIndex] }
+  if (movedSrc !== answers.value[e.moved.newIndex]) {
+    lastError.value = { picture: movedSrc, answer: answers.value[e.moved.newIndex] }
   }
 }
 
