@@ -35,15 +35,19 @@
                 <thead class="bg-teal-200 text-black">
                   <tr>
                     <th scope="col"
-                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                      Nombre de mots
+                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
+                      Nombre de mots total
                     </th>
                     <th scope="col"
-                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-900 uppercase">
+                      Nombre de mots déjà écrits
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
                       Nombre de semaines
                     </th>
                     <th scope="col"
-                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
                       Mots par semaine
                     </th>
                   </tr>
@@ -54,10 +58,13 @@
                       <div class="text-sm text-gray-900">{{ nbMots }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
+                      <input type="number" v-model="words" class=" text-gray-900" />
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900">{{ nbSemaines }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ motsParSemaine }}</div>
+                      <div class="text-sm text-gray-900">{{ nbMotsRestantsParSemaine }}</div>
                     </td>
                   </tr>
                 </tbody>
@@ -94,6 +101,11 @@ const daysBetween = (date1, date2) => {
 const weeksBetween = (date1, date2) => {
   return daysBetween(date1, date2) / 7;
 };
+
+const words = ref(0)
+const nbMotsRestantsParSemaine = computed(() => {
+  return Math.round((nbMots - words.value) / nbSemaines)
+})
 
 const nbMots = 15000
 const nbJours = daysBetween(new Date(), new Date(2024, 3, 15))
