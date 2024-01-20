@@ -63,11 +63,13 @@ const startFireWorks = computed(() => pictures.value.every(picture => picture.fo
 const main = ref() as Ref<HTMLElement>
 const lastError = ref( {picture: '', answer: ''} )
 
-onMounted(async() => {
-  await nextTick()
-  main.value.classList.remove('opacity-0')
-  document.querySelector('nav')?.classList.add('opacity-0')
-});
+// onMounted(async() => {
+//   await nextTick()
+//   main.value.classList.remove('opacity-0')
+//   document.querySelector('nav')?.classList.add('opacity-0')
+// });
+
+watchEffect(() =>  main.value.classList.remove('opacity-0'))
 
 const handleChange = (e: any) => {
   console.log(e)
@@ -89,7 +91,8 @@ const handleEnd = (e: any) => {
   const chosenPicture = pictures.value[newIndex]
   console.log('chosenAnswer', chosenAnswer, 'chosenPicture', chosenPicture, 'picture new', pictures.value[newIndex])
   if (chosenAnswer !== chosenPicture.answer) {
-    lastError.value = { picture: chosenPicture.src, answer: chosenAnswer }
+    // lastError.value = { picture: chosenPicture.src, answer: chosenAnswer }
+    lastError.value.answer= chosenAnswer 
   }
 }
 
