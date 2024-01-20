@@ -12,12 +12,20 @@
         <!-- choose between words or pages -->
         <div class="flex justify-center mb-5">
             <div class="flex items-center mr-5">
-                <input type="radio" id="words" name="type" value="Mots" v-model="wordOrPages" />
-                <label for="words" class="ml-2">Mots</label>
+                <input type="radio" id="words" name="type" value="Mots" v-model="wordOrPages" class = "hidden"/>
+                <label for="words" 
+                    class="ml-2 px-3 cursor-pointer hover:opacity-75 transition-all" 
+                    :class = "wordOrPages === 'Mots' ? 'bg-blue-500' : 'bg-teal-700 '">
+                    Mots
+                </label>
             </div>
             <div class="flex items-center">
-                <input type="radio" id="pages" name="type" value="Pages" v-model="wordOrPages" />
-                <label for="pages" class="ml-2">Pages</label>
+                <input type="radio" id="pages" name="type" value="Pages" v-model="wordOrPages" class = "hidden"/>
+                <label for="pages" 
+                    class="ml-2 px-3 cursor-pointer hover:opacity-75 transition-all" 
+                    :class = "wordOrPages === 'Pages' ? 'bg-blue-500' : 'bg-teal-700 '">
+                    Pages
+                </label>
             </div>
         </div>
 
@@ -63,9 +71,15 @@
         <div class="relative pt-1 mt-10">
             Progression...
             <div class="overflow-hidden h-4 mb-4 text-xs flex rounded bg-teal-200">
-                <div :style="{ width: !ready ? '0' : (words / nbMots) * 100 + '%' }"
+            <transition-scale>
+                <div v-if = "wordOrPages === 'Mots'"
+                    :style="{ width: !ready ? '0' : (words / nbMots) * 100 + '%' }" 
                     class="shadow-none flex flex-col whitespace-nowrap text-white justify-center bg-teal-800 transition-all duration-700">
                 </div>
+                <div v-else :style="{ width: !ready ? '0' : (pages / nbPages) * 100 + '%' }" 
+                    class="shadow-none flex flex-col whitespace-nowrap text-white justify-center bg-teal-800 transition-all duration-700">
+                </div>
+            </transition-scale>
             </div>
         </div>
     </main>
@@ -76,9 +90,8 @@
 import { onMounted } from 'vue'
 import { useStorage } from '@vueuse/core'
 
-// define ts type string that can only be 'Mots' or 'Pages'
 type Type = 'Mots' | 'Pages'
-const wordOrPages = ref<Type>('Mots')
+const wordOrPages = useStorage<Type>('wordOrPages', 'Mots')
 
 const ready = ref(false)
 const title = "Objectif mémoire";
