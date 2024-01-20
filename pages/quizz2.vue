@@ -1,48 +1,39 @@
 
 <template>
-  <main class="min-h-screen opacity-0 transition-all duration-700" ref = "main">
+  <main class="min-h-screen transition-all duration-700" :class = "{'opacity-0' : !ready}" ref="main">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
-        <VueDraggableNext :list="pictures" @end = "handleEnd" 
-        animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4" direction = "horizontal">
-      <transition-group>
-        <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
-          <!-- span de fond - empeche le click si deja ok -->
-          <span v-if="picture.found"
-            class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
-            🥇
-          </span>
-          <img :src="'quizz/' + picture.src" :data-src="picture.src"
-            :class="{ 'my-error': lastError.picture === picture.src }"
-            class="cursor-pointer hover:opacity-90 transition-all border-4 border-solid">
-        </li>
-      </transition-group>
-    </VueDraggableNext>
-    <VueDraggableNext :list="answers" 
-        animation="500" tag="ul" class="flex flex-nowrap space-x-2" direction = "horizontal">
+      <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4"
+        direction="horizontal">
         <transition-group>
-      <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2"> -->
-        <li v-for="answer in answers" :key="answer"
-          class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
-          :class="{ 'my-error': lastError.answer === answer }"
-          :data-answer="answer"
-          :style="basisStyle">
+          <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
+            <span v-if="picture.found"
+              class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
+              🥇
+            </span>
+            <img :src="'quizz/' + picture.src" :data-src="picture.src"
+              :class="{ 'my-error': lastError.picture === picture.src }"
+              class="cursor-move hover:opacity-90 transition-all border-4 border-solid">
+          </li>
+        </transition-group>
+      </VueDraggableNext>
+          <ul v-auto-animate class="flex flex-nowrap space-x-2">
+          <li v-for="answer in answers" :key="answer"
+            class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
+            :class="{ 'my-error': lastError.answer === answer }" :data-answer="answer" :style="basisStyle">
             {{ answer }}
-        </li>
-      </transition-group>
-    </VueDraggableNext>
-      <!-- </ul> -->
+          </li>
+      </ul>
     </div>
   </main>
-  <AppFires v-if="startFireWorks" class="opacity-60"/>
+  <AppFires v-if="startFireWorks" class="opacity-60" />
 </template>
 
 <script setup lang = "ts">
 
 import { ref, watchEffect, computed, onMounted } from 'vue'
-import {VueDraggableNext} from 'vue-draggable-next'
-
+import { VueDraggableNext } from 'vue-draggable-next'
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
 const description = "Tout est dans le désordre.. Essaye de remettre chaque image au dessus du bon prénom !";
@@ -59,26 +50,30 @@ useSeoMeta({
   themeColor: "teal",
 });
 
+const ready = ref(false)
 const startFireWorks = computed(() => pictures.value.every(picture => picture.found))
 const main = ref() as Ref<HTMLElement>
-const lastError = ref( {picture: '', answer: ''} )
+const lastError = ref({ picture: '', answer: '' })
 
-onMounted(async() => {
-  // await nextTick()
-  main.value.classList.remove('opacity-0')
-  document.querySelector('nav')?.classList.add('opacity-0')
-});
+onMounted(() =>  ready.value=true);
 
 const handleChange = (e: any) => {
   console.log(e)
   const movedSrc = e.moved.element.src
-  console.log('src', movedSrc, 'answer should be ', pictures.value.find(p=> p.src == movedSrc)?.answer,
-   'current answer is ', answers.value[e.moved.newIndex])
+  console.log('src', movedSrc, 'answer should be ', pictures.value.find(p => p.src == movedSrc)?.answer,
+    'current answer is ', answers.value[e.moved.newIndex])
   // set last error if not found
   if (movedSrc !== answers.value[e.moved.newIndex]) {
     lastError.value = { picture: movedSrc, answer: answers.value[e.moved.newIndex] }
   }
 }
+
+// reset last error each time its value is not empty
+watchEffect(() => {
+  if (lastError.value.picture !== '' || lastError.value.answer !== '') {
+    lastError.value = { picture: '', answer: '' }
+  }
+})
 
 const handleEnd = (e: any) => {
   console.log(e)
@@ -88,7 +83,7 @@ const handleEnd = (e: any) => {
   const chosenPicture = pictures.value[newIndex]
   console.log('chosenAnswer', chosenAnswer, 'chosenPicture', chosenPicture, 'picture new', pictures.value[newIndex])
   if (chosenAnswer !== chosenPicture.answer) {    // set last error if not found
-    lastError.value.answer= chosenAnswer 
+    lastError.value.answer = chosenAnswer
   }
 }
 
@@ -130,7 +125,7 @@ const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 const checkAnswer = async () => {
   for (let i = 0; i < pictures.value.length; i++) {
     const pic = pictures.value[i]
-    pic.found =  pic.answer === answers.value[i]
+    pic.found = pic.answer === answers.value[i]
   }
 }
 
@@ -197,4 +192,5 @@ watchEffect(() => checkAnswer())
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
-}</style>
+}
+</style>
