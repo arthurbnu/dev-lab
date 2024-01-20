@@ -38,9 +38,13 @@
         <h3 class="text-2xl font-bold text-center">Bravo !</h3>
         <p class="text-center">Tu as reconnu tout le monde !</p>
         <div class="flex justify-center mt-5">
-          <ULink to="/quizz" class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
+          <!-- button reseting pictures to pics -->
+          <button @click="pictures = pics" class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
             Rejouer
-          </ULink>
+          </button>
+          <!-- <ULink to="/quizz2" class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
+            Rejouer
+          </ULink> -->
         </div>
       </div>
     </div>
@@ -105,7 +109,7 @@ const handleEnd = (e: any) => {
   }
 }
 
-const pictures = ref([
+const pics = [
   { src: 'art1.png', answer: 'Arthur', found: false },
   { src: 'art2.png', answer: 'Christophe', found: false },
   { src: 'art3.png', answer: 'Madeleine', found: false },
@@ -116,10 +120,12 @@ const pictures = ref([
   { src: 'art8.png', answer: 'François', found: false },
   { src: 'art9.png', answer: 'Jimmy', found: false },
   { src: 'art10.png', answer: 'Mathilde', found: false },
-])
+]
+
+const pictures = ref(pics)
 
 // instead get answer from picture
-// const answers = ref(pictures.value.map(picture => picture.answer))
+// const answers = ref(pictures.value.map(picture => picture.answer)) 
 
 const answers = ref([
   'Elisa',
