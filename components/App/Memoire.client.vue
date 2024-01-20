@@ -56,7 +56,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">
-                                            {{ wordOrPages === 'Mots' ? motsParSemaine : pagesRestantesParSemaine }}
+                                            {{ wordOrPages === 'Mots' ? nbMotsRestantsParSemaine : pagesRestantesParSemaine }}
                                         </div>
                                     </td>
                                 </tr>
@@ -71,15 +71,9 @@
         <div class="relative pt-1 mt-10">
             Progression...
             <div class="overflow-hidden h-4 mb-4 text-xs flex rounded bg-teal-200">
-            <transition-scale>
-                <div v-if = "wordOrPages === 'Mots'"
-                    :style="{ width: !ready ? '0' : (words / nbMots) * 100 + '%' }" 
+                <div :style="{ width: !ready ? '0' : percentSucceeded + '%' }" 
                     class="shadow-none flex flex-col whitespace-nowrap text-white justify-center bg-teal-800 transition-all duration-700">
                 </div>
-                <div v-else :style="{ width: !ready ? '0' : (pages / nbPages) * 100 + '%' }" 
-                    class="shadow-none flex flex-col whitespace-nowrap text-white justify-center bg-teal-800 transition-all duration-700">
-                </div>
-            </transition-scale>
             </div>
         </div>
     </main>
@@ -92,6 +86,9 @@ import { useStorage } from '@vueuse/core'
 
 type Type = 'Mots' | 'Pages'
 const wordOrPages = useStorage<Type>('wordOrPages', 'Mots')
+
+const words = useStorage('words', 0)
+const pages = useStorage('pages', 0)
 
 const ready = ref(false)
 const title = "Objectif mémoire";
@@ -112,7 +109,6 @@ const columns = computed(() => wordOrPages.value === 'Mots' ? wordsColumns : Pag
 
 onMounted(async () => {
     await nextTick()
-    // wait for 300ms
     await new Promise(resolve => setTimeout(resolve, 300))
     ready.value = true
 })
@@ -132,27 +128,17 @@ const daysBetween = (date1: Date, date2: Date) => {
     return Math.round(differenceMs / oneDay);
 }
 
-const weeksBetween = (date1: Date, date2: Date) => {
-    return daysBetween(date1, date2) / 7;
-};
+const weeksBetween = (date1: Date, date2: Date) => daysBetween(date1, date2)/7
 
-// const words = ref(0) -> use localStorage
-const words = useStorage('words', 0)
-const pages = useStorage('pages', 0)
-// now words is a reactive variable, and it's stored in localStorage
-const nbMotsRestantsParSemaine = computed(() => {
-    return Math.round((nbMots - words.value) / nbSemaines)
-})
+const nbMotsRestantsParSemaine = computed(() => Math.round((nbMots - words.value) / nbSemaines))
+const pagesRestantesParSemaine = computed(() => Math.round((nbPages - pages.value) / nbSemaines))
 
-const pagesRestantesParSemaine = computed(() => {
-    return Math.round((nbPages - pages.value) / nbSemaines)
-})
+const percentSucceeded = computed(() =>
+    Math.round(wordOrPages.value === 'Mots' ? (words.value / nbMots) * 100 : (pages.value / nbPages) * 100
+))
 
 const nbMots = 15000, nbPages = 40
-const nbJours = daysBetween(new Date(), new Date(2024, 3, 15))
 const nbSemaines = Math.round(weeksBetween(new Date(), new Date(2024, 3, 15)))
-const motsParJour = Math.round(nbMots / nbJours)
-const motsParSemaine = Math.round(nbMots / nbSemaines)
 
 useSeoMeta({
     title: title,
