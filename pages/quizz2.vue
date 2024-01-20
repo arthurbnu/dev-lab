@@ -1,6 +1,6 @@
 
 <template>
-  <main class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }" >
+  <main class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }"  >
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
@@ -34,12 +34,12 @@
     <AppFires class="opacity-60" />
     <!-- Bien joué + bouton Rejouer qui actualise -->
     <div class="absolute inset-0 flex justify-center items-center text-black z-50">
-      <div class="bg-white/90 rounded-lg shadow-lg p-5">
+      <div class="bg-white/80 rounded-lg shadow-lg p-5 w-80 ">
         <h3 class="text-2xl font-bold text-center">Bravo !</h3>
         <p class="text-center">Tu as reconnu tout le monde !</p>
         <div class="flex justify-center mt-5">
-          <!-- button reseting pictures to pics -->
-          <button @click="pictures = pics" class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
+          <button @click="refreshAll" 
+          class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
             Rejouer
           </button>
           <!-- <ULink to="/quizz2" class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
@@ -71,6 +71,17 @@ useSeoMeta({
   ogDescription: description,
   themeColor: "teal",
 });
+
+// pour rafraichir la page
+const refreshing = ref(false)
+const refreshAll = async () => {
+  refreshing.value = true
+  try {
+    await refreshNuxtData()
+  } finally {
+    refreshing.value = false
+  }
+}
 
 const ready = ref(false)
 const youWin = computed(() => pictures.value.every(picture => picture.found))
