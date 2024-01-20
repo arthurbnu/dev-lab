@@ -57,7 +57,7 @@ const lastError = ref( {picture: '', answer: ''} )
 const main = ref() as Ref<HTMLElement>
 
 onMounted(async() => {
-  await nextTick()
+  // await nextTick()
   main.value.classList.remove('opacity-0')
   document.querySelector('nav')?.classList.add('opacity-0')
 });

@@ -1,6 +1,6 @@
 
 <template>
-  <main class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }" ref="main">
+  <main class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }" >
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
       <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
@@ -33,10 +33,10 @@
   <div v-if = "youWin">
     <AppFires class="opacity-60" />
     <!-- Bien joué + bouton Rejouer qui actualise -->
-    <div class="absolute inset-0 flex justify-center items-center">
+    <div class="absolute inset-0 flex justify-center items-center text-black z-50">
       <div class="bg-white/90 rounded-lg shadow-lg p-5">
-        <h1 class="text-2xl font-bold text-center">Bravo !</h1>
-        <p class="text-center">Tu as réussi à remettre tout le monde à sa place !</p>
+        <h3 class="text-2xl font-bold text-center">Bravo !</h3>
+        <p class="text-center">Tu as reconnu tout le monde !</p>
         <div class="flex justify-center mt-5">
           <ULink to="/quizz" class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
             Rejouer
@@ -70,7 +70,6 @@ useSeoMeta({
 
 const ready = ref(false)
 const youWin = computed(() => pictures.value.every(picture => picture.found))
-const main = ref() as Ref<HTMLElement>
 const lastError = ref({ picture: '', answer: '' })
 
 onMounted(() => ready.value = true);
@@ -89,7 +88,7 @@ const handleChange = (e: any) => {
 // reset last error each time its value is not empty
 watchEffect(async () => {
   if (lastError.value.picture || lastError.value.answer) {
-    await nextTick()
+    await new Promise(resolve => setTimeout(resolve, 300))
     lastError.value = { picture: '', answer: '' }
   }
 })
