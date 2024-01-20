@@ -38,6 +38,7 @@
         <h3 class="text-2xl font-bold text-center">Bravo !</h3>
         <p class="text-center">Tu as reconnu tout le monde !</p>
         <div class="flex justify-center mt-5">
+          <a href="/quizz2"></a>
           <button @click="refreshAll" 
           class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
             Rejouer
@@ -75,6 +76,24 @@ useSeoMeta({
 // pour rafraichir la page
 const refreshing = ref(false)
 const refreshAll = async () => {
+  console.log('refreshing')
+  
+  // 1 essai : reset pictures
+  pictures.value = pics
+  await new Promise(resolve => setTimeout(resolve, 5000))
+
+  // 2 eme essai : shuffle
+  pictures.value.sort(() => Math.random() - 0.5)
+  await new Promise(resolve => setTimeout(resolve, 5000))
+
+  // 3 eme essai : refresh avec window.location.reload
+  try{
+    window.location.reload()
+  }
+  catch(e){
+    console.log(e)
+  }
+
   refreshing.value = true
   try {
     await refreshNuxtData()

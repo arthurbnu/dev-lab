@@ -54,9 +54,10 @@
 
     <!--  progress bar : transition width according to nb words already written / nb total -->
     <div class="relative pt-1 mt-10">
-      <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-teal-200">
+      Progression...
+      <div class="overflow-hidden h-4 mb-4 text-xs flex rounded bg-teal-200">
         <div :style="{ width: (words / nbMots) * 100 + '%' }"
-          class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teal-500 transition-all"></div>
+          class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teal-800 transition-all"></div>
       </div>
     </div>
 
