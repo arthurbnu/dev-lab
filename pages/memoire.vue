@@ -9,71 +9,55 @@
       </span>
     </div>
 
-    <!-- show nbMots, nbJours and motsParjours in a beautiful nuxt ui way -->
-    <div>
-
-      <!-- <label for="">
-        <span class="text-2xl font-bold">Objectif : </span>
-        <span class="text-2xl font-bold">{{ nbMots }}</span>
-        <span class="text-2xl font-bold">mots</span>
-
-        <span class="text-2xl font-bold">en</span>
-        <span class="text-2xl font-bold">{{ nbJours }}</span>
-        <span class="text-2xl font-bold">jours</span>
-
-        <span class="text-2xl font-bold">soit</span>
-        <span class="text-2xl font-bold">{{ motsParJour }}</span>
-        <span class="text-2xl font-bold">mots par jour</span>
-
-      </label> -->
-      <!-- same but with a nuxi ui table -->
-      <div class="flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200 text-xs">
-                <thead class="bg-teal-200 text-black">
-                  <tr>
-                    <th scope="col"
-                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
-                      Nombre de mots total
-                    </th>
-                    <th scope="col"
-                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-900 uppercase">
-                      Nombre de mots déjà écrits
-                    </th>
-                    <th scope="col"
-                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
-                      Nombre de semaines
-                    </th>
-                    <th scope="col"
-                      class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
-                      Mots par semaine
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ nbMots }}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <input type="number" v-model="words" class=" text-white" />
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ nbSemaines }}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ nbMotsRestantsParSemaine }}</div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200 text-xs">
+              <thead class="bg-teal-200 text-black">
+                <tr>
+                  <th scope="col" class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
+                    Nombre de mots total
+                  </th>
+                  <th scope="col" class="px-6 py-3  font-medium tracking-wider text-left text-gray-900 uppercase">
+                    Nombre de mots déjà écrits
+                  </th>
+                  <th scope="col" class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
+                    Nombre de semaines
+                  </th>
+                  <th scope="col" class="px-6 py-3  font-medium tracking-wider text-left text-gray-800 uppercase">
+                    Mots par semaine
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">{{ nbMots }}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <input type="number" v-model="words" class=" text-white" />
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">{{ nbSemaines }}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">{{ nbMotsRestantsParSemaine }}</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+    </div>
 
+    <!--  progress bar : transition width according to nb words already written / nb total -->
+    <div class="relative pt-1 mt-10">
+      <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-teal-200">
+        <div :style="{ width: (words / nbMots) * 100 + '%' }"
+          class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teal-500 transition-all"></div>
+      </div>
     </div>
 
   </main>
