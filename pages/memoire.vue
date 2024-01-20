@@ -65,6 +65,9 @@
 </template>
 
 <script setup>
+
+import { useStorage } from '@vueuse/core'
+
 const title = "Objectif mémoire";
 const description = "Mémoire | Objectif : 20/20 | 2024 ";
 
@@ -87,7 +90,9 @@ const weeksBetween = (date1, date2) => {
   return daysBetween(date1, date2) / 7;
 };
 
-const words = ref(0)
+// const words = ref(0) -> use localStorage
+const words = useStorage('words', 0)
+// now words is a reactive variable, and it's stored in localStorage
 const nbMotsRestantsParSemaine = computed(() => {
   return Math.round((nbMots - words.value) / nbSemaines)
 })
