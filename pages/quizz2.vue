@@ -69,8 +69,9 @@ const handleChange = (e: any) => {
 }
 
 // reset last error each time its value is not empty
-watchEffect(() => {
-  if (lastError.value.picture !== '' || lastError.value.answer !== '') {
+watchEffect(async () => {
+  if (lastError.value.picture || lastError.value.answer ) {
+    await nextTick()
     lastError.value = { picture: '', answer: '' }
   }
 })
