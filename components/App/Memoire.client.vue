@@ -9,6 +9,18 @@
             </span>
         </div>
 
+        <!-- choose between words or pages -->
+        <div class="flex justify-center mb-5">
+            <div class="flex items-center mr-5">
+                <input type="radio" id="words" name="type" value="Mots" v-model="wordOrPages" />
+                <label for="words" class="ml-2">Mots</label>
+            </div>
+            <div class="flex items-center">
+                <input type="radio" id="pages" name="type" value="Pages" v-model="wordOrPages" />
+                <label for="pages" class="ml-2">Pages</label>
+            </div>
+        </div>
+
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -25,16 +37,19 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ nbMots }}</div>
+                                        <div class="text-sm text-gray-900">{{ wordOrPages === 'Mots' ? nbMots : nbPages }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <input type="number" v-model="words" class=" text-white" />
+                                        <input v-if="wordOrPages === 'Mots'" type="number" v-model="words" class=" text-white" />
+                                        <input v-else type="number" v-model="pages" class=" text-white" />
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ nbSemaines }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ nbMotsRestantsParSemaine }}</div>
+                                        <div class="text-sm text-gray-900">
+                                            {{ wordOrPages === 'Mots' ? motsParSemaine : pagesRestantesParSemaine }}
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -53,7 +68,6 @@
                 </div>
             </div>
         </div>
-
     </main>
 </template>
   
@@ -62,15 +76,26 @@
 import { onMounted } from 'vue'
 import { useStorage } from '@vueuse/core'
 
+// define ts type string that can only be 'Mots' or 'Pages'
+type Type = 'Mots' | 'Pages'
+const wordOrPages = ref<Type>('Mots')
+
 const ready = ref(false)
 const title = "Objectif mémoire";
 const description = "Mémoire | Objectif : 20/20 | 2024 ";
-const columns = [
+const wordsColumns = [
     'Nombre de mots total',
     'Nombre de mots déjà écrits',
     'Nombre de semaines',
     'Mots par semaine'
 ]
+const PagesColumns = [
+    'Nombre de pages total',
+    'Nombre de pages déjà écrites',
+    'Nombre de semaines',
+    'Pages par semaine'
+]
+const columns = computed(() => wordOrPages.value === 'Mots' ? wordsColumns : PagesColumns)
 
 onMounted(async () => {
     await nextTick()
@@ -100,12 +125,17 @@ const weeksBetween = (date1: Date, date2: Date) => {
 
 // const words = ref(0) -> use localStorage
 const words = useStorage('words', 0)
+const pages = useStorage('pages', 0)
 // now words is a reactive variable, and it's stored in localStorage
 const nbMotsRestantsParSemaine = computed(() => {
     return Math.round((nbMots - words.value) / nbSemaines)
 })
 
-const nbMots = 15000
+const pagesRestantesParSemaine = computed(() => {
+    return Math.round((nbPages - pages.value) / nbSemaines)
+})
+
+const nbMots = 15000, nbPages = 40
 const nbJours = daysBetween(new Date(), new Date(2024, 3, 15))
 const nbSemaines = Math.round(weeksBetween(new Date(), new Date(2024, 3, 15)))
 const motsParJour = Math.round(nbMots / nbJours)
