@@ -11,7 +11,7 @@
               class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
               🥇
             </span>
-            <img :src="picture.src"
+            <img :src="baseSrc + picture.src"
               :class="{ 'my-error': lastError.picture === picture.src }"
               class="cursor-move hover:opacity-90 transition-all border-4 border-solid">
           </li>
@@ -71,6 +71,8 @@ const youWin = computed(() => pictures.value.every(picture => picture.found))
 const lastError = ref({ picture: '', answer: '' })
 
 const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
+
+const baseSrc = process.env.NODE_ENV === 'development' ? '' : 'quizz/'
 
 onMounted(() => { 
   shuffle(pictures.value)
