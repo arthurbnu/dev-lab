@@ -1,41 +1,58 @@
 
 <template>
-  <main class="min-h-screen opacity-0 transition-all duration-700" ref = "main">
+  <main class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }">
     <AppHeader class="mb-1 text-center" :title="title" :description="description" />
     <div class=" h-80 shadow-lg m-5 max-w-full">
-      <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4">
-        <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
-          <!-- span de fond - empeche le click si deja ok -->
-          <span v-if="picture.found"
-            class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
-            🥇
-          </span>
-          <img :src="'quizz/' + picture.src" @click="selectedPicture = picture.src" :data-src="picture.src"
-            draggable @dragstart="dragStart"
-            class="cursor-pointer hover:opacity-90 transition-all border-4 border-solid"
-            :class="{ 'border-teal-500': selectedPicture === picture.src, 'my-error': lastError.picture === picture.src }">
-        </li>
-      </ul>
+      <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
+      <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4">
+        <transition-group>
+          <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
+            <span v-if="picture.found"
+              class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
+              🥇
+            </span>
+            <img :src="picture.src"
+              :class="{ 'my-error': lastError.picture === picture.src }"
+              class="cursor-move hover:opacity-90 transition-all border-4 border-solid">
+          </li>
+        </transition-group>
+      </VueDraggableNext>
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
-        <li v-for="answer in answers" :key="answer" @click="selectedAnswer = answer"
-          class="grid place-content-center cursor-pointer hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
-          :class="{ '!border-teal-500': selectedAnswer === answer, 'my-error': lastError.answer === answer }"
-          :data-answer="answer" @drop.prevent="drop" @dragLeave="dragLeave" @dragenter="dragEnter" @dragover="dragOver"
-          :style="basisStyle">
-            {{ answer }}
+        <li v-for="answer in answers" :key="answer"
+          class="grid place-content-center hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
+          :class="{ 'my-error': lastError.answer === answer }" :data-answer="answer" :style="basisStyle">
+          {{ answer }}
         </li>
       </ul>
     </div>
+    <div v-if="!ready" class="absolute inset-0 flex justify-center items-center">
+      <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-teal-900"></div>
+    </div>
+    <div v-if="youWin">
+      <AppFires class="opacity-60" />
+      <div class="absolute inset-0 flex justify-center items-center text-black z-50">
+        <div class="bg-white/80 rounded-lg shadow-lg p-5 w-80 ">
+          <h3 class="text-2xl font-bold text-center">Bravo !</h3>
+          <p class="text-center">Tu as reconnu tout le monde !</p>
+          <div class="flex justify-center mt-5">
+            <button @click="shuffle(answers)"
+              class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
+              Rejouer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
-  <AppFires v-if="startFireWorks" class = "opacity-60"/>
 </template>
 
 <script setup lang = "ts">
 
 import { ref, watchEffect, computed, onMounted } from 'vue'
+import { VueDraggableNext } from 'vue-draggable-next'
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
-const description = "Tout est dans le désordre.. Clique sur les bonnes paires (image et prénom) ou fais glisser l'image vers le bon prénom !";
+const description = "Tout est dans le désordre.. Essaye de remettre chaque image au dessus du bon prénom !";
 
 useSeoMeta({
   title: title,
@@ -49,36 +66,35 @@ useSeoMeta({
   themeColor: "teal",
 });
 
-const startFireWorks = computed(() => pictures.value.every(picture => picture.found))
-const test = ref(false)
-const selectedPicture = ref('')
-const selectedAnswer = ref('')
-const lastError = ref( {picture: '', answer: ''} )
-const main = ref() as Ref<HTMLElement>
+const ready = ref(false)
+const youWin = computed(() => pictures.value.every(picture => picture.found))
+const lastError = ref({ picture: '', answer: '' })
 
-onMounted(async() => {
-  // await nextTick()
-  main.value.classList.remove('opacity-0')
-  document.querySelector('nav')?.classList.add('opacity-0')
+const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
+
+onMounted(() => { 
+  shuffle(pictures.value)
+  ready.value = true
+  setTimeout(() => shuffle(answers.value), 500);
 });
 
-// const dragged = ref() as Ref<HTMLImageElement>
-  // type DragElt = DragEvent & { target: HTMLElement }
-const dragged = ref() as Ref<HTMLElement>
-const dragStart = (e: DragEvent) => dragged.value = e.target as HTMLElement
-const dragOver = (e: DragEvent) => e.preventDefault()
-// const dragOver = (e: DragEvent) => (e.target as HTMLElement).classList.add('border-teal-500')
-const dragEnter = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.add('border-teal-500')
-const dragLeave = (e: DragEvent) => (e.currentTarget as HTMLElement).classList.remove('border-teal-500')
+// reset last error each time its value is not empty to trigger the animation
+watchEffect(async () => {
+  if (lastError.value.picture || lastError.value.answer) {
+    await new Promise(resolve => setTimeout(resolve, 300))
+    lastError.value = { picture: '', answer: '' }
+  }
+})
 
-const drop = (e: DragEvent) => {
-  if (!dragged.value) return
-  selectedAnswer.value = (e.target as HTMLElement).dataset.answer as string
-  selectedPicture.value = dragged.value.dataset.src as string
-  (e.target as HTMLElement).classList.remove('border-teal-500')
+const handleEnd = (e: any) => {
+  const chosenAnswer = answers.value[e.newIndex]
+  const chosenPicture = pictures.value[e.newIndex]
+  if (chosenAnswer !== chosenPicture.answer) { 
+    lastError.value.answer = chosenAnswer
+  }
 }
 
-const pictures = ref([
+const picsInit = [
   { src: 'art1.png', answer: 'Arthur', found: false },
   { src: 'art2.png', answer: 'Christophe', found: false },
   { src: 'art3.png', answer: 'Madeleine', found: false },
@@ -89,61 +105,22 @@ const pictures = ref([
   { src: 'art8.png', answer: 'François', found: false },
   { src: 'art9.png', answer: 'Jimmy', found: false },
   { src: 'art10.png', answer: 'Mathilde', found: false },
-])
+]
 
-// instead get answer from picture
-// const answers = ref(pictures.value.map(picture => picture.answer))
-
-const answers = ref([
-  'Elisa',
-  'Christophe',
-  'Maël',
-  'Kevin',
-  'Arthur',
-  'Mathilde',
-  'Ferdi',
-  'Madeleine',
-  'François',
-  'Jimmy',
-])
-
-// shuffle
-// pictures.value.sort(() => Math.random() - 0.5)
-// answers.value.sort(() => Math.random() - 0.5)
+const pictures = ref(picsInit)
+const answersInit = picsInit.map(picture => picture.answer)
+const answers = ref(answersInit)
 
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
 const checkAnswer = async () => {
-  const pic = pictures.value.find(picture => picture.src === selectedPicture.value)
-  if (!pic) return  // ts error
-  if (selectedAnswer.value === pic.answer) {  // bonne réponse
-    // replace l'element trouvé en premier
-    pictures.value = [pic, ...pictures.value.filter(picture => picture.src !== selectedPicture.value)]
-    answers.value = [selectedAnswer.value, ...answers.value.filter(answer => answer !== selectedAnswer.value)]
-    // pause avant animation 
-    await new Promise(resolve => setTimeout(resolve, 300))
-    pic.found = true
-    test.value = true
-  }
-  else {    // mauvaise réponse
-    lastError.value = {
-      picture: selectedPicture.value,
-      answer: selectedAnswer.value
-    }
-    await new Promise(resolve => setTimeout(resolve, 500))  // on attend la classe my-error
-  }
-  selectedPicture.value = ''
-  selectedAnswer.value = ''
-  lastError.value = {
-    picture: '',
-    answer: ''
+  for (let i = 0; i < pictures.value.length; i++) {
+    const pic = pictures.value[i]
+    pic.found = pic.answer === answers.value[i]
   }
 }
 
-watchEffect(() => {
-  if (selectedPicture.value && selectedAnswer.value)
-    checkAnswer()
-})
+watchEffect(() => checkAnswer())
 
 </script>
 
@@ -206,4 +183,5 @@ watchEffect(() => {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
-}</style>
+}
+</style>
