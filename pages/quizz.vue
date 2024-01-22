@@ -11,7 +11,7 @@
               class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
               🥇
             </span>
-            <img :src="baseSrc + picture.src"
+            <img :src="baseSrc + picture.src" :alt ="'inconnu ' + picture.src"
               :class="{ 'my-error': lastError.picture === picture.src }"
               class="cursor-move hover:opacity-90 transition-all border-4 border-solid">
           </li>

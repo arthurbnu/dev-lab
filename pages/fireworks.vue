@@ -1,4 +1,4 @@
 <template>
     <AppFire/>
-  </template>
+</template>
   
