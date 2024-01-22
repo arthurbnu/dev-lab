@@ -24,6 +24,7 @@
     "yarn-upgrade-all": "^0.7.2"
   },
   "dependencies": {
+    "@fireworks-js/vue": "^2.10.7",
     "@formkit/auto-animate": "^0.8.1",
     "@iconify-json/lucide": "1.1.145",
     "@morev/vue-transitions": "^2.3.6",
@@ -31,6 +32,7 @@
     "@nuxt/ui": "2.11.1",
     "@quasar/extras": "^1.16.9",
     "@sipec/vue3-tags-input": "^3.0.4",
+    "fireworks-js": "^2.10.7",
     "quasar": "^2.14.2",
     "vue-draggable-next": "^2.2.1",
     "vue-use-fixed-header": "^2.0.0"
