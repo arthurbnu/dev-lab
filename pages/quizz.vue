@@ -75,6 +75,12 @@ const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
 const baseSrc = process.env.NODE_ENV === 'development' ? '' : 'quizz/'
 
 onMounted(() => { 
+
+try{
+screen.orientation.lock("landscape")
+}
+catch(e){}
+
   shuffle(pictures.value)
   ready.value = true
   setTimeout(() => shuffle(answers.value), 500);
