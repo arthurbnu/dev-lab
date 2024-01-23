@@ -1,8 +1,14 @@
 
 <template>
   <main class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }">
-    <AppHeader class="mb-1 text-center" :title="title" :description="description" />
-    <div class=" h-80 shadow-lg m-5 max-w-full">
+    <AppHeader class="mb-5 text-center" :title="title" :description="description" />
+    <transition-expand>
+      <p v-if = "orientationError" class = "text-center text-lg text-teal-600 transition-all">    
+        <Icon name = "heroicons:arrow-path-rounded-square" 
+        class = "inline-block w-6 h-6 mr-2" />
+        {{ orientationError }}
+      </p>
+    <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
       <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
       <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4">
         <transition-group>
@@ -25,6 +31,7 @@
         </li>
       </ul>
     </div>
+    </transition-expand>
     <div v-if="!ready" class="absolute inset-0 flex justify-center items-center">
       <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-teal-900"></div>
     </div>
@@ -50,6 +57,10 @@
 
 import { ref, watchEffect, computed, onMounted } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
+// import { useScreenOrientation } from '#imports';
+
+const screenOrientation = useScreenOrientation()
+const acceptedOrientation:OrientationType[] = ['landscape-primary', 'landscape-secondary']
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
 const description = "Tout est dans le désordre.. Essaye de remettre chaque image au dessus du bon prénom !";
@@ -74,13 +85,17 @@ const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
 
 const baseSrc = process.env.NODE_ENV === 'development' ? '' : 'quizz/'
 
+const orientationError = computed(() => {
+  if (!ready.value ) 
+    return ''
+  if (!screenOrientation.isSupported.value || !screenOrientation.orientation.value) 
+    return ''
+  if (!acceptedOrientation.includes(screenOrientation.orientation.value))
+    return 'Passer en mode paysage pour commencer le jeu'
+  return ''  
+})
+
 onMounted(() => { 
-
-try{
-screen.orientation.lock("landscape")
-}
-catch(e){}
-
   shuffle(pictures.value)
   ready.value = true
   setTimeout(() => shuffle(answers.value), 500);
