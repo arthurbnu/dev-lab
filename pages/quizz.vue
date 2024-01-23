@@ -2,7 +2,7 @@
 <template>
   <main class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }">
     <AppHeader class="mb-5 text-center" :title="title" :description="description" />
-    <transition-expand>
+    <transition-expand :delay = "300" :duration="600" :easing=" 'cubic-bezier(0.6, 0, 0.4, 2)'">
       <p v-if = "orientationError" class = "text-center text-lg text-teal-600 transition-all">    
         <Icon name = "heroicons:arrow-path-rounded-square" 
         class = "inline-block w-6 h-6 mr-2" />

@@ -1,22 +1,39 @@
 <template>
   <main class="min-h-screen">
-    <AppHeader class="mb-1 text-center" :title="title" :description="description" />
-
-    <div class="space-y-4 text-center">
-      <span v-for="(tag, id) in tags" :key="id" 
-      class = "bg-teal-800 text-white px-1 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950" >
+    <AppHeader class="mb-1 text-center" :title="title" >
+      <p class = "m-4 opacity-70 text-justify">
+        <!-- Exemple d'interrogation de la base Wikidata à l'aide du langage sparql <br><br> -->
+        <i>
+          Les données de la requête sparql (personnes célèbres ayant une page wikipedia en français)
+          sont issues de wikidata, et complétées par dbpedia (images) et wikipedia (infobox).
+        </i>
+      </p>
+    </AppHeader>
+    <!-- <div class="space-y-4 text-center"> -->
+      <transition-scale group tag = "div" class = "space-y-4 text-center h-6" >
+        <span v-for="(tag, id) in shownTags" :key="id"  
+        class = "bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950" >
         {{ tag }}
       </span>
-    </div>
-
+    </transition-scale>
+    <!-- </div> -->
     <AppOctantView />
   </main>
 </template>
 
 <script setup>
-const title  = "Recherche sparql avec Vuejs";
-const description = "Sparql | Langage de requête pour les données liées rdf." +
-" Les données de la requête sont issues de wikidata, et complétées par des données de dbpedia et l'api wikipedia.";
+import { onMounted } from 'vue'
+
+const title  = "Recherche wikidata avec sparql";
+const description = "Exemple d'interrogation de la base Wikidata à l'aide du langage sparql";
+
+onMounted(() => {
+  for (let i = 0; i < tags.length; i++) {
+    setTimeout(() => {
+      shownTags.value.push(tags[i])
+    }, 50 * i);
+  }
+})
 
 useSeoMeta({
   title: title,
@@ -39,8 +56,8 @@ const tags = [
   "rdf",
   "api",
   "vuejs",
-  "nuxt",
 ];
 
+const shownTags = ref([])
 
 </script>
