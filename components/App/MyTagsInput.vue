@@ -2,13 +2,12 @@
 <template>  
     <div class = "template col-6 q-pa-md text-center" 
     @contextmenu = "handleRightClick"
-
     :class = "{'template_loading' : loading, 'invalidInput' : invalidInput}" 
     ref = "currentTemplate" 
     @click = "handleTemplateClick">
     <span class = "row inline items-center">
-        <img v-if = "image" class = "my-api-img" :alt="api">
-        <!-- <img v-if = "image" class = "my-api-img" :src='getImageUrl(image)' :alt="api"> -->
+        <!-- <img v-if = "image" class = "my-api-img" :alt="api"> -->
+        <img v-if = "image" class = "my-api-img" :src="image" :alt="api">
         <!-- <h5 class="title q-ma-xs q-pa-xs q-pb-sm">
             {{ api }}         
         </h5> -->
@@ -30,7 +29,7 @@
         </q-checkbox>
     </span>
     <div ref = "tagsInputContainer">
-        <div class="spinner q-pa-md">
+        <div class="spinner q-pb-md">
             <q-circular-progress
                 indeterminate
                 rounded
@@ -40,15 +39,6 @@
             />
             Chargement
         </div>
-        <!-- <ClientOnly > -->
-
-            <!-- to have this working we need to add the following to nuxt.config.js
-            plugins: [
-                { src: '~/plugins/vue-tags-input', mode: 'client' }
-            ] -->
-            <!--  or we must add placeholder manually -->
-
-
         <vue-tags-input
             v-model="tag" 
             :tags="tags" 
@@ -81,7 +71,6 @@
                 </q-btn>
             </template>
         </vue-tags-input>
-        <!-- </ClientOnly> -->
         <!-- position sticky possible uniquement si pas de recherche en cours pour éviter dépassement de résultats  -->
         <div    
             v-if = "fetchError.message && ! loading" 
@@ -94,38 +83,6 @@
            <p class = "hidden">{{ url }} | {{ actualPlaceHolder }}</p>
         </div>
         <slot name = "items-list"></slot>
-        <!-- config par défaut du composant : displayUserItems (possibilité d'utiliser le slot items-list dans le parent sinon) -->
-        <!-- <div v-if = "displayUserItems" class = "max-width"> 
-            <ul v-auto-animate = "{duration : 400}" class = "q-pa-none q-mt-xl" >
-                <li v-for="item, i in tags.slice().reverse()" :key="item" >
-                        <CardUserVue :user = "item">
-                            <template v-slot:card-user-controls>
-                                <button :class = "classBtnDeleteCardUser" class = "text-grey" @click = "deleteUser(item)">
-                                    ✖ 
-                                </button>
-                            </template>
-                            <template v-slot:search-matched-api-user>
-                                <div class="text-subtitle2 qa-ma-md text-grey">
-                                    Nom d'utilisateur : 
-                                    <button class = "my-button-user"
-                                        @click = "actionSender = 
-                                        {name : 'checkMatchedApi', searchOption : 'Nom d\'utilisateur', userId : item.value}"   
-                                    >
-                                    {{ item.value }}
-                                    <q-tooltip v-if = "item.value"  anchor="center right" self="center left">
-                                        <div class="text-center">
-                                            <span class="text-weight-light">Rechercher ce nom d'utilisateur sur</span>
-                                            <br>
-                                            <span class="text-weight-bold"> {{ props.matchedApi}}</span>
-                                        </div>
-                                    </q-tooltip>
-                                    </button>
-                                </div>
-                            </template>
-                        </CardUserVue>
-                </li>
-            </ul>
-        </div> -->
     </div>
 </div>
 </template>
@@ -134,17 +91,10 @@
 import { ref, watch, onMounted, inject, computed} from 'vue';
 
 // La version de base de vue tags input n'est plus maintenue.. V2 only
-// problem to solve : vue3-tags-input is client side only, so we can't use it on server side
-// to fix this, we can tell nuxt to ignore this component on server side rendering
 import VueTagsInput from "@sipec/vue3-tags-input";
-
-// vue3-tags-input has been added to nuxt.config.js in plugins, so we can use it on server side like this
-// import VueTagsInput from 'vue3-tags-input';
-
 
 // import { useRoute } from 'vue-router';
 // import router from '@/router';
-
 // const route = useRoute();
 
 // props
@@ -213,10 +163,6 @@ let mainInput = null,
     // true si env de production
     // const envProd = inject('envProd');
     const myLog = console.log
-
-    // token d'authentification
-    // const result = inject('result'); 
-    // const expiredTokenError = inject('expiredTokenError')
 
     // const getImageUrl = (image) => require('@/assets/' + image)
     const disableAutoComplete = ref (false);
@@ -589,10 +535,6 @@ div {
 
 .template{
     transition: all .8s ease;
-
-    &:hover{
-        // background-color: rgb(248, 248, 248);
-    }
 }
 
 // Bouton de recherche user sur l'autre api (matchedApi)

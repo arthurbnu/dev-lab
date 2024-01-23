@@ -8,8 +8,10 @@
         :handleResponse="handleOctant"
         :tags = tags
         @tags-update = "tagsUpdate"
-    >
-        <template v-slot:items-list> <!-- soit auto animate soit vue-transition group w-full  -->
+        >
+        <!-- image="wikidata-query-service.png" -->
+        <template v-slot:items-list> 
+            <!-- soit auto animate soit vue-transition group w-full  -->
             <ul v-auto-animate = "{duration : 400}" id = "my-items-list">
             <!-- <ul  id = "my-items-list"> -->
                 <!-- <transition-scale group class = "w-full"> -->
@@ -28,9 +30,6 @@ import {ref, provide, watch} from 'vue'
 import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
-const ready= ref(false)
-
-// import { useFocus } from '@vueuse/core';
 import { useFocus} from '~/composables/focus';      // ces 2 composables appellent nextTick car composant client - cf doc nuxt
 import useKeyDown from '~/composables/use-keydown';
 useFocus()
@@ -168,12 +167,3 @@ const handleApiError = (data) => {
 }
 
 </script>
-
-<!-- <style lang="scss" scoped>
-
-.q-separator{
-      width : 150px;
-      margin: auto;
-  }
-
-</style> -->
