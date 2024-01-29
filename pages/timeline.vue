@@ -1,19 +1,20 @@
 <template>
   <div class="q-px-lg q-py-md">
     <q-timeline color="secondary">
-      <q-timeline-entry heading body="Timeline heading" />
+      <q-timeline-entry heading body="En mai, fait ce qu'il te plAIt..." />
 
       <q-timeline-entry
-        title="Event Title"
-        subtitle="February 22, 1986"
+        title="ADELE"
+        subtitle="2 mai"
+color="secondary"
         avatar="https://cdn.quasar.dev/img/avatar3.jpg"
         :body="body"
       />
 
       <q-timeline-entry
-        title="Event Title"
-        subtitle="February 21, 1986"
-        icon="delete"
+        title="Ateliers IA"
+        subtitle="3, 5, 9 et 10 mai"
+        icon="rocket_launch"
         :body="body"
       />
 
