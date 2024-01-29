@@ -30,7 +30,7 @@ color="orange"
 
 <q-timeline-entry
         title="Ateliers IA"
-        subtitle="15,16,17,19 mai"
+        subtitle="15, 16, 17 et 19 mai"
         icon="rocket_launch"
         :body="body"
       />
@@ -39,23 +39,48 @@ color="orange"
 
       <q-timeline-entry
         title="Wikidata, printemps de la donnée"
-        subtitle="découvrez comment alimenter et obtenir des données Wikidata avec le langage spatql, .. et bien plus encore"
+        subtitle="26 mai"
         color="orange"
         icon="done_all"
         :body="body"
+      >
+<div>
+Découvrez comment alimenter et obtenir des données Wikidata avec le langage sparql, et bien plus encore...
+</div>
+ </q-timeline-entry>
+
+<q-timeline-entry heading body="Été rime avec ateliers" />
+
+      <q-timeline-entry
+        title="Atelier Univoak"
+        subtitle="8 juin"
+        :body="body"
+color="purple"
       />
 
       <q-timeline-entry
-        title="Event Title"
-        subtitle="February 22, 1986"
+        title="GT Libre accès"
+        subtitle="13 juin"
         :body="body"
+      />    
+
+<q-timeline-entry
+        title="Ateliers ESTRADES"
+        subtitle="14 - 15 juin"
+        :body="body"
+color="purple"
+avatar="https://eveille.hypotheses.org/files/2022/12/18383-768x768.jpg"
       />
 
-      <q-timeline-entry
-        title="Event Title"
-        subtitle="February 22, 1986"
+   <q-timeline-entry
+        title="Atelier Mirabel"
+        subtitle="20 juin"
         :body="body"
-      />
+color="pink"
+icon="nutrition"
+      />  
+
+
     </q-timeline>
   </div>
 </template>
