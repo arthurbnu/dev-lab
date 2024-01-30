@@ -12,7 +12,7 @@ color="secondary"
       />
 
       <q-timeline-entry
-        title="Ateliers IA"
+        title="SUPERS Ateliers IA"
         subtitle="3, 5, 9 et 10 mai"
         icon="rocket_launch"
         :body="body"
