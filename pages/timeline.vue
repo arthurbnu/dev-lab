@@ -1,5 +1,5 @@
 <template>
-  <div class="q-px-lg q-py-md">
+  <div class="q-px-lg q-py-md text-xl margin-auto">
     <q-timeline color="secondary">
       <q-timeline-entry heading body="En mai, fait ce qu'il te plAIt..." />
 
