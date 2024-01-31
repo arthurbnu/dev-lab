@@ -32,6 +32,52 @@
   <div class="font-extrabold text-lg [text-wrap:balance] text-gray-700">
     <AppPolarAreaGraph></AppPolarAreaGraph>
   </div>
+  <div
+    class="p-4 bg-gray-100 rounded-md border flex flex-col justify-center items-center overflow-hidden"
+  >
+  <div class="font-extrabold  margin -auto text-lg [text-wrap:balance] text-gray-700">
+      En ce moment le Lab ... </div>
+    <br>
+
+  <div class="flex-container">
+
+  <div class="flex-child">
+    <div class="font-extrabold text-lg [text-wrap:balance] text-teal-700">
+      ... collabore sur XX différents projets </div>
+      <q-circular-progress
+      show-value
+      class="text-gray-700  q-ma-md"
+      value='55'
+      size="100px"
+      color="teal"
+    />
+</div>
+
+<div class="flex-child">
+  <div class="font-bold text-lg [text-wrap:balance] text-teal-700">
+      ...élabore XX différentes formations </div>
+      <q-circular-progress
+      show-value
+      class="text-gray-700  q-ma-md"
+      value='99'
+      size="100px"
+      color="teal"
+    />
+    </div>
+
+  <div class="flex-child">
+  <div class="font-extrabold text-lg [text-wrap:balance] text-teal-700">
+      ...élabore XX différentes formations </div>
+      <q-circular-progress
+      show-value
+      class="text-gray-700 q-ma-md"
+      value='80'
+      size="100px"
+      color="teal"
+    />
+    </div>
+  </div>
+  </div>
   
 </template>
 
