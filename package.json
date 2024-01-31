@@ -35,6 +35,7 @@
     "apexcharts": "^3.45.2",
     "fireworks-js": "^2.10.7",
     "quasar": "^2.14.2",
+    "vue-apexcharts": "^1.6.2",
     "vue-draggable-next": "^2.2.1",
     "vue-use-fixed-header": "^2.0.0",
     "vue3-apexcharts": "^1.4.4"
