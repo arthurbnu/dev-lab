@@ -17,7 +17,7 @@
           <li class="text-rose-500">XX ateliers</li>
           <li class="text-yellow-500">XX différents projets</li>
           <li class="text-teal-500">XX différentes personnes</li>
-          <li class="text-pink-500">XXX </li>
+          <li class="text-pink-500">XX outils </li>
           <li class="text-sky-500">XXX</li>
         </ul>
       </span>
@@ -29,10 +29,8 @@
     <AppTargetNumber targetNumber="1234"></AppTargetNumber>
   </div>
   </div>
-  
+  <AppPolarAreaGraph></AppPolarAreaGraph>
 </template>
-
-
 
 <style>
   .animate-text-slide {
