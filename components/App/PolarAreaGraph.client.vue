@@ -1,5 +1,5 @@
 <template>
-    <VueApexCharts width="500" type="area" :options="options" :series="series"></VueApexCharts>
+    <VueApexCharts height=250, type="area" :options="options" :series="series"></VueApexCharts>
 </template>
 
 <script setup>
@@ -29,7 +29,6 @@ const generateDayWiseTimeSeries = (baseval, count, yrange) => {
         dataLabels: {
           enabled: false
         },
-        height: 350,
         stroke: {
           curve: 'smooth'
         },
