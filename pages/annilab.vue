@@ -29,7 +29,10 @@
     <AppTargetNumber targetNumber="1234"></AppTargetNumber>
   </div>
   </div>
-  <AppPolarAreaGraph></AppPolarAreaGraph>
+  <div class="font-extrabold text-lg [text-wrap:balance] text-gray-700">
+    <AppPolarAreaGraph></AppPolarAreaGraph>
+  </div>
+  
 </template>
 
 <style>
