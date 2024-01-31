@@ -9,17 +9,18 @@
         {{ orientationError }}
       </p>
     <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
-      <!-- <ul v-auto-animate class="flex flex-nowrap space-x-2 mb-4"> -->
       <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4">
         <transition-group>
           <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
             <span v-if="picture.found"
-              class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
-              🥇
-            </span>
-            <img :src="baseSrc + picture.src" :alt ="'inconnu ' + picture.src"
-              :class="{ 'my-error': lastError.picture === picture.src }"
-              class="cursor-move hover:opacity-90 transition-all border-4 border-solid">
+            class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
+            🥇
+          </span>
+          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="transition-all duration-700">
+            <NuxtImg :src="'quizz/' + picture.src" :alt ="'inconnu ' + picture.src"
+            :class="{ 'my-error': lastError.picture === picture.src }"
+            class="cursor-move hover:opacity-90 transition-all border-4 border-solid" />
+          </UChip>
           </li>
         </transition-group>
       </VueDraggableNext>
@@ -57,7 +58,6 @@
 
 import { ref, watchEffect, computed, onMounted } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
-// import { useScreenOrientation } from '#imports';
 
 const screenOrientation = useScreenOrientation()
 const acceptedOrientation:OrientationType[] = ['landscape-primary', 'landscape-secondary']
@@ -82,8 +82,6 @@ const youWin = computed(() => pictures.value.every(picture => picture.found))
 const lastError = ref({ picture: '', answer: '' })
 
 const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
-
-const baseSrc = process.env.NODE_ENV === 'development' ? '' : 'quizz/'
 
 const orientationError = computed(() => {
   if (!ready.value ) 

@@ -12,14 +12,12 @@ export default defineNuxtConfig({
    'nuxt-quasar-ui',
    '@formkit/auto-animate/nuxt',
    "@morev/vue-transitions/nuxt",
-   // fireworks npm install @fireworks-js/vue
-  //  "@fireworks-js/vue"
   ],
 
   quasar: { 
     config: {
       brand: {
-        primary: 'red',
+        primary: 'teal',
         secondary: '#26a69a',
         accent: '#9c27b0',
 
@@ -32,7 +30,6 @@ export default defineNuxtConfig({
       }
     },
  },  
-
   ui: {
     icons: ["heroicons", "lucide"],
   },

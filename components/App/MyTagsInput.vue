@@ -523,10 +523,6 @@ div {
     &.level_1 {
         color: rgb(255, 0, 0);
     }
-
-    &.level_0 {
-        color: black;
-    }
 }
 
 .max-width {
