@@ -12,7 +12,11 @@
         </UAvatarGroup>
         {{ title }}
       </h1>
-    
+  
+      {{ error }}
+      <br>
+      {{ pending ? "chargement..." : "TERMINE"}}
+      {{ sparqlQuery }}
       <transition-fade :duration="500">
         <p class = "m-4 opacity-70 text-justify italic" v-if = "sparqlQuery">
             <!-- Les données de la  <a href="https://fr.wikipedia.org/wiki/SPARQL" v-bind="linkParams">requête sparql</a> -->
@@ -56,9 +60,33 @@ const logos = [
   "https://logo.clearbit.com/wikipedia.org",
   // "https://logo.clearbit.com/vuejs.org",
 ]
-
+const error = ref(null)
+const pending = ref(true)
 onMounted(async () => {
-  sparqlQuery.value = (await useFetch("/sparql/request.txt")).data.value
+  // sparqlQuery.value = (await useFetch("/sparql/request.txt", {
+  //   responseType: "text",
+    
+  // })).data.value
+  // do the same but also get the error
+  try{
+    const {data, myError, myPending} = await useFetch("/sparql/request.txt", {
+      responseType: "text",
+    }).catch(e => {
+      console.log(e)
+    })
+    sparqlQuery.value = data.value
+    error.value = myError
+    pending.value = myPending
+  } catch (e) {
+    error.value = e
+
+  }
+  // const {data, myError} = await useFetch("/sparql/request2.txt", {
+  //   responseType: "text",
+  // })
+  // sparqlQuery.value = data.value
+  // error.value = myError
+  if (error.value) console.log(error.value)
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {
       shownTags.value.push(tags[i])
