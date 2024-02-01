@@ -31,7 +31,7 @@
       </span>
     </transition-scale>
     <AppOctantView v-if = "show && sparqlQuery" :sparql-query="sparqlQuery"/> 
-    {{ test2 }}
+    {{ sparqlQuery }}
     <pre>
       {{ test }}
     </pre>
@@ -50,7 +50,6 @@ const linkParams = {
   class: "text-teal-500"
 }
 
-const sparqlQuery = ref('')
 const exampleRequest = computed(() => 'https://query.wikidata.org/#' + encodeURIComponent(sparqlQuery.value))
 const timeBetweenTags = 50
 
@@ -62,12 +61,12 @@ const logos = [
 ]
 
 const req = ref()
-const test = ref('')
-const {data : test2} = await useFetch("https://dev-lab-one.vercel.app/sparql/request.txt")
+const {data : sparqlQuery} = await useFetch("https://dev-lab-one.vercel.app/sparql/request.txt")
+const {data : test} = await useFetch("/sparql/request.txt")
+
 onMounted(async () => {
   // sparqlQuery.value = (await useFetch("/sparql/request.txt")).data.value   
-  test.value = (await useFetch("https://dev-lab-one.vercel.app/sparql/request.txt")).data.value   
-  sparqlQuery.value = req.value.$el.innerText
+  // sparqlQuery.value = req.value.$el.innerText
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {
       shownTags.value.push(tags[i])

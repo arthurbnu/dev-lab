@@ -5,6 +5,8 @@ name: "sparql_humans"
 ---
 
 
+```sparql
+
 # Recherche de personnes ayant un article wikipedia en français
 # Remplacer "__replace__" par la valeur souhaitée ('léonard de vinci", 'albert einstein', 'louis xiv', 'dupont', ...)
 SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescription
@@ -70,3 +72,7 @@ SELECT distinct ?item ?itemLabel ?articleLabel ?itemDescription
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
     }
     GROUP BY ?item ?itemLabel ?articleLabel ?itemDescription
+
+
+
+```
