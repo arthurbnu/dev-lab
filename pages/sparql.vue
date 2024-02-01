@@ -1,5 +1,6 @@
 <template>
   <main class="min-h-screen">
+    <SparqlRequest ref = "req" class = "hidden"/>
       <h1 class="mb-1 text-center text-2xl flex flex-center q-x-gutter-md">
         <UAvatarGroup size="md" class="m-6">
           <UAvatar
@@ -12,11 +13,6 @@
         </UAvatarGroup>
         {{ title }}
       </h1>
-  
-      {{ error }}
-      <br>
-      {{ pending ? "chargement..." : "TERMINE"}}
-      {{ sparqlQuery }}
       <transition-fade :duration="500">
         <p class = "m-4 opacity-70 text-justify italic" v-if = "sparqlQuery">
             <!-- Les données de la  <a href="https://fr.wikipedia.org/wiki/SPARQL" v-bind="linkParams">requête sparql</a> -->
@@ -35,6 +31,10 @@
       </span>
     </transition-scale>
     <AppOctantView v-if = "show && sparqlQuery" :sparql-query="sparqlQuery"/> 
+    {{ test2 }}
+    <pre>
+      {{ test }}
+    </pre>
   </main>
 </template>
 
@@ -52,7 +52,7 @@ const linkParams = {
 
 const sparqlQuery = ref('')
 const exampleRequest = computed(() => 'https://query.wikidata.org/#' + encodeURIComponent(sparqlQuery.value))
-const timeBetweenTags = 50 
+const timeBetweenTags = 50
 
 const logos = [
   "https://logo.clearbit.com/wikidata.org",
@@ -60,33 +60,14 @@ const logos = [
   "https://logo.clearbit.com/wikipedia.org",
   // "https://logo.clearbit.com/vuejs.org",
 ]
-const error = ref(null)
-const pending = ref(true)
-onMounted(async () => {
-  // sparqlQuery.value = (await useFetch("/sparql/request.txt", {
-  //   responseType: "text",
-    
-  // })).data.value
-  // do the same but also get the error
-  try{
-    const {data, myError, myPending} = await useFetch("/sparql/request.txt", {
-      responseType: "text",
-    }).catch(e => {
-      console.log(e)
-    })
-    sparqlQuery.value = data.value
-    error.value = myError
-    pending.value = myPending
-  } catch (e) {
-    error.value = e
 
-  }
-  // const {data, myError} = await useFetch("/sparql/request2.txt", {
-  //   responseType: "text",
-  // })
-  // sparqlQuery.value = data.value
-  // error.value = myError
-  if (error.value) console.log(error.value)
+const req = ref()
+const test = ref('')
+const {data : test2} = await useFetch("https://dev-lab-one.vercel.app/sparql/request.txt")
+onMounted(async () => {
+  // sparqlQuery.value = (await useFetch("/sparql/request.txt")).data.value   
+  test.value = (await useFetch("https://dev-lab-one.vercel.app/sparql/request.txt")).data.value   
+  sparqlQuery.value = req.value.$el.innerText
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {
       shownTags.value.push(tags[i])
