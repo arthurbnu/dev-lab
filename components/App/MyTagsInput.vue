@@ -171,7 +171,7 @@ const tag = ref(''),
  exampleSearch = inject('exampleSearch'),
 
     autocompleteItems = ref([]),
-    actualUrl = ref(props.filterOptions ? props.url + props.filterOptions.find(it => it.default).url : props.url),
+    actualUrl = ref(props.url),
     actualPlaceHolder = ref(props.placeHolder),
     modelAutoComplete = ref(props.autoComplete),
     modelSelect = ref(props.filterOptions ? props.filterOptions.find(it => it.default).value : props.placeHolder),
@@ -185,7 +185,12 @@ const tag = ref(''),
     searchHistoryIndex = ref(0)
 
     // Fonctions ---------------------------------------------------------------------------------------------
-    
+
+
+watchEffect(() => {
+  actualUrl.value = props.url;
+});    
+
     onMounted(async() => {
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
         if (mainInput)
