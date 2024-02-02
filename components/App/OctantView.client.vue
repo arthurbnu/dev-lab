@@ -11,14 +11,10 @@
         <!-- @tags-update = "tagsUpdate" -->
         <!-- image="wikidata-query-service.png" -->
         <template v-slot:items-list> 
-            <!-- soit auto animate soit vue-transition group w-full  -->
             <ul v-auto-animate = "{duration : 400}" id = "my-items-list">
-            <!-- <ul  id = "my-items-list"> -->
-                <!-- <transition-scale group class = "w-full"> -->
-                    <li v-for = "item in tags.slice().reverse()" :key="item.id" class = "li_item"> <!-- reverse() peut se faire avec flex -->
-                        <CardItem :item = item  ref = "listItems"/>
-                    </li>
-                <!-- </transition-scale> -->
+                <li v-for = "item in tags.slice().reverse()" :key="item.id" class = "li_item">
+                    <CardItem :item = item  ref = "listItems"/>
+                </li>
             </ul>
         </template>
     </MyTagsInput>
@@ -51,12 +47,6 @@ const listItems = ref([]);
 const apiName = 'Recherche-Sparql-Wikidata'
 provide('tags '+ apiName, tags)
 
-// emitted - gestion flex row - 1, 2 ou 3 colonnes
-// const tagsUpdate = (newTags) => {
-//     // let suffix = newTags.length > 2 ? '3' : newTags.length
-//     // rowClass.value = defaultClass + '-' + suffix
-// }
-
 const handleFullScreen = (action) => {
     let componentFullScreen = listItems.value.find(item => item.fullscreen)
     if (! componentFullScreen) return
@@ -77,8 +67,6 @@ let defaultImage = 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymou
 
 const handleOctant = (response) => {
     handleApiError(response);
-    console.log(response)
-    console.log(response.results)
     console.log(response.results.bindings)
     return response.results.bindings.map(a => 
     {       

@@ -1,17 +1,15 @@
 
 <template>  
-    <div class = "template col-6 q-pa-md text-center" 
+    <div class = "template col-6 text-center" 
     @contextmenu = "handleRightClick"
     :class = "{'template_loading' : loading, 'invalidInput' : invalidInput}" 
     ref = "currentTemplate" 
     @click = "handleTemplateClick">
     <span class = "row inline items-center">
-        <!-- <img v-if = "image" class = "my-api-img" :alt="api"> -->
         <img v-if = "image" class = "my-api-img" :src="image" :alt="api">
         <!-- <h5 class="title q-ma-xs q-pa-xs q-pb-sm">
             {{ api }}         
         </h5> -->
-
         <q-radio v-for = "option in filterOptions" 
             size="xs" 
             v-model="modelSelect" 
@@ -79,6 +77,9 @@
         >
             {{ fetchError.message }}
         </div>
+        <div v-else-if = "autocompleteItems.length" class = "text-primary q-ma-md no_select">
+            {{autocompleteItems.length}} résultat(s) trouvé(s)
+        </div>
         <div  class="config q-pt-md">
            <p class = "hidden">{{ url }} | {{ actualPlaceHolder }}</p>
         </div>
@@ -93,11 +94,8 @@ import { ref, watch, onMounted, inject, computed} from 'vue';
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 import VueTagsInput from "@sipec/vue3-tags-input";
 
-// import { useRoute } from 'vue-router';
-// import router from '@/router';
-// const route = useRoute();
+const toast = useToast()
 
-// props
 const props = defineProps({
     api: String,
     image: String,
@@ -170,6 +168,8 @@ let mainInput = null,
 const tag = ref(''),
 
     tags = inject('tags ' + props.api),
+ exampleSearch = inject('exampleSearch'),
+
     autocompleteItems = ref([]),
     actualUrl = ref(props.filterOptions ? props.url + props.filterOptions.find(it => it.default).url : props.url),
     actualPlaceHolder = ref(props.placeHolder),
@@ -232,26 +232,15 @@ const tag = ref(''),
 
     const lastRequestUrl = computed(() => {
         let searchVal = tag.value
-        let exactSearch = modelAutoComplete.value ? '&auto_complete=1' : '';    // use js native query string lib INSTEAD
         let startUrl =  props.replaceSearchInUrl ?
                         actualUrl.value.replace(props.replaceSearchInUrl, encodeURIComponent(searchVal)) : 
                         actualUrl.value + encodeURIComponent(searchVal);
 
         if (! props.filterOptions) 
-            return startUrl + props.endUrl + exactSearch;
-        // let formatFunction = props.filterOptions.find(it => it.value === modelSelect.value).function;
-        // if ( ! searchVal.includes('@')) // Recherche par nom d'utilisateur
-        //     switch (formatFunction){
-        //         case 'syncDec' :
-        //             searchVal = syncDec(searchVal);
-        //             break;
-        //         case 'syncHex' :
-        //             searchVal = syncHex(searchVal);
-        //             break;
-        //     }
-
-        return startUrl + props.endUrl + exactSearch;
+            return startUrl + props.endUrl;
+        return startUrl + props.endUrl;
     });
+
     
     // validation de l'input si validateInput définie, à chaque modif de tag.value ou modelSelect.value
     const invalidInput = computed(() => ! props.validateInput(tag.value, modelSelect.value))
@@ -357,10 +346,6 @@ const tag = ref(''),
             // Annulation de la requête précédente
             fetchController.abort()
             fetchController = new AbortController()
-
-
-// {signal : axiosController.signal, headers : header
-
             $fetch(currentRequestUrl, { signal : fetchController.signal, headers : {'Accept' : 'application/json'}}).then(response => {
                 myLog(response);
                 autocompleteItems.value = props.handleResponse(response)
@@ -452,7 +437,7 @@ const tag = ref(''),
     }
     
     
-    let userSearchedFromParam = false;      // Utile juste une fois au chargement de la page quand le token MSAL est reçu.
+    let userSearchedFromParam = false;      // Utile juste une fois au chargement de la page quand le token MSAL est reçu. 
     const loadUsersFromUrl = () => {
         if (userSearchedFromParam || ! route.params.user || ! result.value ) return
         tag.value= '@' + route.params.user.split(separatorUsersUrl).pop()   // pour le moment, on ne prend que le dernier user de la liste
@@ -465,8 +450,15 @@ const tag = ref(''),
     watch(tag, initItems);
     watch(modelAutoComplete, handleAutoComplete);
     watch(modelSelect, handleSelectOptions);
-    // watch(actionTracker, handleReceivedAction);
-    // watch(result, loadUsersFromUrl);
+
+
+    // gestion exemple de recherche transmis par le parent
+    watch(exampleSearch, () =>{
+        if (! exampleSearch.value) return
+        tag.value = exampleSearch.value
+        // toast.add({title : "Recherche d'exemple", message : "Recherche de " + tag.value, type : 'positive'})
+    });
+    watch(tag, () => exampleSearch.value = '');
 
 </script>
 

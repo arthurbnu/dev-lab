@@ -7,6 +7,9 @@
   </UContainer>
   <div class="h-32"></div>
   <AppFooter />
+  
+  <UNotifications />
+
 </template>
 
 <style>

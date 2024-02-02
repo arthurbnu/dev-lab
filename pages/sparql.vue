@@ -1,49 +1,79 @@
 <template>
   <main class="min-h-screen">
-    <SparqlRequest ref = "req" class = "hidden"/>
-      <h1 class="mb-1 text-center text-2xl flex flex-center q-x-gutter-md">
-        <UAvatarGroup size="md" class="m-6">
-          <UAvatar
-            v-for="(logo, id) in logos"
-            :key="id"
-            :src="logo"
-            :alt="logo"
-            class=""
-          />
-        </UAvatarGroup>
-        {{ title }}
-      </h1>
-      <transition-fade :duration="500">
-        <p class = "m-4 opacity-70 text-justify italic" v-if = "sparqlQuery">
-            <!-- Les données de la  <a href="https://fr.wikipedia.org/wiki/SPARQL" v-bind="linkParams">requête sparql</a> -->
-            Les données de la <a :href = "exampleRequest" v-bind="linkParams">requête sparql</a>
-              (personnes célèbres ayant une page wikipedia en français)
-            sont issues de <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page" v-bind="linkParams" >wikidata</a>, 
-            puis complétées par <a href="https://fr.dbpedia.org/" v-bind="linkParams">dbpedia</a> (images) 
-            et <a href="https://fr.wikipedia.org/" v-bind="linkParams">wikipedia</a> (infobox).
-        </p>
-      </transition-fade>
-    <!-- </AppHeader> -->
-      <transition-scale group tag = "div" class = "space-y-4 text-center" :delay="200">
-        <span v-for="(tag, id) in shownTags" :key="id"  
-        class = "bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950" >
+    <h1 class="mb-1 text-center text-2xl flex flex-center q-x-gutter-md">
+      <UAvatarGroup size="lg" class="m-6">
+        <UAvatar v-for="(logo, id) in logos" :key="id" :src="logo" :alt="logo" img-class="border-2 border-teal-700 border-solid transition-all hover:scale-125" />
+      </UAvatarGroup>
+      {{ title }}
+    </h1>
+    <transition-fade :duration="500">
+      <p class="m-4 opacity-70 text-justify italic" v-if="sparqlQuery">
+        <!-- Les données de la  <a href="https://fr.wikipedia.org/wiki/SPARQL" v-bind="linkParams">requête sparql</a> -->
+        Les données de la <a :href="exampleRequest" v-bind="linkParams">requête sparql</a>
+        (personnes célèbres ayant une page wikipedia en français)
+        sont issues de <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page" v-bind="linkParams">wikidata</a>,
+        puis complétées par <a href="https://fr.dbpedia.org/" v-bind="linkParams">dbpedia</a> (images)
+        et <a href="https://fr.wikipedia.org/" v-bind="linkParams">wikipedia</a> (infobox).
+      </p>
+    </transition-fade>
+    <transition-scale group tag="div" class="space-y-4 text-center" :delay="200">
+      <span v-for="(tag, id) in shownTags" :key="id"
+        class="bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
         {{ tag }}
       </span>
     </transition-scale>
-    <AppOctantView v-if = "show && sparqlQuery" :sparql-query="sparqlQuery"/> 
-    {{ sparqlQuery }}
-    <pre>
-      {{ test }}
-    </pre>
+
+    <div class = "ma-auto flex items-center justify-center m-4">
+      <UButton @click = "changeQuery">
+        Essayer la requête 2
+      </UButton>
+    </div>
+ 
+    <div class="flex flex-center space-x-4 mt-5">
+      <span class = "p-4 text-grey">
+        Essayer un exemple : 
+      </span> 
+      <span v-for="example in examples">
+        <span @click = "exampleSearch = example" class = "hover:text-teal-700 text-neutral rounded-sm cursor-pointer select-none">
+          {{ example }} 
+        </span>
+      </span>
+    </div>
+
+    <AppOctantView v-if="show && sparqlQuery" :sparql-query="sparqlQuery" />
+
+    <div class="">
+      <ContentList path="/sparql" v-slot="{ list }">
+        <ContentQuery v-for="item in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
+          <ContentRenderer :value="data" >
+            <code ref = "spql" class="hidden">{{data.body.children[0].props.code}}</code>
+            <ContentRendererMarkdown :value="data" class="max-w-full overflow-x-scroll bg-slate-900/30 px-5 pb-7" ref="md" />
+          </ContentRenderer>
+        </ContentQuery>
+      </ContentList>
+    </div>
   </main>
 </template>
 
-<script setup> 
-import { onMounted } from 'vue'
+<script setup>
+import { onMounted, watchEffect } from 'vue'
+const toast = useToast()
+const exampleSearch = ref('')
+provide('exampleSearch', exampleSearch)
+
+const examples = [
+  'Charles',
+  'de Vinci',
+  'Louis XIV',
+  'Marie Curie',
+  'Dupont',
+]
 
 const show = ref(false)
-const title  = "Recherche wikidata avec sparql";
+const title = "Recherche wikidata avec sparql";
 const description = "Exemple d'interrogation de la base Wikidata à l'aide du langage sparql";
+const md = ref()
+const spql = ref()
 
 const linkParams = {
   target: "_blank",
@@ -57,16 +87,26 @@ const logos = [
   "https://logo.clearbit.com/wikidata.org",
   "https://logo.clearbit.com/dbpedia.org",
   "https://logo.clearbit.com/wikipedia.org",
-  // "https://logo.clearbit.com/vuejs.org",
 ]
 
-const req = ref()
-const {data : sparqlQuery} = await useFetch("https://dev-lab-one.vercel.app/sparql/request.txt")
-const {data : test} = await useFetch("/sparql/request.txt")
+// const requestUrl = "https://dev-lab-one.vercel.app/sparql/request.txt2"
+// const { data: sparqlQuery, error: fetchError, pending: pending } = await useFetch(requestUrl)
 
-onMounted(async () => {
-  // sparqlQuery.value = (await useFetch("/sparql/request.txt")).data.value   
-  // sparqlQuery.value = req.value.$el.innerText
+const sparqlQuery = ref('')
+watchEffect(() => {
+  if (spql.value) {
+    sparqlQuery.value = spql.value[0].innerText.trim()
+    console.log('md renderer : ', md.value)
+  }
+})
+
+const changeQuery = () => {
+  sparqlQuery.value = spql.value[1].innerText.trim()
+  console.log('spql : ', sparqlQuery.value)
+
+}
+
+onMounted(() => {
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {
       shownTags.value.push(tags[i])
@@ -76,6 +116,8 @@ onMounted(async () => {
     show.value = true
   }, timeBetweenTags * tags.length);
 })
+
+
 
 useSeoMeta({
   title: title,
@@ -93,7 +135,7 @@ useSeoMeta({
 const tags = ['sparql',
   "wikipedia",
   "dbpedia",
-  "wikidata", 
+  "wikidata",
   "rdf",
   "api",
   "vuejs",
