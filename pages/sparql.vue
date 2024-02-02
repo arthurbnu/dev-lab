@@ -23,13 +23,18 @@
       </span>
     </transition-scale>
 
-    <div class = "ma-auto flex items-center justify-center m-4">
-      <UButton @click = "changeQuery">
-        Essayer la requête 2
-      </UButton>
+    <div class = "ma-auto flex items-center justify-center mt-4">
+      <span class = "p-4 text-grey">
+        Choix de la requête : 
+      </span> 
+      <span v-for="(title, id) in titles"
+        @click="changeRequest(title)"
+      class = "hover:text-teal-700 text-neutral rounded-sm cursor-pointer select-none m-3"
+      :class="{'bg-teal-700 text-white' : indexRequest === id}"
+      >{{ title }}</span>
     </div>
  
-    <div class="flex flex-center space-x-4 mt-5">
+    <div class="flex flex-center space-x-4 mt-3">
       <span class = "p-4 text-grey">
         Essayer un exemple : 
       </span> 
@@ -44,10 +49,12 @@
 
     <div class="">
       <ContentList path="/sparql" v-slot="{ list }">
-        <ContentQuery v-for="item in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
+        <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
           <ContentRenderer :value="data" >
-            <code ref = "spql" class="hidden">{{data.body.children[0].props.code}}</code>
-            <ContentRendererMarkdown :value="data" class="max-w-full overflow-x-scroll bg-slate-900/30 px-5 pb-7" ref="md" />
+            <code ref = "spql" class="hidden" :data-title="item.title">{{data.body.children[0].props.code}}</code>
+            <ContentRendererMarkdown :value="data" class="max-w-full overflow-x-scroll bg-slate-900/30 px-5 pb-7" ref="md"
+            :class="{'hidden' : indexRequest !== id}"
+            />
           </ContentRenderer>
         </ContentQuery>
       </ContentList>
@@ -93,12 +100,26 @@ const logos = [
 // const { data: sparqlQuery, error: fetchError, pending: pending } = await useFetch(requestUrl)
 
 const sparqlQuery = ref('')
+const indexRequest = ref(0)
+const titles = ref([])
 watchEffect(() => {
   if (spql.value) {
     sparqlQuery.value = spql.value[0].innerText.trim()
-    console.log('md renderer : ', md.value)
+    titles.value = spql.value.map(item => item.getAttribute('data-title'))
+    console.log("titles : ", titles.value)
+    // console.log('md renderer : ', md.value)
   }
 })
+
+const changeRequest = (title) => {
+  const indexInTitles = titles.value.indexOf(title)
+  if (indexInTitles !== -1) {
+    indexRequest.value = indexInTitles
+    sparqlQuery.value = spql.value[indexInTitles].innerText.trim()
+  } 
+  console.log('spql : ', sparqlQuery.value)
+
+}
 
 const changeQuery = () => {
   sparqlQuery.value = spql.value[1].innerText.trim()
