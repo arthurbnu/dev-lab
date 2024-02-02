@@ -89,7 +89,7 @@
 </template>
   
 <script setup>
-import { ref, watch, onMounted, inject, computed} from 'vue';
+import { ref, watch, onMounted, inject, computed, watchEffect} from 'vue';
 
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 import VueTagsInput from "@sipec/vue3-tags-input";
