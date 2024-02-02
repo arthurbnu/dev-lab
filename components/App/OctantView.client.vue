@@ -1,7 +1,7 @@
 <template>
     <MyTagsInput
         :api = "apiName"
-        :url = "'https://query.wikidata.org/sparql?query=' + encodeURIComponent(sparqlQuery)" 
+        :url = "'https://query.wikidata.org/sparql?query=' + encodeURIComponent(refQuery)" 
         replace-search-in-url="__REPLACE__"
         :displayUserItems="false"
         placeHolder="Rechercher une personne sur wikipedia"
@@ -22,7 +22,7 @@
 
 <script setup>
 
-import {ref, provide} from 'vue'
+import {ref, provide, watchEffect} from 'vue'
 import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
@@ -44,8 +44,14 @@ const props = defineProps({
 // refs
 const tags = ref([])
 const listItems = ref([]);
+const refQuery = ref('')
 const apiName = 'Recherche-Sparql-Wikidata'
 provide('tags '+ apiName, tags)
+
+
+watchEffect(() => {
+  refQuery.value = props.sparqlQuery;
+});
 
 const handleFullScreen = (action) => {
     let componentFullScreen = listItems.value.find(item => item.fullscreen)
