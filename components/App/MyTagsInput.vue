@@ -189,12 +189,11 @@ const tag = ref(''),
 
 watchEffect(() => {
   actualUrl.value = props.url;
+  search()
 });    
 
     onMounted(async() => {
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
-        if (mainInput)
-            mainInput.setAttribute('tabIndex', props.tIndex);
         lastChoiceAutocomplete = props.autoComplete;
     });
 
@@ -236,7 +235,7 @@ watchEffect(() => {
     }
 
     const lastRequestUrl = computed(() => {
-        let searchVal = tag.value
+        let searchVal = tag.value.trim()
         let startUrl =  props.replaceSearchInUrl ?
                         actualUrl.value.replace(props.replaceSearchInUrl, encodeURIComponent(searchVal)) : 
                         actualUrl.value + encodeURIComponent(searchVal);
