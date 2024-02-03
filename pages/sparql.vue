@@ -2,7 +2,8 @@
   <main class="min-h-screen">
     <h1 class="mb-1 text-center text-2xl flex flex-center q-x-gutter-md">
       <UAvatarGroup size="lg" class="m-6">
-        <UAvatar v-for="(logo, id) in logos" :key="id" :src="logo" :alt="logo" img-class="border-2 border-teal-700 border-solid transition-all hover:scale-125" />
+        <UAvatar v-for="(logo, id) in logos" :key="id" :src="logo" :alt="logo" 
+          img-class="border-2 border-teal-700 border-solid transition-all hover:scale-125" />
       </UAvatarGroup>
       {{ title }}
     </h1>
@@ -27,10 +28,10 @@
       <span class = "p-4 text-grey">
         Choix de la requête : 
       </span> 
-      <span v-for="(title, id) in titles"
-        @click="changeRequest(title)"
-      class = "hover:text-teal-700 text-neutral rounded-sm cursor-pointer select-none m-3"
-      :class="{'bg-teal-700 text-white' : indexRequest === id}"
+      <span v-for="(title, id) in requestTitles"
+        @click="indexRequest = id"
+        class = "hover:text-teal-700 text-neutral rounded-sm cursor-pointer select-none m-3"
+        :class="{'bg-teal-700 text-white' : indexRequest === id}"
       >{{ title }}</span>
     </div>
  
@@ -47,13 +48,14 @@
 
     <AppOctantView v-if="show && sparqlQuery" :sparql-query="sparqlQuery" />
 
-    <div class="">
+    <div class="">  
       <ContentList path="/sparql" v-slot="{ list }">
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
           <ContentRenderer :value="data" >
             <code ref = "spql" class="hidden" :data-title="item.title">{{data.body.children[0].props.code}}</code>
-            <ContentRendererMarkdown :value="data" class="max-w-full overflow-x-scroll bg-slate-900/30 px-5 pb-7" ref="md"
-            :class="{'hidden' : indexRequest !== id}"
+            <ContentRendererMarkdown :value="data" ref="md"
+              class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7" 
+              :class="{'hidden' : indexRequest !== id}"
             />
           </ContentRenderer>
         </ContentQuery>
@@ -101,31 +103,23 @@ const logos = [
 
 const sparqlQuery = ref('')
 const indexRequest = ref(0)
-const titles = ref([])
+const requestTitles = ref([])
 watchEffect(() => {
   if (spql.value) {
-    sparqlQuery.value = spql.value[0].innerText.trim()
-    titles.value = spql.value.map(item => item.getAttribute('data-title'))
-    console.log("titles : ", titles.value)
-    // console.log('md renderer : ', md.value)
+    requestTitles.value = spql.value.map(item => item.dataset.title)
+    sparqlQuery.value = spql.value[indexRequest.value].innerText.trim()
+    console.log("requestTitles : ", requestTitles.value)
+    console.log('md renderer : ', md.value)
   }
 })
 
-const changeRequest = (title) => {
-  const indexInTitles = titles.value.indexOf(title)
-  if (indexInTitles !== -1) {
-    indexRequest.value = indexInTitles
-    sparqlQuery.value = spql.value[indexInTitles].innerText.trim()
-  } 
-  console.log('spql : ', sparqlQuery.value)
-
-}
-
-const changeQuery = () => {
-  sparqlQuery.value = spql.value[1].innerText.trim()
-  console.log('spql : ', sparqlQuery.value)
-
-}
+// const changeRequest = (title) => {
+//   const indexInTitles = requestTitles.value.indexOf(title)
+//   if (indexInTitles !== -1) {
+//     indexRequest.value = indexInTitles
+//     sparqlQuery.value = spql.value[indexInTitles].innerText.trim()
+//   } 
+// }
 
 onMounted(() => {
   for (let i = 0; i < tags.length; i++) {
@@ -137,8 +131,6 @@ onMounted(() => {
     show.value = true
   }, timeBetweenTags * tags.length);
 })
-
-
 
 useSeoMeta({
   title: title,
