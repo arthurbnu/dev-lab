@@ -71,6 +71,7 @@ const handleFullScreen = (action) => {
 
 let defaultImage = 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymous_emblem.svg'
 
+const maxLength = 35
 const handleOctant = (response) => {
     handleApiError(response);
     console.log(response.results.bindings)
@@ -89,7 +90,7 @@ const handleOctant = (response) => {
     });
 }
 
-const shorten = (text, maxLength = 30) => text.length > maxLength ? text.substr(0, maxLength) + '...' : text;
+const shorten = (text) => text.length > maxLength ? text.substr(0, maxLength) + '...' : text;
 
 const safeValue = (item, property, defaultValue = '') => property in item ? item[property].value : defaultValue;
 
