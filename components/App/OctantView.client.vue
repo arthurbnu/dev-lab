@@ -48,10 +48,7 @@ const refQuery = ref('')
 const apiName = 'Recherche-Sparql-Wikidata'
 provide('tags '+ apiName, tags)
 
-
-watchEffect(() => {
-  refQuery.value = props.sparqlQuery;
-});
+watchEffect(() => refQuery.value = props.sparqlQuery)
 
 const handleFullScreen = (action) => {
     let componentFullScreen = listItems.value.find(item => item.fullscreen)
@@ -71,7 +68,7 @@ const handleFullScreen = (action) => {
 
 let defaultImage = 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymous_emblem.svg'
 
-const maxLength = 35
+const maxLength = 30
 const handleOctant = (response) => {
     handleApiError(response);
     console.log(response.results.bindings)
