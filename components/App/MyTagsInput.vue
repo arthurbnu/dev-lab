@@ -187,10 +187,16 @@ const tag = ref(''),
     // Fonctions ---------------------------------------------------------------------------------------------
 
 
-watchEffect(() => {
-  actualUrl.value = props.url;
-  search()
-});    
+// watchEffect(() => {
+//   actualUrl.value = props.url;
+//   search()
+// });    
+
+// watch props url
+watch(() => props.url, () => {
+    actualUrl.value = props.url;
+    search()
+});
 
     onMounted(async() => {
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
