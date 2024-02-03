@@ -7,9 +7,6 @@
     @click = "handleTemplateClick">
     <span class = "row inline items-center">
         <img v-if = "image" class = "my-api-img" :src="image" :alt="api">
-        <!-- <h5 class="title q-ma-xs q-pa-xs q-pb-sm">
-            {{ api }}         
-        </h5> -->
         <q-radio v-for = "option in filterOptions" 
             size="xs" 
             v-model="modelSelect" 
@@ -89,7 +86,7 @@
 </template>
   
 <script setup>
-import { ref, watch, onMounted, inject, computed, watchEffect} from 'vue';
+import { ref, watch, onMounted, inject, computed} from 'vue';
 
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 import VueTagsInput from "@sipec/vue3-tags-input";
@@ -158,17 +155,14 @@ let mainInput = null,
     classBtnDeleteCardUser = 'my-btn-close',
     debounce = null;
 
-    // true si env de production
     // const envProd = inject('envProd');
     const myLog = console.log
-
-    // const getImageUrl = (image) => require('@/assets/' + image)
     const disableAutoComplete = ref (false);
 
 const tag = ref(''),
 
     tags = inject('tags ' + props.api),
- exampleSearch = inject('exampleSearch'),
+    exampleSearch = inject('exampleSearch'),    // exemple de recherche transmis par le parent
 
     autocompleteItems = ref([]),
     actualUrl = ref(props.url),
@@ -184,19 +178,13 @@ const tag = ref(''),
     searchHistory = ref([]),
     searchHistoryIndex = ref(0)
 
-    // Fonctions ---------------------------------------------------------------------------------------------
+    // Fonctions --------------------------------------------------------------------------------------------- 
 
-
-// watchEffect(() => {
-//   actualUrl.value = props.url;
-//   search()
-// });    
-
-// watch props url
-watch(() => props.url, () => {
-    actualUrl.value = props.url;
-    search()
-});
+    // modif depuis le parent
+    watch(() => props.url, () => {
+        actualUrl.value = props.url;
+        search()
+    });
 
     onMounted(async() => {
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
