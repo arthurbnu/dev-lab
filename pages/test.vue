@@ -9,8 +9,6 @@
 </template>
 
 <script setup lang = "ts">
-import { NuxtImg } from '#build/components';
-
 
 const title = "L'IPNI selon l'Intelligence Artificielle";
 const description = "Tout est dans le désordre.. Essaye de remettre chaque image au dessus du bon prénom !";
