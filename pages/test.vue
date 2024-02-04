@@ -48,40 +48,40 @@ const values =
             }
           ]
         },
+        // {
+        //   "binding": [
+        //     {
+        //       "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Giorgione%20-%20Il%20Tramonto%20%281506-1510%29.jpg"
+        //     },
+        //     {
+        //       "literal": "Giorgione"
+        //     }
+        //   ]
+        // },
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Giorgione%20-%20Il%20Tramonto%20%281506-1510%29.jpg"
-            },
-            {
-              "literal": "Giorgione"
-            }
-          ]
-        },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Antonello%20da%20Messina%20-%20Portrait%20of%20a%20Man%20-%20National%20Gallery%20London.jpg"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Antonello%20da%20Messina%20-%20Portrait%20of%20a%20Man%20-%20National%20Gallery%20London.jpg"
             },
             {
               "literal": "Antonello da Messina"
             }
           ]
         },
+        // {
+        //   "binding": [
+        //     {
+        //       "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Titian%20-%20The%20Appeal%20-%2026.107%20-%20Detroit%20Institute%20of%20Arts.jpg"
+        //     },
+        //     {
+        //       "literal": "Giorgione | Titian | Sebastiano del Piombo"
+        //     }
+        //   ]
+        // },
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Titian%20-%20The%20Appeal%20-%2026.107%20-%20Detroit%20Institute%20of%20Arts.jpg"
-            },
-            {
-              "literal": "Giorgione | Titian | Sebastiano del Piombo"
-            }
-          ]
-        },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Giorgione%20063.jpg"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Giorgione%20063.jpg"
             },
             {
               "literal": "Giorgione"
@@ -91,7 +91,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Sandro%20Botticelli%2C%20The%20Last%20Communion%20of%20Saint%20Jerome.png"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Sandro%20Botticelli%2C%20The%20Last%20Communion%20of%20Saint%20Jerome.png"
             },
             {
               "literal": "Sandro Botticelli"
@@ -101,7 +101,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Tiziano%2C%20stimmate%20di%20san%20francesco%2C%20trapani.jpg"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Tiziano%2C%20stimmate%20di%20san%20francesco%2C%20trapani.jpg"
             },
             {
               "literal": "Titian"
@@ -111,7 +111,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/La-belle-jardiniere.jpg"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/La-belle-jardiniere.jpg"
             },
             {
               "literal": "Raphael"
@@ -121,7 +121,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Pietro%20Perugino%20cat55.jpg"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Pietro%20Perugino%20cat55.jpg"
             },
             {
               "literal": "Pietro Perugino"
