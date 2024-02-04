@@ -1,6 +1,6 @@
 
 <template>
-  <div class="min-h-screen transition-all duration-700" :class="{ 'opacity-0': !ready }">
+  <div class="transition-all duration-700" :class="{ 'opacity-0': !ready }">
     <transition-expand :delay = "300" :duration="600" :easing=" 'cubic-bezier(0.6, 0, 0.4, 2)'">
       <p v-if = "orientationError" class = "text-center text-lg text-teal-600 transition-all">    
         <Icon name = "heroicons:arrow-path-rounded-square" 
@@ -60,21 +60,6 @@ import { VueDraggableNext } from 'vue-draggable-next'
 
 const screenOrientation = useScreenOrientation()
 const acceptedOrientation:OrientationType[] = ['landscape-primary', 'landscape-secondary']
-
-// const title = "L'IPNI selon l'Intelligence Artificielle";
-// const description = "Tout est dans le désordre.. Essaye de remettre chaque image au dessus du bon prénom !";
-
-// useSeoMeta({
-//   title: title,
-//   description,
-//   author: "A B",
-//   ogImage: "https://dev-lab-one.vercel.app/quizz/quizz-ipni.png",
-//   ogUrl: "https://dev-lab-one.vercel.app/quizz",
-//   ogType: "website",
-//   ogTitle: title,
-//   ogDescription: description,
-//   themeColor: "teal",
-// });
 
 const ready = ref(false)
 const youWin = computed(() => pictures.value.every(picture => picture.found))
