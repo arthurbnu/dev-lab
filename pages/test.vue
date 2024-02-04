@@ -31,7 +31,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Piero%2C%20arezzo%2C%20Discovery%20and%20Proof%20of%20the%20True%20Cross%2001.jpg"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Piero%2C_arezzo%2C_Discovery_and_Proof_of_the_True_Cross_01.jpg"
             },
             {
               "literal": "Piero della Francesca"
@@ -41,7 +41,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Angelico%2C%20niccolina%2004.jpg"
+              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Angelico%2C_niccolina_04.jpg"
             },
             {
               "literal": "Fra Angelico"
