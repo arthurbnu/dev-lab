@@ -24,16 +24,16 @@ useSeoMeta({
 });
 
 const picsInit = [
-  { src: 'art1.png', answer: 'Arthur', found: false },
-  { src: 'art2.png', answer: 'Christophe', found: false },
-  { src: 'art3.png', answer: 'Madeleine', found: false },
-  { src: 'art4.png', answer: 'Ferdi', found: false },
-  { src: 'art5.png', answer: 'Elisa', found: false },
-  { src: 'art6.png', answer: 'Kevin', found: false },
-  { src: 'art7.png', answer: 'Maël', found: false },
-  { src: 'art8.png', answer: 'François', found: false },
-  { src: 'art9.png', answer: 'Jimmy', found: false },
-  { src: 'art10.png', answer: 'Mathilde', found: false },
+  { src: 'art1.png', answer: 'Arthur'},
+  { src: 'art2.png', answer: 'Christophe'},
+  { src: 'art3.png', answer: 'Madeleine'},
+  { src: 'art4.png', answer: 'Ferdi'},
+  { src: 'art5.png', answer: 'Elisa'},
+  { src: 'art6.png', answer: 'Kevin'},
+  { src: 'art7.png', answer: 'Maël'},
+  { src: 'art8.png', answer: 'François'},
+  { src: 'art9.png', answer: 'Jimmy'},
+  { src: 'art10.png', answer: 'Mathilde'},
 ]
 
 </script>

@@ -100,12 +100,11 @@ const handleEnd = (e: any) => {
 }
 
 const props = defineProps<{
-  picsInit: { src: string; answer: string; found: boolean }[],
+  picsInit: { src: string; answer: string; }[]
 }>()
 
-const pictures = ref(props.picsInit)
-const answersInit = props.picsInit.map(picture => picture.answer)
-const answers = ref(answersInit)
+const pictures = ref(props.picsInit.map(picture => ({ ...picture, found: false })))
+const answers = ref(props.picsInit.map(picture => picture.answer))
 
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
