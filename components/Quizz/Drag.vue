@@ -16,7 +16,7 @@
             🥇
           </span>
           <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="transition-all duration-700">
-            <NuxtImg :src="'quizz/' + picture.src" :alt ="'inconnu ' + picture.src"
+            <NuxtImg :src="picture.src" :alt ="'inconnu ' + picture.src"
             :class="{ 'my-error': lastError.picture === picture.src }"
             class="cursor-move hover:opacity-90 transition-all border-4 border-solid" />
           </UChip>
