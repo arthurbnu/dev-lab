@@ -56,8 +56,10 @@ const { data: items, error: error, pedning: pending } = await useFetch(baseUrl +
 const pics = ref([]) as any
 
 watchEffect(() => {
-  console.log('items : ', items.data)
-  pics.value = items.data.results.bindings.map((item: any) => {
+  console.log('items : ', items.value)
+  console.log('items : ', items.value.results)
+  console.log('items : ', items.value.results.bindings[0])
+  pics.value = items.value.results.bindings.map((item: any) => {
     console.log('item : ', item)
     return {
       src: item.image.value,
