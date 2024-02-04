@@ -46,7 +46,7 @@ SELECT ?peintureLabel ?mouvementLabel ?peinture
 }
 GROUP BY ?peintureLabel ?mouvementLabel ?peinture
 ORDER BY ?random
-# LIMIT 10
+LIMIT 10
 `;
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
