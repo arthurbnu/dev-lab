@@ -3,8 +3,6 @@
   <main class="min-h-screen">
     <AppHeader class="mb-5 text-center" :title="title" :description="description" />
     <QuizzDrag :picsInit="picsInit" />
-    <img :src="picsInit[7].src" alt="">
-    <NuxtImg :src="picsInit[7].src" alt=""/>
   </main>
 </template>
 
