@@ -72,7 +72,9 @@
         >
             {{ fetchError.message }}
         </div>
-        <div v-else-if = "autocompleteItems.length" class = "text-primary q-ma-md no_select">
+        <div v-else-if = "autocompleteItems.length" 
+            @click="mainInput?.focus()"
+            class = "text-primary q-ma-md no_select cursor-pointer p-3 hover:bg-slate-500/40 transition-all">
             {{autocompleteItems.length}} résultat(s) trouvé(s)
         </div>
         <div  class="config q-pt-md">
@@ -296,23 +298,23 @@ const tag = ref(''),
     const initItems = () => {
         if (mustResetSearch.value) return resetValues()
         fetchError.value = defaultError;
-        scrollTop()
+        // scrollTop()
         loading.value = true;
         handleApi(lastRequestUrl.value);
     }
 
     // Remonte jusqu'à la barre de recherche si trop éloigné
-    let destinationScrollPosition = 0;
-    const scrollTop = () => {
-        if (typeof window === 'undefined') return
+    // let destinationScrollPosition = 0;
+    // const scrollTop = () => {
+    //     if (typeof window === 'undefined') return
 
-        let distance = Math.abs(window.scrollY - destinationScrollPosition);
-        if (distance > 150) {
-            currentTemplate.value.scrollIntoView();             // nécessaire pour le scroll smooth qui suit
-            window.scrollBy({top : - 80, behavior : 'smooth'})
-            destinationScrollPosition = window.scrollY;
-        }    
-    }
+    //     let distance = Math.abs(window.scrollY - destinationScrollPosition);
+    //     if (distance > 150) {
+    //         currentTemplate.value.scrollIntoView();             // nécessaire pour le scroll smooth qui suit
+    //         window.scrollBy({top : - 80, behavior : 'smooth'})
+    //         destinationScrollPosition = window.scrollY;
+    //     }    
+    // }
 
     const noResultMessage = computed(() => {
         const criteriaIsUnknown = tag.value.includes('@') || ! selectedSearchOption.value       // @ => peut être une recherche par nom d'utilisateur
