@@ -51,7 +51,7 @@ ORDER BY ?random
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
-const { data: items, error: error, pedning: pending } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery))
+const { data: items, error: error, pending: pending } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery))
 
 const pics = ref([]) as any
 
