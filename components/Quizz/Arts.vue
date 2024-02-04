@@ -2,14 +2,9 @@
 <template>
   <section>
     <div class="flex flex-col items-center space-y-4">
-      <h1 class="text-3xl font-bold">Quizz</h1>
-      <p class="text-lg">Trouvez l'auteur de chaque oeuvre</p>
-    </div>
-    <div class="flex flex-col items-center space-y-4">
       <p class="text-lg">Chaque oeuvre est associée à un auteur</p>
       <p class="text-lg">Faites glisser chaque oeuvre vers son auteur</p>
     </div>
-    <!-- show error if ther is one -->
     <div v-if="error" class="text-red-500">{{ error }}</div>
     <QuizzDrag :picsInit="pics"/>
   </section>
@@ -51,7 +46,8 @@ LIMIT 10
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
-const { data: items, error: error, pending: pending } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery))
+const headers = { 'Accept': 'application/sparql-results+json' };
+const { data: items, error: error, pending: pending } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: headers });
 
 const pics = ref([]) as any
 

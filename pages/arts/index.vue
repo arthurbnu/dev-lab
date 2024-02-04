@@ -1,6 +1,6 @@
 <template>
     <main class="min-h-screen">
-        <AppHeader class="mb-6" title="Arts visuels" :description="description" />
+        <AppHeader class="mb-6" :title="title" :description="description" />
         <div class="space-y-4">
             <QuizzArts/>
         </div>
@@ -9,10 +9,11 @@
 
 <script setup>
 
-const description =  " ... Jeu sparql avec des peintures disponiles sur wikidata";
+const title = "Quizz - Peintures de la renaissance";
+const description =  "Trouvez l'auteur de chaque oeuvre";
 
 useSeoMeta({
-    title: "Arts ",
+    title: title,
     description,
 });
 
