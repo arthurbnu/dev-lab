@@ -135,7 +135,7 @@ const values =
 
 const picsInit = values.sparql.results.result.map((item: any) => {
   return {
-    url: item.binding[0].uri,
+    src: item.binding[0].uri,
     answer: item.binding[1].literal,
   }
 })
