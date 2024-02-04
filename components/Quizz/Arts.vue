@@ -57,15 +57,15 @@ LIMIT 10
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
-const headers = { 'Accept': 'application/sparql-results+json' };
-// const { data: items, error: error, pending: pending } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: headers });
-const { data: items, pending: pending, error: error } = useLazyAsyncData(
-  'arts',
-  () => $fetch(baseUrl + encodeURIComponent(sparqlQuery), {
-    headers: headers
-  }),
-  { server: true }
-)
+const headers = { 'Accept' : 'application/json' };
+const { data: items, error: error, pending: pending } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: headers });
+// const { data: items, pending: pending, error: error } = useLazyAsyncData(
+//   'arts',
+//   () => $fetch(baseUrl + encodeURIComponent(sparqlQuery), {
+//     headers: headers
+//   }),
+//   { server: true }
+// )
 
 const pics = ref([]) as any
 
