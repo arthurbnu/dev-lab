@@ -56,6 +56,7 @@ const { data: items, error: error, pending: pending } = await useFetch(baseUrl +
 const pics = ref([]) as any
 
 watchEffect(() => {
+  if (!items.value) return
   console.log('items : ', items.value)
   console.log('items : ', items.value.results)
   console.log('items : ', items.value.results.bindings[0])
