@@ -77,4 +77,5 @@ watchEffect(() => {
   console.log('pics : ', pics.value)
 })
 
+
 </script>
