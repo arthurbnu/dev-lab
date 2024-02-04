@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <QuizzDrag v-else-if="pics" :picsInit="pics"/>
+    <QuizzDrag v-else-if="pics.length" :picsInit="pics"/>
   </section>
 </template>
 
