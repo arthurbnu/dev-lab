@@ -15,7 +15,7 @@
             class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
             🥇
           </span>
-          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full">
+          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full transition-all duration-700">
             <NuxtImg v-if="!picture.src.includes('http')"
             :src="picture.src" :alt ="'inconnu ' + picture.src"
             :class="{ 'my-error': lastError.picture === picture.src }"
@@ -106,8 +106,6 @@ const handleEnd = (e: any) => {
   const chosenPicture = pictures.value[e.newIndex]
   if (chosenAnswer !== chosenPicture.answer) 
     lastError.value.answer = chosenAnswer
-  // if (props.easyMode)
-    // sortFound()
 }
 
 const props = defineProps<{
@@ -129,12 +127,14 @@ const checkAnswer = async () => {
 
 // trie à gauche toutes les images trouvées
 const sortFound = () => {
+  if (!props.easyMode) return
   const found = pictures.value.filter(picture => picture.found)
   const notFound = pictures.value.filter(picture => !picture.found)
   pictures.value = [...found, ...notFound]
 }
 
 watchEffect(() => checkAnswer())
+watchEffect(() => sortFound())
 
 </script>
 
