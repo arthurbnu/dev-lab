@@ -10,21 +10,20 @@
     <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
       <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4">
         <transition-group>
-          <li v-for="(picture, id) in pictures" :key="id" class="relative" :style="basisStyle">
+          <li v-for="(picture, id) in pictures" :key="picture.src" class="relative" :style="basisStyle">
             <span v-if="picture.found"
             class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
             🥇
           </span>
-          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="transition-all duration-700">
+          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full">
             <NuxtImg v-if="!picture.src.includes('http')"
             :src="picture.src" :alt ="'inconnu ' + picture.src"
             :class="{ 'my-error': lastError.picture === picture.src }"
-            class="cursor-move hover:opacity-90 transition-all border-4 border-solid" />
+            class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
 
             <img v-else :src="picture.src" :alt ="'inconnu ' + picture.src"
             :class="{ 'my-error': lastError.picture === picture.src }"
-            class="cursor-move hover:opacity-90 transition-all border-4 border-solid" />
- 
+            class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
             <!-- component is nuxtimg if relative path, img otherwise -->
             <!-- <component :is="picture.src.includes('http') ? 'img' : NuxtImg" 
               :src="picture.src" :alt ="'inconnu ' + picture.src"
