@@ -71,6 +71,14 @@ const cleanResults = (receivedPictures) =>
     && !picture.answer.includes('|')   // plusieurs auteurs
     && !picture.src.includes('.tiff')  // format non supporté
   )
+  // remove duplicate answers and duplicate pictures
+  .filter((picture, index, self) =>
+    index === self.findIndex((t) => (
+      t.answer === picture.answer || t.src === picture.src
+    ))
+  )
+
+
 
 watchEffect(() => {
   if (!items.value) return
