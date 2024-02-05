@@ -16,7 +16,7 @@
         </div>
       </div>
     </transition-expand>
-    <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': !pending }" />
+    <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" />
   </div>
 </template>
 
