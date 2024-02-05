@@ -21,9 +21,13 @@
 </template>
 
 <script  setup>
-import { watchEffect, ref } from 'vue';
-const nbPics = ref(7);
+import { watchEffect, ref, computed } from 'vue';
+const nbPics = ref(6);
 const imgWidth = 200
+const rand = ref(0)   // to force refresh
+const randLine = computed(() => `
+# Requête sparql : ${rand.value}
+`)
 
 const sparqlQuery = `
 #  +800 résultats
@@ -53,15 +57,16 @@ SELECT ?peintureLabel ?mouvementLabel ?peinture
 }
 GROUP BY ?peintureLabel ?mouvementLabel ?peinture
 ORDER BY ?random
-LIMIT ${nbPics.value}
+LIMIT ${nbPics.value + 2}
 `;
+
+const fullUrl = computed(() => baseUrl + encodeURIComponent(randLine.value + sparqlQuery))
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
-
 const headers = { 'Accept': 'application/json' };
 const pending = ref(true)
-const { data: items, error: error } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: headers });
+const { data: items, error: error } = await useFetch(baseUrl + encodeURIComponent(randLine.value + sparqlQuery), { headers: headers });
 
 const pics = ref([])
 
@@ -74,11 +79,9 @@ const cleanResults = (receivedPictures) =>
   // remove duplicate answers and duplicate pictures
   .filter((picture, index, self) =>
     index === self.findIndex((t) => (
-      t.answer === picture.answer || t.src === picture.src
+      t.answer === picture.answer
     ))
   )
-
-
 
 watchEffect(() => {
   if (!items.value) return
@@ -88,23 +91,25 @@ watchEffect(() => {
       answer: item.artisteLabels.value
     }
   })
-  pics.value = cleanResults(receivedPictures)
+  const cleanPics = cleanResults(receivedPictures)
+  pics.value = cleanPics.length > nbPics.value ? cleanPics.slice(0, nbPics.value) : cleanPics
   console.log('pics : ', pics.value)
 })
 
 const clientFetch = async () => {
-  $fetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: { 'Accept': 'application/json' } }).then(response => {
+  rand.value = Math.random()
+  $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } }).then(response => {
     items.value = response
   })
-    .catch(error => {
-      error.value = error
-      console.log('error : ', error)
-    })
-    .finally(() => {
-      setTimeout(() => pending.value = false, 1000)
-      // pending.value = false 
-      console.log('items : ', items.value)
-    });
+  .catch(error => {
+    error.value = error
+    console.log('error : ', error)
+  })
+  .finally(() => {
+    setTimeout(() => pending.value = false, 1000)
+    // pending.value = false 
+    console.log('items : ', items.value)
+  });
 }
 
 onMounted(() => {
