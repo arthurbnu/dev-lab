@@ -10,7 +10,7 @@
     <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
       <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4">
         <transition-group>
-          <li v-for="(picture, id) in pictures" :key="picture.src" class="relative" :style="basisStyle">
+          <li v-for="(picture, id) in pictures" :key="picture.src" class="relative flex items-end" :style="basisStyle">
             <span v-if="picture.found"
             class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
             🥇
@@ -127,14 +127,14 @@ const checkAnswer = async () => {
 
 // trie à gauche toutes les images trouvées
 const sortFound = () => {
-  if (!props.easyMode) return
-  const found = pictures.value.filter(picture => picture.found)
-  const notFound = pictures.value.filter(picture => !picture.found)
-  pictures.value = [...found, ...notFound]
+  // const found = pictures.value.filter(picture => picture.found)
+  // const notFound = pictures.value.filter(picture => !picture.found)
+  // pictures.value = [...found, ...notFound]
+  pictures.value = pictures.value.sort((a, b) => a.found ? -1 : 1)
 }
 
 watchEffect(() => checkAnswer())
-watchEffect(() => sortFound())
+watchEffect(() => props.easyMode && sortFound())
 
 </script>
 
