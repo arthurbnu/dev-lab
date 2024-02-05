@@ -10,7 +10,7 @@
     <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
       <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4">
         <transition-group>
-          <li v-for="picture in pictures" :key="picture.src" class="relative" :style="basisStyle">
+          <li v-for="(picture, id) in pictures" :key="id" class="relative" :style="basisStyle">
             <span v-if="picture.found"
             class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
             🥇
@@ -34,7 +34,7 @@
         </transition-group>
       </VueDraggableNext>
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
-        <li v-for="answer in answers" :key="answer"
+        <li v-for="(answer, id) in answers" :key="id"
           class="grid place-content-center hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
           :class="{ 'my-error': lastError.answer === answer }" :data-answer="answer" :style="basisStyle">
           {{ answer }}

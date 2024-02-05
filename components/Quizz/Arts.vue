@@ -1,28 +1,28 @@
 
 <template>
-  <section>
-    <div class="flex flex-col items-center space-y-4">
-      <p class="text-lg">Chaque oeuvre est associée à un auteur</p>
-      <p class="text-lg">Faites glisser chaque oeuvre vers son auteur</p>
-    </div>
-    <div v-if="error" class="text-red-500">{{ error }}</div>
+  <div>
+    <div v-if="error" class="text-red-500 hidden">{{ error }}</div>
     <div v-if="pending">
-      <div class="animate-pulse flex space-x-4">
-        <div class="rounded-full bg-gray-200 h-12 w-12"></div>
-        <div class="flex-1 space-y-4 py-1">
-          <div class="space-y-2">
-            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
-          </div>
+      <div class="animate-pulse flex space-x-4 w-[80%] m-auto py-4 px-[2vw]">
+        <div class = "w-full flex justify-between">
+          <div v-for="n in nbPics" :key="n"
+          class="rounded-full bg-gray-200 h-14 w-14"></div>
+        </div>
+        <div class="w-full">
+        <div class = "w-full flex justify-between mt-5">
+            <div v-for = "n in nbPics" :key="n" class="h-4 bg-primary-200 rounded w-14"></div>
+        </div>
+
         </div>
       </div>
     </div>
     <QuizzDrag v-else-if="pics.length" :picsInit="pics"/>
-  </section>
+  </div>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
 import { watchEffect, ref } from 'vue';
+const nbPics = ref(7);
 
 const sparqlQuery = `
 #  +800 résultats
@@ -30,7 +30,7 @@ const sparqlQuery = `
 # - sample img -> 848 résultats
 # - concat auteurs -> 819
 # données manquantes : 
-#  - auteurs inconnus (tête de méduse)
+#  - auteurs inconnus (tête de méduse )
 
 #defaultView:ImageGrid
 #             wdt:P347 ?idJoconde.        # 80 oeuvres sur +800
@@ -52,37 +52,57 @@ SELECT ?peintureLabel ?mouvementLabel ?peinture
 }
 GROUP BY ?peintureLabel ?mouvementLabel ?peinture
 ORDER BY ?random
-LIMIT 10
+LIMIT ${nbPics.value}
 `;
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
-const headers = { 'Accept' : 'application/json' };
-const { data: items, error: error, pending: pending } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: headers });
-// const { data: items, pending: pending, error: error } = useLazyAsyncData(
-//   'arts',
-//   () => $fetch(baseUrl + encodeURIComponent(sparqlQuery), {
-//     headers: headers
-//   }),
-//   { server: true }
-// )
 
-const pics = ref([]) as any
+const headers = { 'Accept' : 'application/json'};
+const pending = ref(true)
+const { data: items, error: error } = await useFetch(baseUrl + encodeURIComponent(  sparqlQuery), { headers: headers });
+
+const pics = ref([])
+
+const cleanResults = (receivedPictures) => 
+  receivedPictures.filter(picture => ! picture.answer.includes('http') 
+  && ! picture.answer.includes('|')
+  && ! picture.src.endsWith('.tiff')
+  )
 
 watchEffect(() => {
-  if (!items.value) return
-  console.log('items : ', items.value)
-  console.log('items : ', items.value.results)
-  console.log('items : ', items.value.results.bindings[0])
-  pics.value = items.value.results.bindings.map((item: any) => {
-    console.log('item : ', item)
+  if (! items.value) return
+  const receivedPictures = items.value.results.bindings.map((item) => {
     return {
       src: item.image.value,
       answer: item.artisteLabels.value
     }
   })
+  pics.value = cleanResults(receivedPictures)
   console.log('pics : ', pics.value)
 })
+
+const clientFetch = async () => {
+  $fetch(baseUrl + encodeURIComponent(sparqlQuery), { headers : {'Accept'   : 'application/json'}}).then(response => {
+      items.value = response
+  })
+  .catch(error => {
+      error.value = error
+      console.log('error : ', error)
+    }) 
+  .finally(() => {
+    setTimeout(() => pending.value = false, 1000)
+      // pending.value = false 
+      console.log('items : ', items.value)
+  });
+}
+
+onMounted(() => {
+  if (! pics.value.length) {
+    clientFetch()
+  }
+})
+
 
 
 </script>

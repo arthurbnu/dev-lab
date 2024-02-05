@@ -113,14 +113,6 @@ watchEffect(() => {
   }
 })
 
-// const changeRequest = (title) => {
-//   const indexInTitles = requestTitles.value.indexOf(title)
-//   if (indexInTitles !== -1) {
-//     indexRequest.value = indexInTitles
-//     sparqlQuery.value = spql.value[indexInTitles].innerText.trim()
-//   } 
-// }
-
 onMounted(() => {
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {

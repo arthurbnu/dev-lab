@@ -8,8 +8,8 @@
 
 <script setup lang = "ts">
 
-const title = "L'IPNI selon l'Intelligence Artificielle";
-const description = "Tout est dans le désordre.. Essaye de remettre chaque image au dessus du bon prénom !";
+const title = "Quelques peintures de la Renaissance";
+const description = "Tout est dans le désordre.. Essaye de remettre chaque peinture au dessus du bon peintre !";
 
 useSeoMeta({
   title: title,
@@ -31,7 +31,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Piero%2C_arezzo%2C_Discovery_and_Proof_of_the_True_Cross_01.jpg"
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Piero%2C_arezzo%2C_Discovery_and_Proof_of_the_True_Cross_01.jpg"
             },
             {
               "literal": "Piero della Francesca"
@@ -41,7 +41,7 @@ const values =
         {
           "binding": [
             {
-              "uri": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Angelico%2C_niccolina_04.jpg"
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Angelico%2C_niccolina_04.jpg"
             },
             {
               "literal": "Fra Angelico"

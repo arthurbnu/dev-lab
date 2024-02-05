@@ -1,9 +1,7 @@
 <template>
     <main class="min-h-screen">
-        <AppHeader class="mb-6" :title="title" :description="description" />
-        <div class="space-y-4">
-            <QuizzArts/>
-        </div>
+        <AppHeader class="mb-6 text-center" :title="title" :description="description" />
+        <QuizzArts/>
     </main>
 </template>
 
