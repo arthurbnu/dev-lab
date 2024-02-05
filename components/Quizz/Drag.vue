@@ -15,15 +15,15 @@
             class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
             🥇
           </span>
-          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="transition-all duration-700">
+          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full">
             <NuxtImg v-if="!picture.src.includes('http')"
             :src="picture.src" :alt ="'inconnu ' + picture.src"
             :class="{ 'my-error': lastError.picture === picture.src }"
-            class="cursor-move hover:opacity-90 transition-all border-4 border-solid" />
+            class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
 
             <img v-else :src="picture.src" :alt ="'inconnu ' + picture.src"
             :class="{ 'my-error': lastError.picture === picture.src }"
-            class="cursor-move hover:opacity-90 transition-all border-4 border-solid" />
+            class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
             <!-- component is nuxtimg if relative path, img otherwise -->
             <!-- <component :is="picture.src.includes('http') ? 'img' : NuxtImg" 
               :src="picture.src" :alt ="'inconnu ' + picture.src"
@@ -104,13 +104,15 @@ watchEffect(async () => {
 const handleEnd = (e: any) => {
   const chosenAnswer = answers.value[e.newIndex]
   const chosenPicture = pictures.value[e.newIndex]
-  if (chosenAnswer !== chosenPicture.answer) { 
+  if (chosenAnswer !== chosenPicture.answer) 
     lastError.value.answer = chosenAnswer
-  }
+  if (props.easyMode)
+    sortFound()
 }
 
 const props = defineProps<{
-  picsInit: { src: string; answer: string; }[]
+  picsInit: { src: string; answer: string; }[],
+  easyMode?: boolean
 }>()
 
 const pictures = ref(props.picsInit.map(picture => ({ ...picture, found: false })))
@@ -123,6 +125,13 @@ const checkAnswer = async () => {
     const pic = pictures.value[i]
     pic.found = pic.answer === answers.value[i]
   }
+}
+
+// trie à gauche toutes les images trouvées
+const sortFound = () => {
+  const found = pictures.value.filter(picture => picture.found)
+  const notFound = pictures.value.filter(picture => !picture.found)
+  pictures.value = [...found, ...notFound]
 }
 
 watchEffect(() => checkAnswer())

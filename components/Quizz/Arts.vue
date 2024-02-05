@@ -4,25 +4,24 @@
     <div v-if="error" class="text-red-500 hidden">{{ error }}</div>
     <div v-if="pending">
       <div class="animate-pulse flex space-x-4 w-[80%] m-auto py-4 px-[2vw]">
-        <div class = "w-full flex justify-between">
-          <div v-for="n in nbPics" :key="n"
-          class="rounded-full bg-gray-200 h-14 w-14"></div>
+        <div class="w-full flex justify-between">
+          <div v-for="n in nbPics" :key="n" class="rounded-full bg-gray-200 h-14 w-14"></div>
         </div>
         <div class="w-full">
-        <div class = "w-full flex justify-between mt-5">
-            <div v-for = "n in nbPics" :key="n" class="h-4 bg-primary-200 rounded w-14"></div>
-        </div>
-
+          <div class="w-full flex justify-between mt-5">
+            <div v-for="n in nbPics" :key="n" class="h-4 bg-primary-200 rounded w-14"></div>
+          </div>
         </div>
       </div>
     </div>
-    <QuizzDrag v-else-if="pics.length" :picsInit="pics"/>
+    <QuizzDrag v-else-if="pics.length" :picsInit="pics" :easyMode = "true" />
   </div>
 </template>
 
 <script  setup>
 import { watchEffect, ref } from 'vue';
 const nbPics = ref(7);
+const imgWidth = 200
 
 const sparqlQuery = `
 #  +800 résultats
@@ -58,23 +57,24 @@ LIMIT ${nbPics.value}
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
 
-const headers = { 'Accept' : 'application/json'};
+const headers = { 'Accept': 'application/json' };
 const pending = ref(true)
-const { data: items, error: error } = await useFetch(baseUrl + encodeURIComponent(  sparqlQuery), { headers: headers });
+const { data: items, error: error } = await useFetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: headers });
 
 const pics = ref([])
 
-const cleanResults = (receivedPictures) => 
-  receivedPictures.filter(picture => ! picture.answer.includes('http') 
-  && ! picture.answer.includes('|')
-  && ! picture.src.endsWith('.tiff')
+const cleanResults = (receivedPictures) =>
+  receivedPictures.filter(picture =>
+    !picture.answer.includes('http')   // url pour auteur inconnu
+    && !picture.answer.includes('|')   // plusieurs auteurs
+    && !picture.src.includes('.tiff')  // format non supporté
   )
 
 watchEffect(() => {
-  if (! items.value) return
+  if (!items.value) return
   const receivedPictures = items.value.results.bindings.map((item) => {
     return {
-      src: item.image.value,
+      src: item.image.value + `?width=${imgWidth}`,
       answer: item.artisteLabels.value
     }
   })
@@ -83,22 +83,22 @@ watchEffect(() => {
 })
 
 const clientFetch = async () => {
-  $fetch(baseUrl + encodeURIComponent(sparqlQuery), { headers : {'Accept'   : 'application/json'}}).then(response => {
-      items.value = response
+  $fetch(baseUrl + encodeURIComponent(sparqlQuery), { headers: { 'Accept': 'application/json' } }).then(response => {
+    items.value = response
   })
-  .catch(error => {
+    .catch(error => {
       error.value = error
       console.log('error : ', error)
-    }) 
-  .finally(() => {
-    setTimeout(() => pending.value = false, 1000)
+    })
+    .finally(() => {
+      setTimeout(() => pending.value = false, 1000)
       // pending.value = false 
       console.log('items : ', items.value)
-  });
+    });
 }
 
 onMounted(() => {
-  if (! pics.value.length) {
+  if (!pics.value.length) {
     clientFetch()
   }
 })
