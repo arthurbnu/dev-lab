@@ -34,7 +34,7 @@
         </transition-group>
       </VueDraggableNext>
       <ul v-auto-animate class="flex flex-nowrap space-x-2">
-        <li v-for="(answer, id) in answers" :key="id"
+        <li v-for="(answer, id) in answers" :key="answer"
           class="grid place-content-center hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
           :class="{ 'my-error': lastError.answer === answer }" :data-answer="answer" :style="basisStyle">
           {{ answer }}
