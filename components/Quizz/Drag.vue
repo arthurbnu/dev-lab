@@ -106,8 +106,8 @@ const handleEnd = (e: any) => {
   const chosenPicture = pictures.value[e.newIndex]
   if (chosenAnswer !== chosenPicture.answer) 
     lastError.value.answer = chosenAnswer
-  if (props.easyMode)
-    sortFound()
+  // if (props.easyMode)
+    // sortFound()
 }
 
 const props = defineProps<{

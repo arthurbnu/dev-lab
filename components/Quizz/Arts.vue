@@ -2,19 +2,21 @@
 <template>
   <div>
     <div v-if="error" class="text-red-500 hidden">{{ error }}</div>
-    <div v-if="pending">
-      <div class="animate-pulse flex space-x-4 w-[80%] m-auto py-4 px-[2vw]">
-        <div class="w-full flex justify-between">
-          <div v-for="n in nbPics" :key="n" class="rounded-full bg-gray-200 h-14 w-14"></div>
-        </div>
-        <div class="w-full">
-          <div class="w-full flex justify-between mt-5">
-            <div v-for="n in nbPics" :key="n" class="h-4 bg-primary-200 rounded w-14"></div>
+    <transition-expand>
+      <div v-if="pending">
+        <div class="animate-pulse flex space-x-4 w-[80%] m-auto py-4 px-[2vw]">
+          <div class="w-full flex justify-between">
+            <div v-for="n in nbPics" :key="n" class="rounded-full bg-gray-200 h-14 w-14"></div>
+          </div>
+          <div class="w-full">
+            <div class="w-full flex justify-between mt-5">
+              <div v-for="n in nbPics" :key="n" class="h-4 bg-primary-200 rounded w-14"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <QuizzDrag v-else-if="pics.length" :picsInit="pics" :easyMode = "true" />
+    </transition-expand>
+    <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': !pending }" />
   </div>
 </template>
 
