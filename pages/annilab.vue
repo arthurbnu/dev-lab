@@ -25,9 +25,6 @@
       </div>
     </div>
     <br>
-    <div class="font-extrabold  margin -auto text-lg [text-wrap:balance] text-white-700  items-center"
-      style="text-align:center">
-      Temps d'occupation du Lab en 2023, par catégories </div>
     <div class="font-extrabold text-lg [text-wrap:balance] text-gray-700">
       <AppPolarAreaGraph></AppPolarAreaGraph>
     </div>
@@ -46,7 +43,7 @@
             ... collabore sur {{ labNumbers[0].number_current_projects }} différents projets </div>
           <q-circular-progress show-value font-size="12px" :value=percentage_capacity_projects size="100px"
             :thickness="0.22" color="teal" track-color="grey-3" class="text-gray-700 q-ma-md" style="text-align:center">
-            {{ percentage_capacity_projects }}% de sa capacité
+            {{ Math.round(percentage_capacity_projects) }}% de sa capacité
           </q-circular-progress>
 
         </div>
