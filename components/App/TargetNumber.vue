@@ -2,7 +2,10 @@
   <div class="p-4 bg-gray-100 dark:bg-gray-900 flex flex-col justify-center items-center overflow-hidden">
     <span
       class="flex tabular-nums text-slate-900 dark:text-white text-5xl font-extrabold mb-2 [counter-set:_num_var(--num)] before:content-[counter(num)] animate-counter">
-      <span class="sr-only">{{ targetNumber }}</span>
+      <span class="sr-only">{{ targetNumber }}  </span>
+      <span class="flex text-white-900 " style="font-size: 21px; align-self: flex-end">
+        &nbsp heures d'occupation</span>
+      <div> </div>
     </span>
   </div>
 </template>

@@ -4,9 +4,11 @@
 
 <script setup>
 import VueApexCharts from "vue3-apexcharts";
+
 const { data: labNumbers } = await useAsyncData("annilab", () =>
     queryContent("/annilab").find()
   );
+  
 const generateDateTimeSerie = (timeSerie) => {
   var series = [];
   timeSerie.forEach(function (e) {
@@ -35,12 +37,36 @@ const generateDateTimeSerie = (timeSerie) => {
           }
         },
         legend: {
+          labels: {colors:  'white'},
           position: 'top',
-          horizontalAlign: 'left'
+          horizontalAlign: 'left',
+          style: {
+              color:  'white !important'
+        },
         },
         xaxis: {
-          type: 'datetime'
+          type: 'datetime',
+          labels:{
+            style: {
+              colors: 'white'
+            }
+          }
         },
+        yaxis: {
+          labels:{
+            style: {
+              colors: 'white'
+            }
+          }
+        }, 
+        title: {
+              text: "Temps d'occupation (en heures) du Lab en 2023, par catégories",
+              align: 'left',
+              offsetX: 14,
+              style: {
+              color:  'white'
+              },
+            },
       }
 
      const series = [{
