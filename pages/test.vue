@@ -1,143 +1,50 @@
-
 <template>
   <main class="min-h-screen">
-    <AppHeader class="mb-5 text-center" :title="title" :description="description" />
-    <QuizzDrag :picsInit="picsInit" />
+    <AppHeader class="mb-6 text-center" :title="title" :description="description" />
+    <QuizzRandomSparql :nbPics="nbPics" :sparqlQuery="sparqlQuery" />
   </main>
 </template>
 
-<script setup lang = "ts">
+<script setup>
 
-const title = "Quelques peintures de la Renaissance";
-const description = "Tout est dans le désordre.. Essaye de remettre chaque peinture au dessus du bon peintre !";
+const title = "Quizz - actrices ayant reçu un oscar ";
+const description = "Remettez les photos au dessus du bon nom ! ";
 
-useSeoMeta({
-  title: title,
-  description,
-  author: "A B",
-  ogImage: "https://dev-lab-one.vercel.app/quizz/quizz-ipni.png",
-  ogUrl: "https://dev-lab-one.vercel.app/quizz",
-  ogType: "website",
-  ogTitle: title,
-  ogDescription: description,
-  themeColor: "teal",
-});
+const nbPics = 7
 
-const values = 
-{
-  "sparql": {
-    "results": {
-      "result": [
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Piero%2C_arezzo%2C_Discovery_and_Proof_of_the_True_Cross_01.jpg"
-            },
-            {
-              "literal": "Piero della Francesca"
-            }
-          ]
-        },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Angelico%2C_niccolina_04.jpg"
-            },
-            {
-              "literal": "Fra Angelico"
-            }
-          ]
-        },
-        // {
-        //   "binding": [
-        //     {
-        //       "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Giorgione%20-%20Il%20Tramonto%20%281506-1510%29.jpg"
-        //     },
-        //     {
-        //       "literal": "Giorgione"
-        //     }
-        //   ]
-        // },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Antonello%20da%20Messina%20-%20Portrait%20of%20a%20Man%20-%20National%20Gallery%20London.jpg"
-            },
-            {
-              "literal": "Antonello da Messina"
-            }
-          ]
-        },
-        // {
-        //   "binding": [
-        //     {
-        //       "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Titian%20-%20The%20Appeal%20-%2026.107%20-%20Detroit%20Institute%20of%20Arts.jpg"
-        //     },
-        //     {
-        //       "literal": "Giorgione | Titian | Sebastiano del Piombo"
-        //     }
-        //   ]
-        // },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Giorgione%20063.jpg"
-            },
-            {
-              "literal": "Giorgione"
-            }
-          ]
-        },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Sandro%20Botticelli%2C%20The%20Last%20Communion%20of%20Saint%20Jerome.png"
-            },
-            {
-              "literal": "Sandro Botticelli"
-            }
-          ]
-        },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Tiziano%2C%20stimmate%20di%20san%20francesco%2C%20trapani.jpg"
-            },
-            {
-              "literal": "Titian"
-            }
-          ]
-        },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/La-belle-jardiniere.jpg"
-            },
-            {
-              "literal": "Raphael"
-            }
-          ]
-        },
-        {
-          "binding": [
-            {
-              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Pietro%20Perugino%20cat55.jpg"
-            },
-            {
-              "literal": "Pietro Perugino"
-            }
-          ]
-        }
-      ]
-    }
+const sparqlQuery = `
+#defaultView:ImageGrid
+#             wdt:P347 ?idJoconde.        # 80 oeuvres sur +800
+#             wdt:P973 ?descriptionUrl.   # 590
+SELECT  ?date 
+(MD5(CONCAT(str(?artiste),str(RAND()))) as ?random)
+(SAMPLE(?image) AS ?image) 
+(GROUP_CONCAT(DISTINCT ?artisteLabel; SEPARATOR = " | ") AS ?artisteLabels) 
+(GROUP_CONCAT(DISTINCT ?recompenseLabel; SEPARATOR = " | ") AS ?recompenseLabels) 
+WHERE {
+  ?artiste wdt:P31 wd:Q5;
+#          wdt:P106 wd:Q33999;    # Américain
+          wdt:P166 ?recompense;
+          wdt:P27 wd:Q30;
+          
+    wdt:P18 ?image;
+    wdt:P569 ?date.
+  
+  filter(?recompense in (wd:Q103618)).
+#   filter(?recompense in (wd:Q103916, wd:Q103618)).
+  
+#   filter(year(?date) > 1970).  
+#   filter(year(?date) > 1950).
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?artiste rdfs:label ?artisteLabel.
+    ?recompense rdfs:label ?recompenseLabel.
   }
 }
-
-const picsInit = values.sparql.results.result.map((item: any) => {
-  return {
-    src: item.binding[0].uri,
-    answer: item.binding[1].literal,
-  }
-})
+GROUP BY ?random ?date ?artiste 
+ORDER BY ?random
+`;
 
 </script>
