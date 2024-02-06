@@ -3,18 +3,7 @@
   <div>
     <div v-if="error" class="text-red-500 hidden">{{ error }}</div>
     <transition-expand>
-      <div v-if="pending">
-        <div class="animate-pulse flex space-x-4 w-[80%] m-auto py-4 px-[2vw]">
-          <div class="w-full flex justify-between">
-            <div v-for="n in nbPics" :key="n" class="rounded-full bg-gray-200 h-14 w-14"></div>
-          </div>
-          <div class="w-full">
-            <div class="w-full flex justify-between mt-5">
-              <div v-for="n in nbPics" :key="n" class="h-4 bg-primary-200 rounded w-14"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <QuizzGhostLoader v-if="pending" :nbItems="nbPics"/>
     </transition-expand>
     <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" />
   </div>
@@ -24,10 +13,8 @@
 import { watchEffect, ref, computed } from 'vue';
 const nbPics = ref(6);
 const imgWidth = 200
-const rand = ref(0)   // to force refresh
-const randLine = computed(() => `
-# Requête sparql : ${rand.value}
-`)
+const date = ref('')  
+const dateLine = computed(() => `# Requête sparql : ${date.value}`)  // to force refresh
 
 const sparqlQuery = `
 #  +800 résultats
@@ -57,16 +44,16 @@ SELECT ?peintureLabel ?mouvementLabel ?peinture
 }
 GROUP BY ?peintureLabel ?mouvementLabel ?peinture
 ORDER BY ?random
-LIMIT ${nbPics.value + 2}
+LIMIT ${nbPics.value + 5}
 `;
 
-const fullUrl = computed(() => baseUrl + encodeURIComponent(randLine.value + sparqlQuery))
+const fullUrl = computed(() => baseUrl + encodeURIComponent(dateLine.value + sparqlQuery))
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
 const headers = { 'Accept': 'application/json' };
 const pending = ref(true)
-const { data: items, error: error } = await useFetch(baseUrl + encodeURIComponent(randLine.value + sparqlQuery), { headers: headers });
+const { data: items, error: error } = await useFetch(baseUrl + encodeURIComponent(dateLine.value + sparqlQuery), { headers: headers });
 
 const pics = ref([])
 
@@ -97,19 +84,10 @@ watchEffect(() => {
 })
 
 const clientFetch = async () => {
-  rand.value = Math.random()
-  $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } }).then(response => {
-    items.value = response
-  })
-  .catch(error => {
-    error.value = error
-    console.log('error : ', error)
-  })
-  .finally(() => {
-    setTimeout(() => pending.value = false, 1000)
-    // pending.value = false 
-    console.log('items : ', items.value)
-  });
+  date.value = new Date().toLocaleString()
+  $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } }).then(response => items.value = response)
+  .catch(error => error.value = error)
+  .finally(() => setTimeout(() => pending.value = false, 1000));
 }
 
 onMounted(() => {
