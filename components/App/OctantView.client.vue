@@ -1,7 +1,7 @@
 <template>
     <MyTagsInput
         :api = "apiName"
-        :url = "'https://query.wikidata.org/sparql?query=' + encodeURIComponent(sparqlQuery)" 
+        :url = "'https://query.wikidata.org/sparql?query=' + encodeURIComponent(refQuery)" 
         replace-search-in-url="__REPLACE__"
         :displayUserItems="false"
         placeHolder="Rechercher une personne sur wikipedia"
@@ -11,14 +11,10 @@
         <!-- @tags-update = "tagsUpdate" -->
         <!-- image="wikidata-query-service.png" -->
         <template v-slot:items-list> 
-            <!-- soit auto animate soit vue-transition group w-full  -->
             <ul v-auto-animate = "{duration : 400}" id = "my-items-list">
-            <!-- <ul  id = "my-items-list"> -->
-                <!-- <transition-scale group class = "w-full"> -->
-                    <li v-for = "item in tags.slice().reverse()" :key="item.id" class = "li_item"> <!-- reverse() peut se faire avec flex -->
-                        <CardItem :item = item  ref = "listItems"/>
-                    </li>
-                <!-- </transition-scale> -->
+                <li v-for = "item in tags.slice().reverse()" :key="item.id" class = "li_item">
+                    <CardItem :item = item  ref = "listItems"/>
+                </li>
             </ul>
         </template>
     </MyTagsInput>
@@ -26,7 +22,7 @@
 
 <script setup>
 
-import {ref, provide} from 'vue'
+import {ref, provide, watchEffect} from 'vue'
 import MyTagsInput from '@/components/App/MyTagsInput.vue';
 import CardItem from '@/components/App/CardItem.vue';
 
@@ -48,14 +44,11 @@ const props = defineProps({
 // refs
 const tags = ref([])
 const listItems = ref([]);
+const refQuery = ref('')
 const apiName = 'Recherche-Sparql-Wikidata'
 provide('tags '+ apiName, tags)
 
-// emitted - gestion flex row - 1, 2 ou 3 colonnes
-// const tagsUpdate = (newTags) => {
-//     // let suffix = newTags.length > 2 ? '3' : newTags.length
-//     // rowClass.value = defaultClass + '-' + suffix
-// }
+watchEffect(() => refQuery.value = props.sparqlQuery)
 
 const handleFullScreen = (action) => {
     let componentFullScreen = listItems.value.find(item => item.fullscreen)
@@ -75,10 +68,9 @@ const handleFullScreen = (action) => {
 
 let defaultImage = 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymous_emblem.svg'
 
+const maxLength = 30
 const handleOctant = (response) => {
     handleApiError(response);
-    console.log(response)
-    console.log(response.results)
     console.log(response.results.bindings)
     return response.results.bindings.map(a => 
     {       
@@ -95,7 +87,7 @@ const handleOctant = (response) => {
     });
 }
 
-const shorten = (text, maxLength = 30) => text.length > maxLength ? text.substr(0, maxLength) + '...' : text;
+const shorten = (text) => text.length > maxLength ? text.substr(0, maxLength) + '...' : text;
 
 const safeValue = (item, property, defaultValue = '') => property in item ? item[property].value : defaultValue;
 

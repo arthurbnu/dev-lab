@@ -1,32 +1,25 @@
 
 <template>  
-    <div class = "template col-6 q-pa-md text-center" 
-    @contextmenu = "handleRightClick"
-    :class = "{'template_loading' : loading, 'invalidInput' : invalidInput}" 
-    ref = "currentTemplate" 
-    @click = "handleTemplateClick">
+    <div class = "template col-6 text-center" 
+        @contextmenu = "handleRightClick"
+        :class = "{'template_loading' : loading, 'invalidInput' : invalidInput}" 
+        ref = "currentTemplate" >
     <span class = "row inline items-center">
-        <!-- <img v-if = "image" class = "my-api-img" :alt="api"> -->
         <img v-if = "image" class = "my-api-img" :src="image" :alt="api">
-        <!-- <h5 class="title q-ma-xs q-pa-xs q-pb-sm">
-            {{ api }}         
-        </h5> -->
-
         <q-radio v-for = "option in filterOptions" 
             size="xs" 
             v-model="modelSelect" 
             :val="option.value" 
             :label="option.label ?? option.value" 
         />
-        <!-- <q-checkbox v-if = "!envProd && autoComplete !== null" v-model = "modelAutoComplete"  -->
-        <q-checkbox v-if = "autoComplete !== null" v-model = "modelAutoComplete" 
+        <!-- <q-checkbox v-if = "autoComplete !== null" v-model = "modelAutoComplete" 
         label = "Auto Complétion" class = "q-ml-lg" :disable="disableAutoComplete">
         <q-tooltip anchor="bottom middle" self="top middle">
             <div class="text-center">
                 <span> Recherche exacte si décoché</span>
            </div>
         </q-tooltip>
-        </q-checkbox>
+        </q-checkbox> -->
     </span>
     <div ref = "tagsInputContainer">
         <div class="spinner q-pb-md">
@@ -79,6 +72,11 @@
         >
             {{ fetchError.message }}
         </div>
+        <div v-else-if = "autocompleteItems.length" 
+            @click="mainInput?.focus()"
+            class = "text-primary q-ma-md no_select cursor-pointer p-3 hover:bg-slate-500/40 transition-all">
+            {{autocompleteItems.length}} résultat(s) trouvé(s)
+        </div>
         <div  class="config q-pt-md">
            <p class = "hidden">{{ url }} | {{ actualPlaceHolder }}</p>
         </div>
@@ -93,11 +91,8 @@ import { ref, watch, onMounted, inject, computed} from 'vue';
 // La version de base de vue tags input n'est plus maintenue.. V2 only
 import VueTagsInput from "@sipec/vue3-tags-input";
 
-// import { useRoute } from 'vue-router';
-// import router from '@/router';
-// const route = useRoute();
+const toast = useToast()
 
-// props
 const props = defineProps({
     api: String,
     image: String,
@@ -127,12 +122,6 @@ const props = defineProps({
         type : Number,
         default : 700,
     },
-    // si true, on affiche les CardUser car le composant a été développé pour ça. 
-    // Sinon on peut définir une liste custom grâce au slot items-list
-    displayUserItems : {
-        type : Boolean,
-        default : true
-    },
     autoComplete : {
         type : Boolean,
         default : null 
@@ -156,24 +145,19 @@ const deleteUser = user => tags.value = tags.value.filter(tag => tag.value !== u
 const defaultError = {message : '', level : 0};
 let mainInput = null,
     fetchController = new AbortController(),
-    lastChoiceAutocomplete = null,
-    classBtnDeleteCardUser = 'my-btn-close',
     debounce = null;
 
-    // true si env de production
     // const envProd = inject('envProd');
     const myLog = console.log
-
-    // const getImageUrl = (image) => require('@/assets/' + image)
-    const disableAutoComplete = ref (false);
 
 const tag = ref(''),
 
     tags = inject('tags ' + props.api),
+    exampleSearch = inject('exampleSearch'),    // exemple de recherche transmis par le parent
+
     autocompleteItems = ref([]),
-    actualUrl = ref(props.filterOptions ? props.url + props.filterOptions.find(it => it.default).url : props.url),
+    actualUrl = ref(props.url),
     actualPlaceHolder = ref(props.placeHolder),
-    modelAutoComplete = ref(props.autoComplete),
     modelSelect = ref(props.filterOptions ? props.filterOptions.find(it => it.default).value : props.placeHolder),
     fetchError = ref(defaultError),
     loading = ref(false),
@@ -184,13 +168,16 @@ const tag = ref(''),
     searchHistory = ref([]),
     searchHistoryIndex = ref(0)
 
-    // Fonctions ---------------------------------------------------------------------------------------------
-    
+    // Fonctions --------------------------------------------------------------------------------------------- 
+
+    // modif depuis le parent
+    watch(() => props.url, () => {
+        actualUrl.value = props.url;
+        search()
+    });
+
     onMounted(async() => {
         mainInput = tagsInputContainer.value.querySelector('.ti-input input');
-        if (mainInput)
-            mainInput.setAttribute('tabIndex', props.tIndex);
-        lastChoiceAutocomplete = props.autoComplete;
     });
 
     // export des résultats de recherche en CSV (autocompleteItems) - TODO : composable
@@ -231,27 +218,16 @@ const tag = ref(''),
     }
 
     const lastRequestUrl = computed(() => {
-        let searchVal = tag.value
-        let exactSearch = modelAutoComplete.value ? '&auto_complete=1' : '';    // use js native query string lib INSTEAD
+        let searchVal = tag.value.trim()
         let startUrl =  props.replaceSearchInUrl ?
                         actualUrl.value.replace(props.replaceSearchInUrl, encodeURIComponent(searchVal)) : 
                         actualUrl.value + encodeURIComponent(searchVal);
 
         if (! props.filterOptions) 
-            return startUrl + props.endUrl + exactSearch;
-        // let formatFunction = props.filterOptions.find(it => it.value === modelSelect.value).function;
-        // if ( ! searchVal.includes('@')) // Recherche par nom d'utilisateur
-        //     switch (formatFunction){
-        //         case 'syncDec' :
-        //             searchVal = syncDec(searchVal);
-        //             break;
-        //         case 'syncHex' :
-        //             searchVal = syncHex(searchVal);
-        //             break;
-        //     }
-
-        return startUrl + props.endUrl + exactSearch;
+            return startUrl + props.endUrl;
+        return startUrl + props.endUrl;
     });
+
     
     // validation de l'input si validateInput définie, à chaque modif de tag.value ou modelSelect.value
     const invalidInput = computed(() => ! props.validateInput(tag.value, modelSelect.value))
@@ -298,16 +274,11 @@ const tag = ref(''),
         if (newTagAdded)  {
             tags.value.push(newTagAdded);
             currentTemplate.value.scrollIntoView({behavior: "smooth", block: "start"});
-            // let newUrl = router.resolve({name: 'user', params: {user: newTagsValues.join(separatorUsersUrl)}}).href;
-            // let newUrl = router.resolve({name: 'user', params: {user: newTagAdded.value.toLowerCase()}}).href;
-            // window.history.pushState({path:newUrl},'',newUrl);
         }
         else {
             let tagToRemove = tags.value.find(tag => ! newTagsValues.includes(tag.value));
             if (tagToRemove) {
                 tags.value = tags.value.filter(tag => tag.value !== tagToRemove.value);
-                // url set to home whenever a tag is removed
-                // window.history.pushState({name:'home'},'',router.resolve({name:'home'}).href);
             }
         }
 
@@ -327,23 +298,23 @@ const tag = ref(''),
     const initItems = () => {
         if (mustResetSearch.value) return resetValues()
         fetchError.value = defaultError;
-        scrollTop()
+        // scrollTop()
         loading.value = true;
         handleApi(lastRequestUrl.value);
     }
 
     // Remonte jusqu'à la barre de recherche si trop éloigné
-    let destinationScrollPosition = 0;
-    const scrollTop = () => {
-        if (typeof window === 'undefined') return
+    // let destinationScrollPosition = 0;
+    // const scrollTop = () => {
+    //     if (typeof window === 'undefined') return
 
-        let distance = Math.abs(window.scrollY - destinationScrollPosition);
-        if (distance > 150) {
-            currentTemplate.value.scrollIntoView();             // nécessaire pour le scroll smooth qui suit
-            window.scrollBy({top : - 80, behavior : 'smooth'})
-            destinationScrollPosition = window.scrollY;
-        }    
-    }
+    //     let distance = Math.abs(window.scrollY - destinationScrollPosition);
+    //     if (distance > 150) {
+    //         currentTemplate.value.scrollIntoView();             // nécessaire pour le scroll smooth qui suit
+    //         window.scrollBy({top : - 80, behavior : 'smooth'})
+    //         destinationScrollPosition = window.scrollY;
+    //     }    
+    // }
 
     const noResultMessage = computed(() => {
         const criteriaIsUnknown = tag.value.includes('@') || ! selectedSearchOption.value       // @ => peut être une recherche par nom d'utilisateur
@@ -357,17 +328,18 @@ const tag = ref(''),
             // Annulation de la requête précédente
             fetchController.abort()
             fetchController = new AbortController()
-
-
-// {signal : axiosController.signal, headers : header
-
             $fetch(currentRequestUrl, { signal : fetchController.signal, headers : {'Accept' : 'application/json'}}).then(response => {
                 myLog(response);
                 autocompleteItems.value = props.handleResponse(response)
-                if (! autocompleteItems.value || autocompleteItems.value.length === 0)
+                // if (! autocompleteItems.value || autocompleteItems.value.length === 0)
+                //     fetchError.value = noResultMessage.value
+                // simpler
+                if (! autocompleteItems.value?.length) 
                     fetchError.value = noResultMessage.value
                 else {
-                    autocompleteItems.value.sort((it, it2) => it.text > it2.text ? 1 : -1)
+                    // autocompleteItems.value.sort((it, it2) => it.text > it2.text ? 1 : -1)
+                    // simpler
+                    autocompleteItems.value.sort((it, it2) => it.text.localeCompare(it2.text))
                     fetchError.value = defaultError
                 }
             })
@@ -397,27 +369,14 @@ const tag = ref(''),
             errorMessage = 'Erreur lors de la connexion avec le serveur. Vérifiez votre connexion internet.'
                 break;
             case 'ERR_BAD_RESPONSE' : 
-            errorMessage = 'Erreur lors du traitement de la requête.'
-                if (tag.value.includes('*') ) 
-                errorMessage += ' La recherche avec le caractère * est limitée pour des raisons de performance.'
-                break;
+                errorMessage = 'Erreur lors du traitement de la requête.'
+            break;
         }
         fetchError.value = {message : errorMessage, level : 1} 
         autocompleteItems.value = [];   // si erreur, on réinitialise la liste de résultats
 
         console.warn('Erreur handleApi : '); 
         myLog(e); 
-    }
-
-    const handleSelectOptions = (selectValue) => {
-        let selected = props.filterOptions.find(it => it.value === selectValue),
-        autoCompletePossible = 'autoCompletePossible' in selected;
-        actualUrl.value = props.url + selected.url
-        actualPlaceHolder.value = selected.description ?? selected.label ?? selected.value
-        if (! autoCompletePossible) modelAutoComplete.value = false
-        else modelAutoComplete.value = lastChoiceAutocomplete
-        disableAutoComplete.value = ! autoCompletePossible
-        search();
     }
     
     const search = () => {
@@ -427,32 +386,11 @@ const tag = ref(''),
 
     // focus sur le champ de recherche sauf suppression ou survol de la carte User 
     const handleTemplateClick = e => {
-        if (! document.querySelector('.q-card:hover') && ! e?.target.classList.contains(classBtnDeleteCardUser)) 
-            mainInput.focus(); 
+        // if (! document.querySelector('.q-card:hover') && ! e?.target.classList.contains(classBtnDeleteCardUser)) 
+        //     mainInput.focus(); 
     }  
 
-    // Vérifie l'existence de l'user pour l'api de recherche correspondante matchedApi
-    const checkMatchedApi = (uid, option) => { 
-        tag.value = '@' + uid 
-        currentTemplate.value.scrollIntoView({block: "start"});
-    }
-
-    const handleReceivedAction = action => {
-        myLog('handleReceivedAction : ', action);
-        switch (action.name) {
-            case 'checkMatchedApi' : checkMatchedApi(action.userId, action.searchOption); break;
-        }
-    }
-
-    // checkbox autocomplete
-    const handleAutoComplete = val => {
-        if (disableAutoComplete.value) return;
-        lastChoiceAutocomplete = val;
-        search();
-    }
-    
-    
-    let userSearchedFromParam = false;      // Utile juste une fois au chargement de la page quand le token MSAL est reçu.
+    let userSearchedFromParam = false;      // Utile juste une fois au chargement de la page quand le token MSAL est reçu. 
     const loadUsersFromUrl = () => {
         if (userSearchedFromParam || ! route.params.user || ! result.value ) return
         tag.value= '@' + route.params.user.split(separatorUsersUrl).pop()   // pour le moment, on ne prend que le dernier user de la liste
@@ -463,10 +401,13 @@ const tag = ref(''),
     // watchers
 
     watch(tag, initItems);
-    watch(modelAutoComplete, handleAutoComplete);
-    watch(modelSelect, handleSelectOptions);
-    // watch(actionTracker, handleReceivedAction);
-    // watch(result, loadUsersFromUrl);
+
+    // gestion exemple de recherche transmis par le parent
+    watch(exampleSearch, () =>{
+        if (! exampleSearch.value) return
+        tag.value = exampleSearch.value
+    });
+    watch(tag, () => exampleSearch.value = '');
 
 </script>
 

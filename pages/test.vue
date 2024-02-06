@@ -1,118 +1,143 @@
+
 <template>
   <main class="min-h-screen">
-    <AppHeader class="mb-1 text-center" :title="title" :description="description" />
-
-    <div class="space-y-4 text-center">
-      <span v-for="(tag, id) in tags" :key="id"
-        class="bg-teal-800 text-white px-1 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
-        {{ tag }}
-      </span>
-    </div>
-    <button v-if="!ready" @click="ready = true">Click to lazy load Octant component</button>
-    <LazyAppOctantView v-if="ready" />
-
-    <!-- <ul class="mb-7" > -->
-      <!-- <transition-fade group> -->
-        <VueDraggableNext class="dragArea list-group w-full mb-5" :list="items" @change="console.log" tag = "ul"
-        v-bind="dragOptions"
-        @start="isDragging = true"
-        @end="isDragging = false">
-          <transition-group>
-
-          <!-- <li v-for="item in items" :key="item" @click="removeItem(item)" class = "list-group-item text-2xl"> -->
-          <li v-for="item in items" :key="item" class = "list-group-item text-2xl">
-            {{ item.name }}
-          </li>
-        </transition-group>
-
-        </VueDraggableNext>
-      <!-- </transition-fade> -->
-    <!-- </ul> -->
-
-    <!-- <ul>
-      <transition-fade group>
-        <li v-for="item in items" :key="item" @click="removeItem(item)">
-          {{ item }}
-        </li>
-      </transition-fade>
-    </ul> -->
+    <AppHeader class="mb-5 text-center" :title="title" :description="description" />
+    <QuizzDrag :picsInit="picsInit" />
   </main>
 </template>
 
-<script setup>
+<script setup lang = "ts">
 
-import { ref, watchEffect, onMounted } from 'vue'
-
-import { VueDraggableNext } from 'vue-draggable-next'
-
-console.log('test draggable')
-
-const dragOptions = {
-  animation: 200,
-  group: 'description',
-  ghostClass: 'ghost',
-  // disabled: false,
-  // chosenClass: 'chosen',
-  // dragClass: 'drag',
-  // forceFallback: false,
-  // fallbackClass: 'fallback',
-  // fallbackOnBody: false,
-  // lockAxis: 'y',
-  // scroll: true,
-  // scrollSensitivity: 30,
-  // scrollSpeed: 10,
-  // sort: true,
-  // preventOnFilter: true,
-  // put: true,
-  // pull: true,
-  // delay: 0,
-  // touchStartThreshold: 0,
-  // bubbleScroll: true,
-}
-
-// test v auto animate
-// const items = ref(["😏", "😐", "😑", "😒", "😕"])
-// same but with name and order
-const items = ref([{name: "😏", order: 1}, {name: "😐", order: 2}, {name: "😑", order: 3}, {name: "😒", order: 4}, {name: "😕", order: 5}])
-function removeItem(toRemove) {
-  items.value = items.value.filter((item) => item !== toRemove)
-}
-
-const ready = ref(false)
-const mounted = ref(false)
-
-watchEffect(() => {
-  if (process.client && mounted.value) {
-    console.log('client')
-    ready.value = true
-  }
-})
-
-onMounted(async () => {
-  await nextTick()
-  mounted.value = true
-});
-
-const title = "Recherche sparql avec VueJs";
-const description = "Sparql | Langage de requête pour les données liées rdf." +
-  " Les données de la requête sont issues de wikidata, et complétées par des données de dbpedia et l'api wikipedia.";
+const title = "Quelques peintures de la Renaissance";
+const description = "Tout est dans le désordre.. Essaye de remettre chaque peinture au dessus du bon peintre !";
 
 useSeoMeta({
-  // title: title,
-  // description,
+  title: title,
+  description,
   author: "A B",
+  ogImage: "https://dev-lab-one.vercel.app/quizz/quizz-ipni.png",
+  ogUrl: "https://dev-lab-one.vercel.app/quizz",
+  ogType: "website",
+  ogTitle: title,
+  ogDescription: description,
+  themeColor: "teal",
 });
 
-const tags = [
-  "sparql",
-  "wikipedia",
-  "dbpedia",
-  "wikidata",
-  "rdf",
-  "api",
-  "vuejs",
-  "nuxt",
-];
+const values = 
+{
+  "sparql": {
+    "results": {
+      "result": [
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Piero%2C_arezzo%2C_Discovery_and_Proof_of_the_True_Cross_01.jpg"
+            },
+            {
+              "literal": "Piero della Francesca"
+            }
+          ]
+        },
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Angelico%2C_niccolina_04.jpg"
+            },
+            {
+              "literal": "Fra Angelico"
+            }
+          ]
+        },
+        // {
+        //   "binding": [
+        //     {
+        //       "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Giorgione%20-%20Il%20Tramonto%20%281506-1510%29.jpg"
+        //     },
+        //     {
+        //       "literal": "Giorgione"
+        //     }
+        //   ]
+        // },
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Antonello%20da%20Messina%20-%20Portrait%20of%20a%20Man%20-%20National%20Gallery%20London.jpg"
+            },
+            {
+              "literal": "Antonello da Messina"
+            }
+          ]
+        },
+        // {
+        //   "binding": [
+        //     {
+        //       "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Titian%20-%20The%20Appeal%20-%2026.107%20-%20Detroit%20Institute%20of%20Arts.jpg"
+        //     },
+        //     {
+        //       "literal": "Giorgione | Titian | Sebastiano del Piombo"
+        //     }
+        //   ]
+        // },
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Giorgione%20063.jpg"
+            },
+            {
+              "literal": "Giorgione"
+            }
+          ]
+        },
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Sandro%20Botticelli%2C%20The%20Last%20Communion%20of%20Saint%20Jerome.png"
+            },
+            {
+              "literal": "Sandro Botticelli"
+            }
+          ]
+        },
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Tiziano%2C%20stimmate%20di%20san%20francesco%2C%20trapani.jpg"
+            },
+            {
+              "literal": "Titian"
+            }
+          ]
+        },
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/La-belle-jardiniere.jpg"
+            },
+            {
+              "literal": "Raphael"
+            }
+          ]
+        },
+        {
+          "binding": [
+            {
+              "uri": "http://commons.wikimedia.org/wiki/Special:FilePath/Pietro%20Perugino%20cat55.jpg"
+            },
+            {
+              "literal": "Pietro Perugino"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
 
+const picsInit = values.sparql.results.result.map((item: any) => {
+  return {
+    src: item.binding[0].uri,
+    answer: item.binding[1].literal,
+  }
+})
 
 </script>
