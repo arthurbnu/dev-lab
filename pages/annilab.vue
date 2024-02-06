@@ -24,9 +24,15 @@
       <AppTargetNumber :targetNumber="labNumbers[0].n_tot_heures"></AppTargetNumber>
     </div>
   </div>
+  <br>
+  <div class="font-extrabold  margin -auto text-lg [text-wrap:balance] text-white-700  items-center" style="text-align:center">
+      Temps d'occupation du Lab en 2023, par catégories </div>
   <div class="font-extrabold text-lg [text-wrap:balance] text-gray-700">
     <AppPolarAreaGraph></AppPolarAreaGraph>
   </div>
+
+
+
   <div class="p-4 bg-gray-100 rounded-md border flex flex-col justify-center items-center overflow-hidden">
     <div class="font-extrabold  margin -auto text-lg [text-wrap:balance] text-gray-700">
       En ce moment le Lab ... </div>

@@ -4,9 +4,11 @@
 
 <script setup>
 import VueApexCharts from "vue3-apexcharts";
+
 const { data: labNumbers } = await useAsyncData("annilab", () =>
     queryContent("/annilab").find()
   );
+  
 const generateDateTimeSerie = (timeSerie) => {
   var series = [];
   timeSerie.forEach(function (e) {
