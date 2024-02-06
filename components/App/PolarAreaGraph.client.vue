@@ -4,21 +4,16 @@
 
 <script setup>
 import VueApexCharts from "vue3-apexcharts";
-const generateDayWiseTimeSeries = (baseval, count, yrange) => {
-      var i = 0;
-      var series = [];
-      while (i < count) {
-        var x = baseval;
-        var y =
-          Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
-          yrange.min;
-
-        series.push([x, y]);
-        baseval += 86400000;
-        i++;
-      }
-      return series;
-    }
+const { data: labNumbers } = await useAsyncData("annilab", () =>
+    queryContent("/annilab").find()
+  );
+const generateDateTimeSerie = (timeSerie) => {
+  var series = [];
+  timeSerie.forEach(function (e) {
+    series.push([new Date(e[0]).getTime(), e[1]]);
+  });
+  return series
+}
 
     const options = {
         chart: {
@@ -49,24 +44,15 @@ const generateDayWiseTimeSeries = (baseval, count, yrange) => {
       }
 
      const series = [{
-            name: 'South',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-              min: 10,
-              max: 60
-            })
+            name: 'First',
+            data: generateDateTimeSerie(labNumbers.value[0].timeline.first)
           },
           {
-            name: 'North',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-              min: 10,
-              max: 20
-            })
+            name: 'Second',
+            data: generateDateTimeSerie(labNumbers.value[0].timeline.second)
           },
           {
-            name: 'Central',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-              min: 10,
-              max: 15
-            })
+            name: 'Third',
+            data: generateDateTimeSerie(labNumbers.value[0].timeline.third)
           }]
 </script>
