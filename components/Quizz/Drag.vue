@@ -87,15 +87,18 @@ const orientationError = computed(() => {
   return ''
 })
 
+const getNbFound = () => pictures.value.filter(picture => picture.found).length
+
 onMounted(() => {
   shuffle(pictures.value)
   ready.value = true
   setTimeout(() => {
-    let nbFound = pictures.value.filter(picture => picture.found).length
-    while (nbFound.value > 1) {
+    let nbFound = 2
+    while (nbFound > 1) {
       shuffle(answers.value)
-      nbFound = pictures.value.filter(picture => picture.found).length
-    }
+      checkAnswer()
+      nbFound = getNbFound()
+    } 
   }
   , 500);
 });
@@ -130,7 +133,7 @@ const answers = ref(props.picsInit.map(picture => picture.answer))
 
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
-const checkAnswer = async () => {
+const checkAnswer = () => {
   for (let i = 0; i < pictures.value.length; i++) {
     const pic = pictures.value[i]
     pic.found = pic.answer === answers.value[i]

@@ -1,7 +1,7 @@
 <template>
   <main class="min-h-screen">
     <AppHeader class="mb-6 text-center" :title="title" :description="description" />
-    <QuizzRandomSparql :nbPics="nbPics" :sparqlQuery="sparqlQuery" />
+    <QuizzRandomSparql :nbPics="10" :sparqlQuery="sparqlQuery" />
   </main>
 </template>
 
@@ -10,12 +10,8 @@
 const title = "Quizz - actrices ayant reçu un oscar ";
 const description = "Remettez les photos au dessus du bon nom ! ";
 
-const nbPics = 7
-
 const sparqlQuery = `
 #defaultView:ImageGrid
-#             wdt:P347 ?idJoconde.        # 80 oeuvres sur +800
-#             wdt:P973 ?descriptionUrl.   # 590
 SELECT  ?date 
 (MD5(CONCAT(str(?artiste),str(RAND()))) as ?random)
 (SAMPLE(?image) AS ?image) 
@@ -23,7 +19,6 @@ SELECT  ?date
 (GROUP_CONCAT(DISTINCT ?recompenseLabel; SEPARATOR = " | ") AS ?recompenseLabels) 
 WHERE {
   ?artiste wdt:P31 wd:Q5;
-#          wdt:P106 wd:Q33999;    # Américain
           wdt:P166 ?recompense;
           wdt:P27 wd:Q30;
           
@@ -31,10 +26,6 @@ WHERE {
     wdt:P569 ?date.
   
   filter(?recompense in (wd:Q103618)).
-#   filter(?recompense in (wd:Q103916, wd:Q103618)).
-  
-#   filter(year(?date) > 1970).  
-#   filter(year(?date) > 1950).
 
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
   SERVICE wikibase:label {
