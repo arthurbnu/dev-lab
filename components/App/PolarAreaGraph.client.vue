@@ -70,15 +70,15 @@ const generateDateTimeSerie = (timeSerie) => {
       }
 
      const series = [{
-            name: 'First',
-            data: generateDateTimeSerie(labNumbers.value[0].timeline.first)
+            name: 'Formations',
+            data: generateDateTimeSerie(labNumbers.value[0].timeline.formas)
           },
           {
-            name: 'Second',
-            data: generateDateTimeSerie(labNumbers.value[0].timeline.second)
+            name: 'Projets',
+            data: generateDateTimeSerie(labNumbers.value[0].timeline.projets)
           },
           {
-            name: 'Third',
-            data: generateDateTimeSerie(labNumbers.value[0].timeline.third)
+            name: 'Evénements',
+            data: generateDateTimeSerie(labNumbers.value[0].timeline.events)
           }]
 </script>
