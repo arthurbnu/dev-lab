@@ -1,47 +1,46 @@
 
 <template>
   <div class="transition-all duration-700" :class="{ 'opacity-0': !ready }">
-    <transition-expand :delay = "300" :duration="600" :easing=" 'cubic-bezier(0.6, 0, 0.4, 2)'">
-      <p v-if = "orientationError" class = "text-center text-lg text-teal-600 transition-all">    
-        <Icon name = "heroicons:arrow-path-rounded-square" 
-        class = "inline-block w-6 h-6 mr-2" />
+    <transition-expand :delay="300" :duration="600" :easing="'cubic-bezier(0.6, 0, 0.4, 2)'">
+      <p v-if="orientationError" class="text-center text-lg text-teal-600 transition-all">
+        <Icon name="heroicons:arrow-path-rounded-square" class="inline-block w-6 h-6 mr-2" />
         {{ orientationError }}
       </p>
-    <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
-      <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul" class="flex flex-nowrap space-x-2 mb-4">
-        <transition-group>
-          <li v-for="(picture, id) in pictures" :key="picture.src" class="relative" :style="basisStyle">
-          <!-- <li v-for="(picture, id) in pictures" :key="picture.src" class="relative flex items-end" :style="basisStyle"> -->
-            <span v-if="picture.found"
-            class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
-            🥇
-          </span>
-          <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full">
-            <NuxtImg v-if="!picture.src.includes('http')"
-            :src="picture.src" :alt ="'inconnu ' + picture.src"
-            :class="{ 'my-error': lastError.picture === picture.src }"
-            class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
+      <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
+        <VueDraggableNext :list="pictures" @end="handleEnd" animation="500" tag="ul"
+          class="flex flex-nowrap space-x-2 mb-4">
+          <transition-group>
+            <li v-for="(picture, id) in pictures" :key="picture.src" class="relative" :style="basisStyle">
+              <!-- <li v-for="(picture, id) in pictures" :key="picture.src" class="relative flex items-end" :style="basisStyle"> -->
+              <span v-if="picture.found"
+                class="absolute w-full h-full bg-teal-700/40 z-10 transition-all my-height grid place-content-center text-4xl border-b-2 border-yellow-300">
+                🥇
+              </span>
+              <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full">
+                <NuxtImg v-if="!picture.src.includes('http')" :src="picture.src" :alt="'inconnu ' + picture.src"
+                  :class="{ 'my-error': lastError.picture === picture.src }"
+                  class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
 
-            <img v-else :src="picture.src" :alt ="'inconnu ' + picture.src"
-            :class="{ 'my-error': lastError.picture === picture.src }"
-            class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
-            <!-- component is nuxtimg if relative path, img otherwise -->
-            <!-- <component :is="picture.src.includes('http') ? 'img' : NuxtImg" 
+                <img v-else :src="picture.src" :alt="'inconnu ' + picture.src"
+                  :class="{ 'my-error': lastError.picture === picture.src }"
+                  class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
+                <!-- component is nuxtimg if relative path, img otherwise -->
+                <!-- <component :is="picture.src.includes('http') ? 'img' : NuxtImg" 
               :src="picture.src" :alt ="'inconnu ' + picture.src"
               :class="{ 'my-error': lastError.picture === picture.src }"
               class="cursor-move hover:opacity-90 transition-all border-4 border-solid" /> -->
-          </UChip>
+              </UChip>
+            </li>
+          </transition-group>
+        </VueDraggableNext>
+        <ul v-auto-animate class="flex flex-nowrap space-x-2">
+          <li v-for="(answer, id) in answers" :key="answer"
+            class="grid place-content-center hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
+            :class="{ 'my-error': lastError.answer === answer }" :data-answer="answer" :style="basisStyle">
+            {{ answer }}
           </li>
-        </transition-group>
-      </VueDraggableNext>
-      <ul v-auto-animate class="flex flex-nowrap space-x-2">
-        <li v-for="(answer, id) in answers" :key="answer"
-          class="grid place-content-center hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
-          :class="{ 'my-error': lastError.answer === answer }" :data-answer="answer" :style="basisStyle">
-          {{ answer }}
-        </li>
-      </ul>
-    </div>
+        </ul>
+      </div>
     </transition-expand>
     <div v-if="!ready" class="absolute inset-0 flex justify-center items-center">
       <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-teal-900"></div>
@@ -70,7 +69,7 @@ import { ref, watchEffect, computed, onMounted } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 
 const screenOrientation = useScreenOrientation()
-const acceptedOrientation:OrientationType[] = ['landscape-primary', 'landscape-secondary']
+const acceptedOrientation: OrientationType[] = ['landscape-primary', 'landscape-secondary']
 
 const ready = ref(false)
 const youWin = computed(() => pictures.value.every(picture => picture.found))
@@ -79,19 +78,29 @@ const lastError = ref({ picture: '', answer: '' })
 const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
 
 const orientationError = computed(() => {
-  if (!ready.value ) 
+  if (!ready.value)
     return ''
-  if (!screenOrientation.isSupported.value || !screenOrientation.orientation.value) 
+  if (!screenOrientation.isSupported.value || !screenOrientation.orientation.value)
     return ''
   if (!acceptedOrientation.includes(screenOrientation.orientation.value))
     return 'Passer en mode paysage pour commencer le jeu'
-  return ''  
+  return ''
 })
 
-onMounted(() => { 
+const getNbFound = () => pictures.value.filter(picture => picture.found).length
+
+onMounted(() => {
   shuffle(pictures.value)
   ready.value = true
-  setTimeout(() => shuffle(answers.value), 500);
+  setTimeout(() => {
+    let nbFound = 2
+    while (nbFound > 1) {
+      shuffle(answers.value)
+      checkAnswer()
+      nbFound = getNbFound()
+    } 
+  }
+  , 500);
 });
 
 // reset last error each time its value is not empty to trigger the animation
@@ -105,7 +114,7 @@ watchEffect(async () => {
 const handleEnd = (e: any) => {
   const chosenAnswer = answers.value[e.newIndex]
   const chosenPicture = pictures.value[e.newIndex]
-  if (chosenAnswer !== chosenPicture.answer) 
+  if (chosenAnswer !== chosenPicture.answer)
     lastError.value.answer = chosenAnswer
 }
 
@@ -124,7 +133,7 @@ const answers = ref(props.picsInit.map(picture => picture.answer))
 
 const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
 
-const checkAnswer = async () => {
+const checkAnswer = () => {
   for (let i = 0; i < pictures.value.length; i++) {
     const pic = pictures.value[i]
     pic.found = pic.answer === answers.value[i]

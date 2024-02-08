@@ -11,41 +11,37 @@
 
 <script  setup>
 import { watchEffect, ref, computed } from 'vue';
-const nbPics = ref(6);
 const imgWidth = 200
 const date = ref('')  
 const dateLine = computed(() => `# Requête sparql : ${date.value}`)  // to force refresh
 
-const sparqlQuery = `
-#  +800 résultats
-# doublons : plusieurs images, plusieurs auteurs
-# - sample img -> 848 résultats
-# - concat auteurs -> 819
-# données manquantes : 
-#  - auteurs inconnus (tête de méduse )
+const defaultImageLabel = 'image'
+const defaultAnswerLabel = 'artisteLabels'
 
-#defaultView:ImageGrid
-#             wdt:P347 ?idJoconde.        # 80 oeuvres sur +800
-#             wdt:P973 ?descriptionUrl.   # 590
-SELECT ?peintureLabel ?mouvementLabel ?peinture 
-(MD5(CONCAT(str(?peinture),str(RAND()))) as ?random)
-(SAMPLE(?image) AS ?image) 
-(GROUP_CONCAT(DISTINCT ?artisteLabel; SEPARATOR = " | ") AS ?artisteLabels) WHERE {
-  ?peinture wdt:P31 wd:Q3305213;
-    wdt:P135 ?mouvement;
-    wdt:P18 ?image;
-    wdt:P170 ?artiste.
-  ?mouvement (wdt:P31|wdt:P361) wd:Q4692.
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-  SERVICE wikibase:label {
-    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
-    ?artiste rdfs:label ?artisteLabel.
+const props = defineProps({
+  sparqlQuery: {
+    type: String,
+    required: true
+  },
+  nbPics: {
+    type: Number,
+    required: false,
+    default: 6
+  },
+  imageLabel: {
+    type: String,
+    required: false,
+    default: defaultImageLabel
+  },
+  answerLabel: {
+    type: String,
+    required: false,
+    default: defaultAnswerLabel
   }
-}
-GROUP BY ?peintureLabel ?mouvementLabel ?peinture
-ORDER BY ?random
-LIMIT ${nbPics.value + 5}
-`;
+})
+
+const limit = `LIMIT ${props.nbPics + 8}`
+const sparqlQuery = props.sparqlQuery + limit
 
 const fullUrl = computed(() => baseUrl + encodeURIComponent(dateLine.value + sparqlQuery))
 
@@ -66,7 +62,7 @@ const cleanResults = (receivedPictures) =>
   // remove duplicate answers and duplicate pictures
   .filter((picture, index, self) =>
     index === self.findIndex((t) => (
-      t.answer === picture.answer
+      t.answer === picture.answer || t.src === picture.src
     ))
   )
 
@@ -74,12 +70,12 @@ watchEffect(() => {
   if (!items.value) return
   const receivedPictures = items.value.results.bindings.map((item) => {
     return {
-      src: item.image.value + `?width=${imgWidth}`,
-      answer: item.artisteLabels.value
+      src: item[props.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
+      answer: item[props.answerLabel ?? defaultAnswerLabel].value
     }
   })
   const cleanPics = cleanResults(receivedPictures)
-  pics.value = cleanPics.length > nbPics.value ? cleanPics.slice(0, nbPics.value) : cleanPics
+  pics.value = cleanPics.length > props.nbPics ? cleanPics.slice(0, props.nbPics) : cleanPics
   console.log('pics : ', pics.value)
 })
 
