@@ -26,7 +26,6 @@ const pageInfos = reactive({
   ogTitle: '',
   ogDescription: '',
   robots: '',
-  themeColor: '',
 })
 
 switch(name){
@@ -147,15 +146,30 @@ switch(name){
     break;
 }
 
+
+useSeoMeta({
+  title: pageInfos.title,
+  description: pageInfos.description,
+
+  ogImage: "https://dev-lab-one.vercel.app/quizz/quizz-sparql.png",
+  ogUrl: "https://dev-lab-one.vercel.app/quizz/" + name,
+  ogType: "website",
+  ogTitle: pageInfos.title,
+  ogDescription: pageInfos.description,
+  robots: "index, follow",
+});
+
+
 </script>
 
 <style lang="scss" >
 
 [data-name="swift"]  {
 
-li:has(img) div {
-  background: aliceblue;
-}
+  li:has(img) div {
+    background: aliceblue;
+  }
 
 }
+
 </style>

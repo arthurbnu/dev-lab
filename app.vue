@@ -38,11 +38,11 @@ useHead({
     { name : 'theme-color', content : 'teal'},
     { name : 'robots', content : 'index, follow'},
     { name : 'author', content : 'A B'},
-    { name : 'og:image', content : 'https://dev-lab-one.vercel.app/sparql/sparql-vuejs-personnes-wikipedia.png'},
-    { name : 'og:url', content : 'https://dev-lab-one.vercel.app/'},
-    { name : 'og:type', content : 'website'},
-    { name : 'og:title', content : 'Portfolio Dev'},
-    { name : 'og:description', content : 'Portfolio Dev'},
+    { property : 'og:image', content : 'https://dev-lab-one.vercel.app/sparql/sparql-vuejs-personnes-wikipedia.png'},
+    { property : 'og:url', content : 'https://dev-lab-one.vercel.app/'},
+    { property : 'og:type', content : 'website'},
+    { property : 'og:title', content : 'Lab Dev - Expériences'},
+    { property : 'og:description', content : 'Expériences et projets de développement sur les données'},
     { name : 'google-site-verification', content : 'PHAJkMWsS9my1gW-Q8KTd-WvO2UHfAoMBNZGr7e1L10'} // google search console
   ],
   bodyAttrs: {
