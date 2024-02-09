@@ -5,7 +5,12 @@
     <transition-expand>
       <QuizzGhostLoader v-if="pending" :nbItems="nbPics" class="w-[60vw] mx-auto my-8"/>
     </transition-expand>
-    <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" />
+    <div v-if = "quizzTemplate === 'drag'">
+      <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" />
+    </div>
+    <div v-else-if = "quizzTemplate === 'choice'">
+      <QuizzChoice v-if="pics.length" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" />
+    </div>
   </div>
 </template>
 
@@ -19,6 +24,11 @@ const defaultImageLabel = 'image'
 const defaultAnswerLabel = 'artisteLabels'
 
 const props = defineProps({
+  quizzTemplate: {
+    type: String,
+    required: false,
+    default: 'drag'   // drag | choice
+  },
   sparqlQuery: {
     type: String,
     required: true
