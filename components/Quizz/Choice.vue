@@ -63,7 +63,7 @@ const getChoices = (answer) => {
     while (choices.length < props.nbChoices) {
         const randomPic = props.pics[Math.floor(Math.random() * props.pics.length)]
         console.log(randomPic)
-        if (!choices.includes(randomPic.answer)) choices.push(randomPic)
+        if (!choices.includes(randomPic)) choices.push(randomPic)
     }
     return choices.sort(() => Math.random() - 0.5)
 }
