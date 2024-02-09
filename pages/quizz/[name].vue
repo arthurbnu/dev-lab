@@ -71,7 +71,7 @@ switch(name){
     case 'arts-choice' : 
     pageInfos.quizzTemplate = 'choice'
     pageInfos.title = "Quizz - Peintures de la renaissance";
-    pageInfos.description =  "Trouvez l'auteur de chaque oeuvre en remettant les images au dessus du bon peintre";
+    pageInfos.description =  "";
     pageInfos.nbPics = 15
     pageInfos.sparqlQuery = `
       #  +800 résultats
@@ -188,7 +188,7 @@ switch(name){
     break;
 
     case 'beatles' :  // Beatles - utilisation de musicbrainz et coverartarchive pour les images 
-    pageInfos.title = "Quizz - The Beatlse";
+    pageInfos.title = "Quizz - The Beatles";
     pageInfos.description =  "Remettez les images de chaque Album au dessus du bon titre de chanson ! ";
     pageInfos.nbPics = 7
     pageInfos.answerLabel = 'trackListLabel'
