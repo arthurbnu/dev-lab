@@ -116,12 +116,7 @@ const handleEnd = (e: any) => {
   const chosenPicture = pictures.value[e.newIndex]
   if (chosenAnswer !== chosenPicture.answer)
     lastError.value.answer = chosenAnswer
-else{
 
-    pictures.value = [chosenPicture, ...pictures.value.filter(picture => picture.src !== chosenPicture.src)]
-answers.value = [chosenAnswer, ...answers.value.filter(ans => ans !== chosenAnswer)]
-
-}
 }
 
 // watchEffect(() => {
