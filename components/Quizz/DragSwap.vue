@@ -7,9 +7,9 @@
         {{ orientationError }}
       </p>
       <div v-else class=" h-80 shadow-lg  max-w-full transition-all">
-        <VueDraggableNext :list="pictures" @end="handleEnd" :move="handleMove" 
-          >
-          <transition-group name="img-group" tag="ul" class="flex flex-nowrap space-x-2 mb-4" >
+        <VueDraggableNext :list="pictures" @end="handleEnd" tag="ul" :move="handleMove" 
+          class="flex flex-nowrap space-x-2 mb-4">
+          <transition-group name="img-group">
             <li v-for="(picture, id) in pictures" :key="picture.src" class="relative" :style="basisStyle">
               <!-- <li v-for="(picture, id) in pictures" :key="picture.src" class="relative flex items-end" :style="basisStyle"> -->
               <span v-if="picture.found"
