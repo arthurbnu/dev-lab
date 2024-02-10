@@ -25,7 +25,7 @@ import type { UProgress } from '#build/components';
                     <!-- class="bg-teal-700 text-white text-center justify-center inline-block cursor-pointer hover:bg-teal-600 transition-all border-teal-950 basis-[33%]" -->
                     <div v-for="(pic, i) in getChoices(pics[currentPicture])" :key="i"
                         @click="handleChoice(pic.answer, $el)"
-                        class="bg-teal-700 text-white px-5 py-2 text-center inline-block cursor-pointer hover:bg-teal-600 transition-all border-solid border-2 basis-[33%]"
+                        class="bg-teal-700 text-white px-5 py-2 text-center inline-block cursor-pointer hover:bg-teal-600 transition-all border-solid border-2 border-transparent basis-[33%]"
                         :class="{ '!border-teal-200': pic.found, '!border-red-400' : pic.found===false }">
                         <span>{{ pic.answer }}</span>
                     </div>
@@ -88,10 +88,10 @@ const handleChoice = (answer, el) => {
     const correctAnswer = props.pics[currentPicture.value].answer
     picsRef.value[currentPicture.value].found = answer === correctAnswer
     if (currentPicture.value !== picsRef.value.length - 1)
-        setTimeout(() => {
-            currentPicture.value++
-        }, 400)
-        // currentPicture.value++
+        // setTimeout(() => {
+        //     currentPicture.value++
+        // }, 400)
+        currentPicture.value++
     else
         end.value = true
 }
