@@ -48,3 +48,26 @@ Likes
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+
+handleDragEnd() {
+  
+   const futureItem = pictures.value[futureIndex.value]
+      const movingItem =
+pictures.value[movingIndex.value]
+      const _items = Object.assign([], pictures.value)
+      _items[futureIndex.value] = movingItem
+      _items[movingIndex.value] = futureItem
+
+      pictures.value= _items
+    },
+
+const movingIndex = ref(0)
+const futureIndex = ref(0)
+
+ const  handleMove = e => {
+      const { index, futureIndex } = e.draggedContext
+      movingIndex.value= index
+      futureIndex.value = futureIndex
+      return false // disable sort
+    }
