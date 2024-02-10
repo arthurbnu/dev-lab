@@ -175,12 +175,8 @@ watchEffect(() => props.easyMode && sortFound())
   max-width: 100vw;
 }
 
-/* .img-group * {
-  transition: all 0.5s ease;
-} */
-
 .img-group-move {
-  transition: all .15s;
+  transition: all .3s;
 }
 
 </style>
