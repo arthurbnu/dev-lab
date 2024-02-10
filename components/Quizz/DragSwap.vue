@@ -128,12 +128,10 @@ const handleEnd = (e: any) => {
   const _items = Object.assign([], pictures.value)
   _items[lastIndex.value] = movingItem
   _items[movingIndex.value] = futureItem
-
   pictures.value = _items
 
-  const chosenAnswer = answers.value[e.newIndex]
-  const chosenPicture = pictures.value[e.newIndex]
-  if (chosenAnswer !== chosenPicture.answer)
+  const chosenAnswer = answers.value[lastIndex.value]
+  if (chosenAnswer !== movingItem.answer)
     lastError.value.answer = chosenAnswer
 }
 
