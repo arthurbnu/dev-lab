@@ -81,7 +81,8 @@ watchEffect(() => {
   const receivedPictures = items.value.results.bindings.map((item) => {
     return {
       src: item[props.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
-      answer: item[props.answerLabel ?? defaultAnswerLabel].value
+      answer: item[props.answerLabel ?? defaultAnswerLabel].value,
+      article : item.article?.value
     }
   })
   const cleanPics = cleanResults(receivedPictures)
