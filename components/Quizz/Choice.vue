@@ -92,7 +92,7 @@ const isVisible = (pic) => currentIndex.value === props.pics.indexOf(pic)
 
 const end = ref(false)
 
-const showAnswerTime = 1000
+const showAnswerTime = 800
 
 const handleChoice = async (answer, el) => {
     const correctAnswer = currentPic.value.answer
