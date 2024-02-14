@@ -13,7 +13,7 @@
             <div v-if="!end">
                 <transition-expand group>
                     <div v-for="(pic, i) in pics" :key="i">
-                        <img v-if="isVisible(pic)" :src="pic.src" class="rounded m-auto object-contain h-[50vh] w-[95%]" />
+                        <img v-if="isVisible(pic)" :src="pic.src" class="rounded m-auto object-contain h-[52vh] w-[97%]" />
                     </div>
                 </transition-expand>
 
@@ -21,7 +21,7 @@
                     <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i"
                         @click="handleChoice(pic.answer, $el)"
                         class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
-                        :class="{ '!border-teal-200 !bg-teal-500': typeof currentPic.found != 'undefined' &&  currentPic.answer === pic.answer}">
+                        :class="{ '!border-teal-200 !bg-teal-500': typeof currentPic.found != 'undefined' &&  currentPic.answer === pic.answer, '!bg-red-500' : currentPic.found === false && selectedAnswer === answer}">
                         {{ pic.answer }}
                     </button>
                 </div>
@@ -94,7 +94,10 @@ const end = ref(false)
 
 const showAnswerTime = 800
 
+const selectedAnswer = ref('')
+
 const handleChoice = async (answer, el) => {
+selectedAnswer.value = answer 
     const correctAnswer = currentPic.value.answer
     currentPic.value.found = answer === correctAnswer
     console.log(el)
