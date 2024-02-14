@@ -21,7 +21,7 @@
                     <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i"
                         @click="handleChoice(pic.answer, $el)"
                         class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
-                        :class="{ '!border-teal-200 !bg-teal-600': typeof currentPic.found != 'undefined' && picsRef[currentIndex].answer === pic.answer }">
+                        :class="{ '!border-teal-200': typeof currentPic.found != 'undefined' &&  currentPic.answer === pic.answer, '!border-red-700' : currentPic.found && currentPic.answer !== answer}">
                         {{ pic.answer }}
                     </button>
                 </div>
