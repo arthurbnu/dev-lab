@@ -82,7 +82,8 @@ watchEffect(() => {
     return {
       src: item[props.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
       answer: item[props.answerLabel ?? defaultAnswerLabel].value,
-      article : item.article?.value
+      article : item.article?.value,
+name : item.itemLabel?.value ?? item.peintureLabel?.value
     }
   })
   const cleanPics = cleanResults(receivedPictures)
