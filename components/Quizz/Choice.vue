@@ -20,7 +20,7 @@
                 <div class="flex justify-around  gap-3 absolute z-10 bottom-4 left-0 w-full">
                     <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i"
                         @click="handleChoice(pic.answer, $el)"
-                        class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
+                        class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
                         :class="{ '!border-teal-200 !bg-teal-600': typeof currentPic.found != 'undefined' && picsRef[currentIndex].answer === pic.answer }">
                         {{ pic.answer }}
                     </button>

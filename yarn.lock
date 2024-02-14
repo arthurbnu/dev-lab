@@ -4829,6 +4829,11 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz"
@@ -4893,6 +4898,11 @@ longest-streak@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/longest-streak/-/longest-streak-3.1.0.tgz"
   integrity sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==
+
+lottie-web@5.12.2:
+  version "5.12.2"
+  resolved "https://registry.npmjs.org/lottie-web/-/lottie-web-5.12.2.tgz"
+  integrity sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==
 
 lru-cache@^10.0.1:
   version "10.0.1"
@@ -9006,7 +9016,7 @@ vue-use-fixed-header@^2.0.0:
   resolved "https://registry.npmjs.org/vue-use-fixed-header/-/vue-use-fixed-header-2.0.0.tgz"
   integrity sha512-N4vWhTZpTaY5uWXIoUAXrmMR2tBQuIPf+mT+jx/ayk2eSZNCcNy0J52uJ7Dvf8St1vSmkdYdH3K/WwuV+dTQDA==
 
-"vue@^2.6.14 || >=3", "vue@^2.7.0 || ^3.2.25", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", vue@^3.0.0-beta.1, vue@^3.2.0, vue@^3.2.2, vue@^3.2.25, vue@^3.3.4, vue@^3.3.8, "vue@> 3.0.0", "vue@>=2.7 || >=3", vue@>=3, vue@>=3.0.0, vue@3.4.4:
+"vue@^2.6.14 || >=3", "vue@^2.7.0 || ^3.2.25", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", vue@^3.0.0-beta.1, vue@^3.2, vue@^3.2.0, vue@^3.2.2, vue@^3.2.25, vue@^3.3.4, vue@^3.3.8, "vue@> 3.0.0", "vue@>=2.7 || >=3", vue@>=3, vue@>=3.0.0, vue@3.4.4:
   version "3.4.4"
   resolved "https://registry.npmjs.org/vue/-/vue-3.4.4.tgz"
   integrity sha512-suZXgDVT8lRNhKmxdkwOsR0oyUi8is7mtqI18qW97JLoyorEbE9B2Sb4Ws/mR/+0AgA/JUtsv1ytlRSH3/pDIA==
@@ -9021,6 +9031,14 @@ vue3-apexcharts@^1.4.4:
   version "1.4.4"
   resolved "https://registry.npmjs.org/vue3-apexcharts/-/vue3-apexcharts-1.4.4.tgz"
   integrity sha512-TH89uZrxGjaDvkaYAISvj8+k6Bf1rUKFillc8oJirs5XZEPiwM1ELKZQ786wz0rfPqkSHHny2lqqUCK7Rw+LcQ==
+
+vue3-lottie@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/vue3-lottie/-/vue3-lottie-3.2.0.tgz"
+  integrity sha512-PtNXbv7iD4XGmK8CXd71aLWmILIR6P6VzLMDw6ZzmDAeuJZuJ0MdOVnn50LOARgq+cOFJsn/2z+7tZh0F9T9qw==
+  dependencies:
+    lodash-es "^4.17.21"
+    lottie-web "5.12.2"
 
 watchpack@^2.4.0:
   version "2.4.0"
