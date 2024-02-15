@@ -1,41 +1,48 @@
 
-import type { UProgress } from '#build/components';
-
-import type { UProgress } from '#build/components';
-
 <template>
     <section>
         <div class="flex justify-center gap-3 mb-5">
             <div v-for="(pic, i) in picsRef" :key="i">
                 <div class="filter saturate-100 border-teal-600 border-solid"
-                    :class="{ 'border-b-2': currentPicture === i }">
+                    :class="{ 'border-b-2': currentIndex === i }">
                     <UAvatar :src="pic.src" :alt="pic.answer" size="lg" :imgClass="getImgClass(pic)" />
                 </div>
             </div>
         </div>
-        <div class="bg-slate-800/40 p-8 h-[75vh] w-full rounded-lg m-auto max-w-[700px] relative">
+        <div class=" p-8 pt-6 h-[70vh] w-full rounded-lg m-auto max-w-[700px] relative" :class="{'bg-slate-800/40' : !end}">
             <div v-if="!end">
                 <transition-expand group>
                     <div v-for="(pic, i) in pics" :key="i">
-                        <img v-if="isVisible(pic)" :src="pic.src" class="rounded m-auto object-contain h-[50vh] w-[58vw]" />
+                        <img v-if="isVisible(pic)" :src="pic.src" class="rounded m-auto object-contain h-[52vh] w-[97%]" />
                     </div>
                 </transition-expand>
 
-                <div class="flex justify-around  gap-3 absolute z-10 bottom-4 left-0 w-full max-x-[58vw]">
-                    <!-- class="bg-teal-700 text-white text-center justify-center inline-block cursor-pointer hover:bg-teal-600 transition-all border-teal-950 basis-[33%]" -->
-                    <div v-for="(pic, i) in getChoices(pics[currentPicture])" :key="i"
+                <div class="flex justify-around  gap-3 absolute z-10 bottom-4 left-0 w-full">
+                    <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i"
                         @click="handleChoice(pic.answer, $el)"
-                        class="bg-teal-700 text-white px-5 py-2 text-center inline-block cursor-pointer hover:bg-teal-600 transition-all border-solid border-2 border-transparent basis-[33%]"
-                        :class="{ '!border-teal-200': pic.found, '!border-red-400' : pic.found===false }">
-                        <span>{{ pic.answer }}</span>
-                    </div>
+                        class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
+                        :class="{ '!border-teal-200 !bg-teal-700': typeof currentPic.found != 'undefined' &&  currentPic.answer === pic.answer, '!bg-red-500' : !currentPic.found && selectedAnswer === pic.answer}">
+                        {{ pic.answer }}
+                    </button>
                 </div>
             </div>
-            <div v-else>
-                <h2>Partie terminée ...</h2>
+            <!-- Partie terminée -->
+            <div v-else>    
+                 <UIcon name="trophy" class="text-9xl text-teal-700" />
+                <h2 class="text-lg mb-4 ">Partie terminée ...</h2>
 
                 Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
-                <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" />
+                <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class = "animate-pulse"  />
+                    <div class="max-w-full my-5 bg-white/5 rounded-lg p-4">
+                        <div class="text-xl mb-5">Réponses</div>
+                        <ul>
+                            <li v-for="(pic, i) in picsRef" :key="i" class="flex items-center gap-3 mb-2 hover:bg-slate-400/10 p-1 rounded-md">
+                                <UAvatar :src="pic.src" :alt="pic.answer" size="lg" :imgClass="''" />
+                                {{ pic.answer}}
+                                <a :href="pic.article ?? pic.src.split('?width')[0]" target="_blank" class="text-primary underline">Voir</a>
+                            </li>
+                        </ul>
+                    </div>
             </div>
         </div>
     </section>
@@ -43,7 +50,8 @@ import type { UProgress } from '#build/components';
 
 <script setup>
 
-const currentPicture = ref(0)
+const currentIndex = ref(0)
+const currentPic = computed(() => picsRef.value[currentIndex.value])
 
 const props = defineProps({
     pics: {
@@ -59,13 +67,16 @@ const props = defineProps({
 // function that takes an answer (the good one) and adds 3 random wrong answers
 const getChoices = (answer) => {
     console.log('right : ', answer)
+    const pic = currentPic.value
+    if (pic.choices) return pic.choices
     const choices = [answer]
     while (choices.length < props.nbChoices) {
         const randomPic = props.pics[Math.floor(Math.random() * props.pics.length)]
         console.log(randomPic)
         if (!choices.includes(randomPic)) choices.push(randomPic)
     }
-    return choices.sort(() => Math.random() - 0.5)
+    pic.choices = choices.sort(() => Math.random() - 0.5)
+    return pic.choices
 }
 
 const getImgClass = (pic) => {
@@ -77,21 +88,23 @@ const getImgClass = (pic) => {
 
 const picsRef = ref(props.pics.map(pic => ({ ...pic, found: undefined })))
 
-const isVisible = (pic) => currentPicture.value === props.pics.indexOf(pic)
-
-// const end = computed(() => picsRef.value.every(pic => typeof pic.found !== 'undefined'))
+const isVisible = (pic) => currentIndex.value === props.pics.indexOf(pic)
 
 const end = ref(false)
 
-const handleChoice = (answer, el) => {
+const showAnswerTime = 800
+
+const selectedAnswer = ref('')
+
+const handleChoice = async (answer, el) => {
+selectedAnswer.value = answer 
+    const correctAnswer = currentPic.value.answer
+    currentPic.value.found = answer === correctAnswer
     console.log(el)
-    const correctAnswer = props.pics[currentPicture.value].answer
-    picsRef.value[currentPicture.value].found = answer === correctAnswer
-    if (currentPicture.value !== picsRef.value.length - 1)
-        // setTimeout(() => {
-        //     currentPicture.value++
-        // }, 400)
-        currentPicture.value++
+    await new Promise(resolve => setTimeout(resolve, showAnswerTime))
+selectedAnswer.value = ''
+    if (currentIndex.value !== picsRef.value.length - 1)
+        currentIndex.value++
     else
         end.value = true
 }

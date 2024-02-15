@@ -84,7 +84,7 @@ switch(name){
       #defaultView:ImageGrid
       #             wdt:P347 ?idJoconde.        # 80 oeuvres sur +800
       #             wdt:P973 ?descriptionUrl.   # 590
-      SELECT ?peintureLabel ?mouvementLabel ?peinture 
+      SELECT ?peintureLabel ?mouvementLabel ?peinture ?article
       (MD5(CONCAT(str(?peinture),str(RAND()))) as ?random)
       (SAMPLE(?image) AS ?image) 
       (GROUP_CONCAT(DISTINCT ?artisteLabel; SEPARATOR = " | ") AS ?artisteLabels) WHERE {
@@ -93,13 +93,18 @@ switch(name){
           wdt:P18 ?image;
           wdt:P170 ?artiste.
         ?mouvement (wdt:P31|wdt:P361) wd:Q4692.
+
+?article schema:about ?peinture;
+        schema:inLanguage "fr";
+        schema:isPartOf <https://fr.wikipedia.org/>.
+
         SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
         SERVICE wikibase:label {
           bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
           ?artiste rdfs:label ?artisteLabel.
         }
       }
-      GROUP BY ?peintureLabel ?mouvementLabel ?peinture
+      GROUP BY ?peintureLabel ?mouvementLabel ?peinture ?article
       ORDER BY ?random
       `;
       break;
