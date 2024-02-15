@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <div class=" p-8 pt-6 h-[75vh] w-full rounded-lg m-auto max-w-[700px] relative" :class="{'bg-slate-800/40' : !end}">
+        <div class=" p-8 pt-6 h-[70vh] w-full rounded-lg m-auto max-w-[700px] relative" :class="{'bg-slate-800/40' : !end}">
             <div v-if="!end">
                 <transition-expand group>
                     <div v-for="(pic, i) in pics" :key="i">
