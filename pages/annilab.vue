@@ -71,6 +71,9 @@
       </div>
     </div>
     <AppFires v-if="startFireWorks" class = "opacity-60"/>
+    <q-popup-proxy v-if="startFireWorks" class="text-gray-700 q-ma-md"> 
+      BRAVOOO ! Vous avez résolu toutes les énigmes. Les canapés vous attendent pour un repos bien mérité :) 
+    </q-popup-proxy>
   </div>
 </template>
 
@@ -138,4 +141,5 @@ const startFireWorks = ref(false)
 .flex-child:first-child {
   margin-right: 20px;
 }
+
 </style>
