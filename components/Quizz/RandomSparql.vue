@@ -3,12 +3,12 @@
   <div>
     <div v-if="error" class="text-red-500 hidden">{{ error }}</div>
     <transition-expand>
-      <QuizzGhostLoader v-if="pending" :nbItems="nbPics" class="w-[60vw] mx-auto my-8"/>
+      <QuizzGhostLoader v-if="pending" :nbItems="nbPics" class="w-[60vw] mx-auto my-8" />
     </transition-expand>
-    <div v-if = "quizzTemplate === 'drag'">
+    <div v-if="quizzTemplate === 'drag'">
       <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" />
     </div>
-    <div v-else-if = "quizzTemplate === 'choice'">
+    <div v-else-if="quizzTemplate === 'choice'">
       <QuizzChoice v-if="pics.length" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" />
     </div>
   </div>
@@ -16,8 +16,8 @@
 
 <script  setup>
 import { watchEffect, ref, computed } from 'vue';
-const imgWidth = 200
-const date = ref('')  
+const imgWidth = 300
+const date = ref('')
 const dateLine = computed(() => `# Requête sparql : ${date.value}`)  // to force refresh
 
 const defaultImageLabel = 'image'
@@ -69,12 +69,12 @@ const cleanResults = (receivedPictures) =>
     && !picture.answer.includes('|')   // plusieurs auteurs
     && !picture.src.includes('.tiff')  // format non supporté
   )
-  // remove duplicate answers and duplicate pictures
-  .filter((picture, index, self) =>
-    index === self.findIndex((t) => (
-      t.answer === picture.answer || t.src === picture.src
-    ))
-  )
+    // remove duplicate answers and duplicate pictures
+    .filter((picture, index, self) =>
+      index === self.findIndex((t) => (
+        t.answer === picture.answer || t.src === picture.src
+      ))
+    )
 
 watchEffect(() => {
   if (!items.value) return
@@ -82,8 +82,8 @@ watchEffect(() => {
     return {
       src: item[props.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
       answer: item[props.answerLabel ?? defaultAnswerLabel].value,
-      article : item.article?.value,
-name : item.itemLabel?.value ?? item.peintureLabel?.value
+      article: item.article?.value,
+      name: item.itemLabel?.value ?? item.peintureLabel?.value
     }
   })
   const cleanPics = cleanResults(receivedPictures)
@@ -94,8 +94,8 @@ name : item.itemLabel?.value ?? item.peintureLabel?.value
 const clientFetch = async () => {
   date.value = new Date().toLocaleString()
   $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } }).then(response => items.value = response)
-  .catch(error => error.value = error)
-  .finally(() => setTimeout(() => pending.value = false, 1000));
+    .catch(error => error.value = error)
+    .finally(() => setTimeout(() => pending.value = false, 1000));
 }
 
 onMounted(() => {
