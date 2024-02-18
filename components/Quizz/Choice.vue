@@ -4,12 +4,14 @@
         <div class="flex justify-center gap-3 mb-5">
             <div v-for="(pic, i) in picsRef" :key="i">
                 <div class="filter saturate-100 border-teal-600 border-solid" :class="{ 'border-b-2': currentIndex === i }">
-                    <UAvatar :src="pic.src" :alt="pic.answer" size="lg" :imgClass="getImgClass(pic)" @click = "currentIndex = i" />
+                    <UAvatar :src="pic.src" :alt="pic.answer" size="lg" :imgClass="getImgClass(pic)"
+                        @click="currentIndex = i" />
                 </div>
             </div>
         </div>
-        <div class=" p-8 pt-3 h-[65vh] w-full rounded-lg m-auto max-w-[700px] relative" :class="{ 'bg-slate-800/40': !end }">
-            <div v-if="!end" ref = "imgContainer" >
+        <div class=" p-5 pt-3 h-[65vh] w-full rounded-lg m-auto max-w-[700px] relative"
+            :class="{ 'bg-slate-800/40': !end }">
+            <div v-if="!end" ref="imgContainer">
                 <transition-expand group>
                     <div v-for="(pic, i) in pics" :key="i">
                         <div v-if="isVisible(pic)">
@@ -39,7 +41,7 @@
                             </span>
                             <UAvatar :src="pic.src" :alt="pic.answer" size="md" class="m" />
                             <a :href="pic.article ?? pic.src.split('?width')[0]" target="_blank"
-                                class="text-primary underline truncate w-72 md:w-80">{{pic.name}}
+                                class="text-primary underline truncate w-72 md:w-80">{{ pic.name }}
                             </a>
                         </li>
                     </ul>
@@ -47,20 +49,18 @@
             </div>
         </div>
         <!--  4 boutons de proposition -->
-        <div class="flex justify-around mt-2 gap-3 z-10 bottom-4 left-0 w-full">
-                    <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i"
-                        @click="handleChoice(pic.answer) " :disabled="currentPic.alreadyAnswered"
-                        class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
-                        :class="{ 
-                            '!border-teal-200 !bg-teal-600': typeof currentPic.found != 'undefined' && currentPic.answer === pic.answer, 
-                            '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
-                            'cursor-not-allowed': currentPic.alreadyAnswered,
-                            }">
-                        {{ pic.answer }}
-                    </button>
-                </div>
-
-
+        <div v-if = "!end" class="flex justify-around mt-2 gap-3 z-10 bottom-4 left-0 w-full">
+            <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i" @click="handleChoice(pic.answer)"
+                :disabled="currentPic.alreadyAnswered"
+                class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
+                :class="{
+                    '!border-teal-200 !bg-teal-600': typeof currentPic.found != 'undefined' && currentPic.answer === pic.answer,
+                    '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
+                    'cursor-not-allowed': currentPic.alreadyAnswered,
+                }">
+                {{ pic.answer }}
+            </button>
+        </div>
     </section>
 </template>
 
@@ -70,12 +70,17 @@ const currentIndex = ref(0)
 const currentPic = computed(() => picsRef.value[currentIndex.value])
 
 const imgContainer = ref(null)
-const { isSwiping, direction } = useSwipe(imgContainer)
+const { isSwiping, direction } = useSwipe(imgContainer, {
+    onSwipeEnd: () => {
+        if (direction.value === 'left' && currentIndex.value < picsRef.value.length - 1) currentIndex.value++
+        if (direction.value === 'right' && currentIndex.value > 0) currentIndex.value--
+    }
+})
 
 watchEffect(() => {
     if (isSwiping.value) {
-        if (direction.value === 'left' && currentIndex.value < picsRef.value.length - 1) currentIndex.value++
-        if (direction.value === 'right' && currentIndex.value > 0) currentIndex.value--
+        // if (direction.value === 'left' && currentIndex.value < picsRef.value.length - 1) currentIndex.value++
+        // if (direction.value === 'right' && currentIndex.value > 0) currentIndex.value--
     }
 })
 
@@ -113,9 +118,9 @@ const getImgClass = (pic) => {
     return [baseClass, foundClass].join(' ')
 }
 
-const picsRef = ref(props.pics.map(pic => ({ ...pic, found: undefined, alreadyAnswered: false})))
+const picsRef = ref(props.pics.map(pic => ({ ...pic, found: undefined, alreadyAnswered: false })))
 const isVisible = pic => currentIndex.value === props.pics.indexOf(pic)
-const end = ref(false)
+const end = computed(() => picsRef.value.every(pic => pic.alreadyAnswered))
 const showAnswerTime = 800
 const selectedAnswer = ref('')
 
@@ -127,8 +132,6 @@ const handleChoice = async answer => {
     selectedAnswer.value = ''
     if (currentIndex.value !== picsRef.value.length - 1)
         currentIndex.value++
-    else
-        end.value = true
 }
 
 
