@@ -8,26 +8,19 @@
                 </div>
             </div>
         </div>
-        <div class=" p-8 pt-6 h-[75vh] w-full rounded-lg m-auto max-w-[700px] relative" :class="{ 'bg-slate-800/40': !end }">
+        <div class=" p-8 pt-3 h-[65vh] w-full rounded-lg m-auto max-w-[700px] relative" :class="{ 'bg-slate-800/40': !end }">
             <div v-if="!end" ref = "imgContainer" >
                 <transition-expand group>
                     <div v-for="(pic, i) in pics" :key="i">
-                        <img v-if="isVisible(pic)" :src="pic.src" class="rounded m-auto object-contain h-[53vh] w-[97%]" />
+                        <div v-if="isVisible(pic)">
+                            <div class="text-center mb-2">
+                                {{ pic.name }}
+                            </div>
+                            <img :src="pic.src" class="rounded m-auto object-contain h-[53vh] w-[97%]" />
+                        </div>
                     </div>
                 </transition-expand>
 
-                <div class="flex justify-around  gap-3 absolute z-10 bottom-4 left-0 w-full">
-                    <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i"
-                        @click="handleChoice(pic.answer) " :disabled="currentPic.alreadyAnswered"
-                        class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
-                        :class="{ 
-                            '!border-teal-200 !bg-teal-600': typeof currentPic.found != 'undefined' && currentPic.answer === pic.answer, 
-                            '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
-                            'cursor-not-allowed': currentPic.alreadyAnswered,
-                            }">
-                        {{ pic.answer }}
-                    </button>
-                </div>
             </div>
             <!-- Partie terminée -->
             <div v-else>
@@ -53,6 +46,21 @@
                 </div>
             </div>
         </div>
+        <!--  4 boutons de proposition -->
+        <div class="flex justify-around mt-2 gap-3 z-10 bottom-4 left-0 w-full">
+                    <button v-for="(pic, i) in getChoices(pics[currentIndex])" :key="i"
+                        @click="handleChoice(pic.answer) " :disabled="currentPic.alreadyAnswered"
+                        class="bg-teal-900 text-white p-1 grid items-center basis-[45%] rounded lg:hover:bg-teal-600 transition-all border-solid border-2 border-transparent"
+                        :class="{ 
+                            '!border-teal-200 !bg-teal-600': typeof currentPic.found != 'undefined' && currentPic.answer === pic.answer, 
+                            '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
+                            'cursor-not-allowed': currentPic.alreadyAnswered,
+                            }">
+                        {{ pic.answer }}
+                    </button>
+                </div>
+
+
     </section>
 </template>
 
