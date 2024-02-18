@@ -98,9 +98,9 @@ switch(name){
         schema:inLanguage "fr";
         schema:isPartOf <https://fr.wikipedia.org/>.
 
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "fr,en". }
         SERVICE wikibase:label {
-          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+          bd:serviceParam wikibase:language "fr,en".
           ?artiste rdfs:label ?artisteLabel.
         }
       }
