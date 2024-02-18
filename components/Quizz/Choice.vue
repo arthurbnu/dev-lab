@@ -12,7 +12,7 @@
         <div class="p-2 md:p-5 pt-3 h-[60vh] w-full rounded-lg m-auto max-w-[700px] relative"
             :class="{ 'bg-slate-800/40': !end }">
             <div v-if="!end" ref="imgContainer">
-                <transition-expand group mode="out-in" axis="x">
+                <transition-slide :offset="['100%', 0]" group mode="out-in">
                     <div v-for="(pic, i) in pics" :key="i">
                         <div v-if="isVisible(pic)">
                             <div class="text-center text-md mb-2">
@@ -21,7 +21,7 @@
                             <img :src="pic.src" class="rounded m-auto object-contain h-[53vh] w-[97%]" />
                         </div>
                     </div>
-                </transition-expand>
+                </transition-slide>
 
             </div>
             <!-- Partie terminée -->
