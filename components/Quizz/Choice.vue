@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class=" p-8 pt-6 h-[75vh] w-full rounded-lg m-auto max-w-[700px] relative" :class="{ 'bg-slate-800/40': !end }">
-            <div v-if="!end">
+            <div v-if="!end" ref = "imgContainer" >
                 <transition-expand group>
                     <div v-for="(pic, i) in pics" :key="i">
                         <img v-if="isVisible(pic)" :src="pic.src" class="rounded m-auto object-contain h-[53vh] w-[97%]" />
@@ -61,6 +61,16 @@
 const currentIndex = ref(0)
 const currentPic = computed(() => picsRef.value[currentIndex.value])
 
+const imgContainer = ref(null)
+const { isSwiping, direction } = useSwipe(imgContainer)
+
+watchEffect(() => {
+    if (isSwiping.value) {
+        if (direction.value === 'left' && currentIndex.value < picsRef.value.length - 1) currentIndex.value++
+        if (direction.value === 'right' && currentIndex.value > 0) currentIndex.value--
+    }
+})
+
 const props = defineProps({
     pics: {
         type: Array,
@@ -96,13 +106,9 @@ const getImgClass = (pic) => {
 }
 
 const picsRef = ref(props.pics.map(pic => ({ ...pic, found: undefined, alreadyAnswered: false})))
-
 const isVisible = pic => currentIndex.value === props.pics.indexOf(pic)
-
 const end = ref(false)
-
 const showAnswerTime = 800
-
 const selectedAnswer = ref('')
 
 const handleChoice = async answer => {
