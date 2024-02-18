@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <div class=" p-5 pt-3 h-[65vh] w-full rounded-lg m-auto max-w-[700px] relative"
+        <div class="p-2 md:p-5 pt-3 h-[65vh] w-full rounded-lg m-auto max-w-[700px] relative"
             :class="{ 'bg-slate-800/40': !end }">
             <div v-if="!end" ref="imgContainer">
                 <transition-expand group>
@@ -32,10 +32,10 @@
                 Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
                 <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="animate-pulse" />
                 <div class="max-w-full my-5 bg-white/5 rounded-lg p-4">
-                    <div class="text-xl mb-5">Réponses</div>
+                    <div class="text-xl mb-5">Liens Wikipédia</div>
                     <ul>
                         <li v-for="(pic, i) in picsRef" :key="i"
-                            class="flex items-center gap-3 mb-2 hover:!bg-slate-400/10 p-1 rounded-md odd:bg-gray-700/10 md:odd:bg-transparent pt-3 pb-2">
+                            class="flex items-center gap-3 mb-2 text-lg hover:!bg-slate-400/10 md:p-1 rounded-md odd:bg-gray-700/10 md:odd:bg-transparent pt-3 pb-2">
                             <span class="basis-40">
                                 {{ pic.answer }}
                             </span>
