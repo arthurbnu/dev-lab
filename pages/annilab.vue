@@ -9,11 +9,11 @@
             <span class="inline-flex flex-col h-[calc(theme(fontSize.lg)*theme(lineHeight.tight))] overflow-hidden">
               <ul class="block text-left leading-tight [&_li]:block animate-text-slide">
                 <li class="text-indigo-500">{{ labNumbers[0].n_tot_formations }} formations</li>
-                <li class="text-rose-500">{{ labNumbers[0].n_tot_events }} évenements</li>
+                <li class="text-rose-500">{{ labNumbers[0].n_tot_events }} événements</li>
                 <li class="text-yellow-500">{{ labNumbers[0].n_tot_projets }} différents projets</li>
-                <li class="text-teal-500">{{ labNumbers[0].n_tot_personnes }} différentes personnes</li>
-                <li class="text-pink-500">{{ labNumbers[0].n_tot_outils }} outils </li>
-                <li class="text-sky-500">XXX</li>
+                <li class="text-teal-500">{{ labNumbers[0].n_tot_formations }} formations</li>
+                <li class="text-pink-500">{{ labNumbers[0].n_tot_events }} événements</li>
+                <li class="text-sky-500">{{ labNumbers[0].n_tot_projets }} différents projets</li>
               </ul>
             </span>
           </div>
