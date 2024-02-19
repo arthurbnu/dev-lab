@@ -70,10 +70,15 @@
         
       </div>
     </div>
-    <AppFires v-if="startFireWorks" class = "opacity-60"/>
-    <q-popup-proxy v-if="startFireWorks" class="text-gray-700 q-ma-md"> 
-      BRAVOOO ! Vous avez résolu toutes les énigmes. Les canapés vous attendent pour un repos bien mérité :) 
-    </q-popup-proxy>
+    <div v-if="startFireWorks">
+      <AppFires class="opacity-60" />
+      <div class="absolute inset-0 flex justify-center items-center text-black z-50">
+        <div class="bg-white/80 rounded-lg shadow-lg p-5 w-80 ">
+          <h3 class="text-2xl  text-center">Bravo !</h3>
+          <p class="text-center font-bold">  Vous avez résolu toutes les énigmes. Les canapés vous attendent pour un repos bien mérité :)  </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
