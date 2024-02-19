@@ -68,6 +68,29 @@ switch(name){
       `;
     break;
 
+    case 'drapeaux' : 
+    pageInfos.quizzTemplate = 'choice'
+    pageInfos.title = "Quizz - Drapeaux";
+    pageInfos.description =  "";
+    pageInfos.nbPics = 12
+pageInfos.answerLabel = "countryLabel";
+pageInfos.imageLabel = "flag";
+    pageInfos.sparqlQuery = `
+    select ?flag ?countryLabel ?image
+(MD5(CONCAT(str(?flag),str(RAND()))) as ?random)
+where{
+
+  ?country wdt:P31 wd:Q3624078;
+        wdt:P41 ?flag
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "fr" . }
+
+  }
+order by ?random
+      `;
+      break;
+
+
+
     case 'arts-choice' : 
     pageInfos.quizzTemplate = 'choice'
     pageInfos.title = "Quizz - Peintures de la renaissance";
