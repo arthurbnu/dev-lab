@@ -63,7 +63,7 @@
             </span>          
             et revenir sur l'onglet précédent.
           </p>
-          <NuxtImg src = "/quizz/f11.png" class="text-center m-auto p-3"/>
+          <NuxtImg src = "/quizz/f11.png" class="text-center m-auto p-7 w-full"/>
           <div class="flex justify-center mt-5">
             <button @click="shuffle(answers)"
               class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
