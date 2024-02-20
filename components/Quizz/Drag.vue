@@ -17,18 +17,21 @@
                 🥇
               </span>
               <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full">
-                <NuxtImg v-if="!picture.src.includes('http')" :src="picture.src" :alt="'inconnu ' + picture.src"
+                <NuxtImg v-if="true" :src="picture.src" :alt="'inconnu ' + picture.src"
+                  :class="{ 'my-error': lastError.picture === picture.src }"
+                  class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
+                <!-- <NuxtImg v-if="!picture.src.includes('http')" :src="picture.src" :alt="'inconnu ' + picture.src"
                   :class="{ 'my-error': lastError.picture === picture.src }"
                   class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
 
                 <img v-else :src="picture.src" :alt="'inconnu ' + picture.src"
                   :class="{ 'my-error': lastError.picture === picture.src }"
-                  class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" />
+                  class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" /> -->
+
                 <!-- component is nuxtimg if relative path, img otherwise -->
-                <!-- <component :is="picture.src.includes('http') ? 'img' : NuxtImg" 
-              :src="picture.src" :alt ="'inconnu ' + picture.src"
-              :class="{ 'my-error': lastError.picture === picture.src }"
-              class="cursor-move hover:opacity-90 transition-all border-4 border-solid" /> -->
+                <!-- <component :is="picture.src.includes('http') ? 'img' : NuxtImg" :src="picture.src"
+                  :alt="'inconnu ' + picture.src" :class="{ 'my-error': lastError.picture === picture.src }"
+                  class="cursor-move hover:opacity-90 transition-all border-4 border-solid w-full" /> -->
               </UChip>
             </li>
           </transition-group>
@@ -51,6 +54,15 @@
         <div class="bg-white/80 rounded-lg shadow-lg p-5 w-80 ">
           <h3 class="text-2xl font-bold text-center">Bravo !</h3>
           <p class="text-center">Tu as reconnu tout le monde !</p>
+          <p class="text-center text-lg text-blue-600 text-bold">
+            Pour quitter le mode plein écran et continuer le jeu : appuyer sur la touche 
+            <span class="inline-flex flex-wrap items-center gap-x-1 text-sm text-gray-600 dark:text-gray-400">
+            <kbd class="min-h-[30px] inline-flex justify-center items-center py-1 px-1.5 bg-gray-200 border border-transparent font-mono text-sm text-gray-800 rounded-md dark:bg-gray-700 dark:text-gray-200">
+              Echap
+            </kbd>
+          </span>          
+            et revenir sur l'onglet précédent.
+          </p>
           <div class="flex justify-center mt-5">
             <button @click="shuffle(answers)"
               class="bg-teal-900 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
@@ -67,6 +79,7 @@
 
 import { ref, watchEffect, computed, onMounted } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
+// import { NuxtImg } from '@components/UI/NuxtImg'
 
 const screenOrientation = useScreenOrientation()
 const acceptedOrientation: OrientationType[] = ['landscape-primary', 'landscape-secondary']

@@ -4,7 +4,7 @@
     <div v-for="index in range" :key="index + 'i'">
       <div class="relative w-24 h-28 rounded flex justify-center items-center mb-10 bg-slate-400 border-slate-200 border-4">
         <client-only>
-          <Vue3Lottie autoPlay animationLink="/quizz/joconde.json" class="opacity-30" />
+          <Vue3Lottie autoPlay animationLink="/quizz/joconde.json" class="opacity-50" />
         </client-only>
       </div>
       <div class="h-4 w-24 rounded bg-teal-500 flex  justify-center items-center mb-3">

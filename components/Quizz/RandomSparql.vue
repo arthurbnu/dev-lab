@@ -93,7 +93,8 @@ watchEffect(() => {
 
 const clientFetch = async () => {
   date.value = new Date().toLocaleString()
-  $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } }).then(response => items.value = response)
+  $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } })
+    .then(response => items.value = response)
     .catch(error => error.value = error)
     .finally(() => setTimeout(() => pending.value = false, 1000));
 }
