@@ -9,11 +9,11 @@
             <span class="inline-flex flex-col h-[calc(theme(fontSize.lg)*theme(lineHeight.tight))] overflow-hidden">
               <ul class="block text-left leading-tight [&_li]:block animate-text-slide">
                 <li class="text-indigo-500">{{ labNumbers[0].n_tot_formations }} formations</li>
-                <li class="text-rose-500">{{ labNumbers[0].n_tot_events }} évenements</li>
+                <li class="text-rose-500">{{ labNumbers[0].n_tot_events }} événements</li>
                 <li class="text-yellow-500">{{ labNumbers[0].n_tot_projets }} différents projets</li>
-                <li class="text-teal-500">{{ labNumbers[0].n_tot_personnes }} différentes personnes</li>
-                <li class="text-pink-500">{{ labNumbers[0].n_tot_outils }} outils </li>
-                <li class="text-sky-500">XXX</li>
+                <li class="text-teal-500">{{ labNumbers[0].n_tot_formations }} formations</li>
+                <li class="text-pink-500">{{ labNumbers[0].n_tot_events }} événements</li>
+                <li class="text-sky-500">{{ labNumbers[0].n_tot_projets }} différents projets</li>
               </ul>
             </span>
           </div>
@@ -70,10 +70,15 @@
         
       </div>
     </div>
-    <AppFires v-if="startFireWorks" class = "opacity-60"/>
-    <q-popup-proxy v-if="startFireWorks" class="text-gray-700 q-ma-md"> 
-      BRAVOOO ! Vous avez résolu toutes les énigmes. Les canapés vous attendent pour un repos bien mérité :) 
-    </q-popup-proxy>
+    <div v-if="startFireWorks">
+      <AppFires class="opacity-60" />
+      <div class="absolute inset-0 flex justify-center items-center text-black z-50">
+        <div class="bg-white/80 rounded-lg shadow-lg p-5 w-80 ">
+          <h3 class="text-2xl  text-center">Bravo !</h3>
+          <p class="text-center font-bold">  Vous avez résolu toutes les énigmes. Les canapés vous attendent pour un repos bien mérité :)  </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
