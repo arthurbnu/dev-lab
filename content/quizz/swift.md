@@ -1,7 +1,7 @@
 ---
 name : "swift"
-title : "Quizz - Taylor Swift"
-description : "Remettez les images de chaque Album au dessus du bon titre de chanson ! "
+title : "Taylor Swift"
+description : "Remettez les images de chaque Album au dessus du bon titre de chanson"
 nbPics : 7
 answerLabel : "trackListLabel"
 ---

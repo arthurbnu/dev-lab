@@ -1,7 +1,7 @@
 ---
 name : "oscar"
-title : "Quizz - actrices ayant reçu un oscar "
-description : "Remettez les images au dessus du bon nom ! "
+title : "Actrices ayant reçu un oscar "
+description : "Remettez les images au dessus du bon nom"
 nbPics : 10
 ---
 

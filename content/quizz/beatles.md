@@ -1,7 +1,7 @@
 ---
 name : "beatles"
-title : "Quizz - Beatles"
-description : "Remettez les images de chaque Album au dessus du bon titre de chanson ! "
+title : "Beatles"
+description : "Remettez les images de chaque Album au dessus du bon titre de chanson"
 nbPics : 7
 answerLabel : "trackListLabel"
 ---

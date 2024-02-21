@@ -9,13 +9,12 @@
       <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" />
     </div>
     <div v-else-if="quizzTemplate === 'choice'">
-      <QuizzChoice v-if="pics.length" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" />
+      <QuizzChoice v-if="pics.length" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" :quizz = "quizz" />
     </div>
   </div>
 </template>
 
 <script  setup>
-import { watchEffect, ref, computed } from 'vue';
 const imgWidth = 300
 const date = ref('')
 const dateLine = computed(() => `# Requête sparql : ${date.value}`)  // to force refresh
@@ -24,6 +23,10 @@ const defaultImageLabel = 'image'
 const defaultAnswerLabel = 'artisteLabels'
 
 const props = defineProps({
+  quizz : {
+    type: Object,
+    required: false
+  },
   quizzTemplate: {
     type: String,
     required: false,
@@ -102,6 +105,9 @@ const clientFetch = async () => {
 onMounted(() => {
   if (!pics.value.length) {
     clientFetch()
+  }
+  else {
+    setTimeout(() => pending.value = false, 1000)
   }
 })
 

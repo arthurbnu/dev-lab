@@ -1,17 +1,19 @@
 ---
 name : "drapeaux"
-title : "Quizz - Drapeaux"
+title : "Drapeaux"
 quizzTemplate : "choice"
-description :  ""
+description :  "... Parmi tous les pays de l'ONU"
 nbPics : 12
 answerLabel : "countryLabel"
 imageLabel : "flag"
+small : true
+hide_title : true
 ---
 
 
 ```sparql
 
-select ?flag ?countryLabel ?image
+select ?flag ?countryLabel ?image 
 (MD5(CONCAT(str(?flag),str(RAND()))) as ?random)
 where{
 

@@ -11,19 +11,20 @@
             </div>
         </div>
         <div class="max-w-2xl m-auto">
-            <div class="bg-slate-800/40 p-2 pt-3 h-[62vh] w-full rounded-lg relative">
+            <div class="bg-slate-800/40 p-2 pt-3 w-full rounded-lg relative" :class="quizz.small ? 'h-[42vh]' : 'h-[62vh]' ">
                 <div ref="imgContainer">
                     <transition-slide :offset="['100%', 0]" group mode="in-out">                  
                         <div v-for="(pic, i) in picsRef" :key="i">
                             <div v-if="i === currentIndex">
-                                <cite class="text-center text-md mb-2 block w-full truncate">
+                                <cite class="text-center text-md mb-2 block w-full truncate min-h-[10px]" :class = "{'opacity-0' : quizz.hide_title}" >
                                     {{ pic.name }}
                                 </cite>
-                                <img :src="pic.src" class="rounded m-auto object-contain h-[53vh] w-full" />
+                                <img :src="pic.src" class="rounded m-auto object-contain w-full" :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]' " />
                             </div>
                         </div>
                     </transition-slide>
                 </div>
+                <!-- <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="absolute z-10 bottom-0 w-full opacity-50" /> -->
             </div>
             <!--  4 proposition de réponses -->
             <div class="flex justify-around gap-3 w-full mt-2 md:mt-5 mb-8">
@@ -38,13 +39,13 @@
                     {{ pic.answer }}
                 </button>
             </div>
+
             <!-- Partie terminée -->
             <div v-if="end" ref = "wikiLinks" class="scroll-mt-2">
                 <UIcon name="trophy" class="text-9xl text-teal-700" />
                 <h2 class="text-lg mb-4 ">Partie terminée ...
                     <!-- bouton rejouer -->
                 </h2>
-
                 Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
                 <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="animate-pulse" />
                 <div class="max-w-full my-5 bg-white/5 rounded-lg p-4">
@@ -52,12 +53,12 @@
                     <ul>
                         <li v-for="(pic, i) in picsRef" :key="i"
                             class="flex items-center gap-3 mb-2 text-md hover:!bg-slate-400/10 rounded-md odd:bg-gray-700/10 p-2">
-                            <span class="basis-40">
+                            <span class="basis-40" v-if = "!quizz.hide_title">
                                 {{ pic.answer }}
                             </span>
-                            <UAvatar :src="pic.src" :alt="pic.answer" size="md" class="m" />
+                            <UAvatar :src="pic.src" :alt="pic.answer" size="md" />
                             <a :href="pic.article ?? pic.src.split('?width')[0]" target="_blank"
-                                class="text-primary underline truncate w-72 md:w-80">{{ pic.name }}
+                                class="text-primary underline truncate md:w-80" :class="{'w-72' : !quizz.hide_title}">{{ pic.name ?? pic.answer }}
                             </a>
                         </li>
                     </ul>
@@ -90,6 +91,10 @@ watchEffect(() => {
 })
 
 const props = defineProps({
+    quizz : {
+        type: Object,
+        required: false
+    },
     pics: {
         type: Array,
         required: true
@@ -99,6 +104,8 @@ const props = defineProps({
         default: 4
     }
 })
+
+console.log('quizz', props.quizz.hide_title)
 
 // function that takes an answer (the good one) and adds 3 random wrong answers
 const getChoices = () => {
