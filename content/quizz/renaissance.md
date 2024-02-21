@@ -1,0 +1,46 @@
+---
+name : "renaissance"
+title : "Quizz - Peintures de la renaissance"
+quizzTemplate : "choice"
+description :  ""
+nbPics : 15
+image : "quizz-renaissance.png"
+---
+
+
+```sparql
+
+#  +800 résultats
+# doublons : plusieurs images, plusieurs auteurs
+# - sample img -> 848 résultats
+# - concat auteurs -> 819
+# données manquantes : 
+#  - auteurs inconnus (tête de méduse )
+
+#defaultView:ImageGrid
+#             wdt:P347 ?idJoconde.        # 80 oeuvres sur +800
+#             wdt:P973 ?descriptionUrl.   # 590
+SELECT ?peintureLabel ?mouvementLabel ?peinture ?article
+(MD5(CONCAT(str(?peinture),str(RAND()))) as ?random)
+(SAMPLE(?image) AS ?image) 
+(GROUP_CONCAT(DISTINCT ?artisteLabel; SEPARATOR = " | ") AS ?artisteLabels) WHERE {
+  ?peinture wdt:P31 wd:Q3305213;
+    wdt:P135 ?mouvement;
+    wdt:P18 ?image;
+    wdt:P170 ?artiste.
+  ?mouvement (wdt:P31|wdt:P361) wd:Q4692.
+
+?article schema:about ?peinture;
+  schema:inLanguage "fr";
+  schema:isPartOf <https://fr.wikipedia.org/>.
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "fr,en". }
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "fr,en".
+    ?artiste rdfs:label ?artisteLabel.
+  }
+}
+GROUP BY ?peintureLabel ?mouvementLabel ?peinture ?article
+ORDER BY ?random
+
+```
