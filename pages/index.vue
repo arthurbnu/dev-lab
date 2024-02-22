@@ -1,6 +1,5 @@
 <template>
   <main class="min-h-screen max-w-3xl m-auto">
-    <!-- <AppHeader class="mb-1 text-center" :title="title" :description="description" /> -->
     <section class="text-center">
       <h1 class="text-2xl m-3">
         <span class="text-teal-400 mr-4">WiQuizz</span>
@@ -62,35 +61,10 @@ const title  = "Quizz générés avec wikidata et sparql ";
 const description = "Le langage sparql permet de faire des requêtes sur des bases de données rdf telles que wikidata." +
 "Chaque quizz est généré à partir d'une requête sparql, les données changent à chaque rechargement de la page. " ;
 
-// const cardConfig = 
-// {
-//   base: '',
-//   background: 'bg-white dark:bg-gray-900',
-//   divide: 'divide-y divide-gray-200 dark:divide-gray-800',
-//   ring: 'ring-1 ring-gray-200 dark:ring-gray-800',
-//   rounded: 'rounded-lg',
-//   shadow: 'shadow',
-//   body: {
-//     base: '',
-//     background: 'red',
-//     padding: 'px-4 py-5 sm:p-6',
-//   },
-//   header: {
-//     base: '',
-//     background: '',
-//     padding: 'px-4 py-5 sm:px-6',
-//   },
-//   footer: {
-//     base: '',
-//     background: '',
-//     padding: 'px-4 py-4 sm:px-6',
-//   },
-// }
-
 useSeoMeta({
   title: title,
   description,
-  author: "A B",
+  author: "arthur.brody@bnu.fr",
   ogImage: baseUrl + "quizz/quizz-renaissance.png",
   ogUrl: baseUrl,
   ogType: "website",

@@ -32,16 +32,16 @@
 
 <script setup lang="ts">
 useHead({
-  title: 'Portfolio Dev',
+  title: 'WiQuizz - Quizz dynamiques wikidata et sparql',
   meta: [
-    { name: 'description', content: 'Portfolio Dev incroyable...' },
+    { name: 'description', content: 'Expérimentations et projets de développement sur les données - sparql - wikidata' },
     { name : 'theme-color', content : 'teal'},
     { name : 'robots', content : 'index, follow'},
     { name : 'author', content : 'A B'},
     { property : 'og:image', content : 'https://dev-lab-one.vercel.app/sparql/sparql-vuejs-personnes-wikipedia.png'},
     { property : 'og:url', content : 'https://dev-lab-one.vercel.app/'},
     { property : 'og:type', content : 'website'},
-    { property : 'og:title', content : 'Lab Dev - Expériences'},
+    { property : 'og:title', content : 'WiQuizz - Quizz dynamiques wikidata et sparql'},
     { property : 'og:description', content : 'Expériences et projets de développement sur les données'},
     { name : 'google-site-verification', content : 'PHAJkMWsS9my1gW-Q8KTd-WvO2UHfAoMBNZGr7e1L10'} // google search console
   ],

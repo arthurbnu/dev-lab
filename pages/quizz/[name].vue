@@ -22,19 +22,19 @@ const { data: quizzContent } = await useAsyncData("quizzContent", () =>
 const sparqlRequest = quizzContent.value.body.children[0].props.code
 const baseUrl = "https://dev-lab-one.vercel.app" + route.fullPath.split(name)[0]
 const img =  quizzContent.value.image ?? "quizz-sparql.png" 
-const defaultDescription = "Quizz dynamique généré avec Wikidata"
-console.log("img",baseUrl  + img, 'url', baseUrl + name)
+const title = quizzContent.value.title + " - Quizz dynamique wikidata"
+const description = "Quizz dynamique généré avec Wikidata et sparql sur le thème : " + quizzContent.value.title
 
 useSeoMeta({
-  title: quizzContent.title, 
-  description: quizzContent.description ?? defaultDescription,
+  title: title,
+  description: description,
+  author: "arthur.brody@bnu.fr",
 
   ogImage: baseUrl + img,
   ogUrl: baseUrl + name,
-  ogTitle: quizzContent.title,
-  ogDescription: quizzContent.description,
+  ogTitle: title,
+  ogDescription: description,
 });
-
 
 </script>
 
