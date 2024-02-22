@@ -7,6 +7,7 @@ nbPics : 12
 answerLabel : "itemLabel"
 small : true
 hide_title : true
+badges : "biologie"
 # image : "quizz-renaissance.png"
 ---
 

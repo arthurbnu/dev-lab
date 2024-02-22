@@ -8,6 +8,7 @@ answerLabel : "countryLabel"
 imageLabel : "flag"
 small : true
 hide_title : true
+badges : "culture"
 ---
 
 
