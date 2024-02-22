@@ -6,7 +6,7 @@
       <QuizzGhostLoader v-if="pending" :nbItems="nbPics" class="w-[60vw] mx-auto my-8" />
     </transition-expand>
     <div v-if="quizzTemplate === 'drag'">
-      <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" />
+      <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" :swap = "!quizz.no_swap"/>
     </div>
     <div v-else-if="quizzTemplate === 'choice'">
       <QuizzChoice v-if="pics.length" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" :quizz = "quizz" />
@@ -77,7 +77,11 @@ const cleanResults = (receivedPictures) =>
       index === self.findIndex((t) => (
         t.answer === picture.answer || t.src === picture.src
       ))
-    )
+    ) // replace http:// by https:// in src
+    .map(picture => {
+      picture.src = picture.src.replace('http://', 'https://')
+      return picture
+    })
 
 watchEffect(() => {
   if (!items.value) return
