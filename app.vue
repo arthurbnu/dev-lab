@@ -55,3 +55,9 @@ useHead({
   // script: [ { innerHTML: 'console.log(\'Hello world\')' } ]
 })
 </script>
+
+<style>
+  .my-override-container {
+    @apply max-w-4xl px-4 self-center min-h-screen;
+  }
+</style>

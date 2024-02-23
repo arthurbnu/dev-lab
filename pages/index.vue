@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-screen max-w-3xl m-auto">
+  <main>
     <section class="text-center">
       <h1 class="text-2xl m-3">
         <span class="text-teal-400 mr-4">WiQuizz</span>

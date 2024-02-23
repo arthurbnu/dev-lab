@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-screen">
+  <main>
     <h1 class="mb-1 text-center text-2xl flex flex-center q-x-gutter-md">
       <UAvatarGroup size="lg" class="m-6">
         <UAvatar v-for="(logo, id) in logos" :key="id" :src="logo" :alt="logo" 

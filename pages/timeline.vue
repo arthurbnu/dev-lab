@@ -1,5 +1,5 @@
 <template>
-  <div class="q-px-lg q-py-md text-xl margin-auto">
+  <main class="q-px-lg q-py-md text-xl">
     <q-timeline color="secondary">
       <q-timeline-entry heading body="En mai, fait ce qu'il te plAIt..." />
 
@@ -82,5 +82,5 @@ icon="nutrition"
 
 
     </q-timeline>
-  </div>
+  </main>
 </template>

@@ -3,7 +3,7 @@
   <div>
     <div v-if="error" class="text-red-500 hidden">{{ error }}</div>
     <transition-expand>
-      <QuizzGhostLoader v-if="pending" :nbItems="quizz.nbPics" class="w-[60vw] mx-auto my-8" />
+      <QuizzGhostLoader v-if="pending" :nbItems="quizz.nbPics" class="w-full max-w-3xl mx-auto my-8" />
     </transition-expand>
     <div v-if="pics.length">
       <QuizzChoice v-if="quizz.quizzTemplate === 'choice'" 

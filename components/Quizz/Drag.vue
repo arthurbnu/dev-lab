@@ -1,6 +1,6 @@
 
 <template>
-  <div class="transition-all duration-700" :class="{ 'opacity-0': !ready }">
+  <div class="transition-all duration-700 my-width" :class="{ 'opacity-0': !ready }">
     <transition-expand :delay="300" :duration="600">
       <p v-if="orientationError" class="text-center text-lg text-teal-600">
         <Icon name="heroicons:arrow-path-rounded-square" class="inline-block w-6 h-6 mr-2" />
@@ -165,12 +165,14 @@ watchEffect(() => resetLastError())   // reset last error whenever it changes to
 </script>
 
 <style>
-.my-override-container {
-  max-width: 100vw;
+
+.my-override-container:has(.my-width) {
+  max-width: 100vw !important;
 }
 </style>
 
-<style scoped > @import url("~/assets/mystyle.css");
+<style scoped > 
+@import url("~/assets/mystyle.css");
 
  .swap .img-group-move {
    transition: all .3s;
