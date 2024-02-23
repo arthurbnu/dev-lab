@@ -65,7 +65,7 @@ useSeoMeta({
   title: title,
   description,
   author: "arthur.brody@bnu.fr",
-  ogImage: baseUrl + "quizz/quizz-renaissance.png",
+  ogImage: baseUrl + "quizz/quizz-renaissance2.png",
   ogUrl: baseUrl,
   ogType: "website",
   ogTitle: title,

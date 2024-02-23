@@ -31,17 +31,17 @@
         </ul>
       </div>
     </transition-expand>
-    <div v-if="youWin">
-      <AppFires class="opacity-60" />
-      <UModal v-model="youWin" prevent-close :ui="{ background : 'bg-gray-500', base: '' , padding : 'p-5', width : 'w-72'}">
-            <div class="text-xl font-bold m-2 p-2">Bravo... Défi réussi !</div>
-            <p></p> <br>
-            <div class="flex p-3 items-center justify-around">
-              <UButton v-if="replay !== 'no-replay'" :disabled="replay" variant="soft" @click="replay = true">
-                {{ replay ? 'Chargement...' : 'Rejouer' }}</UButton>
-              <UButton v-else @click="deepShuffle" variant="soft">Rejouer</UButton>
-              <NuxtLink to="/" class="text-teal-600 underline">Retour aux quizz</NuxtLink>
-            </div>
+    <div v-if="shuffled && youWin">
+      <AppFires class="opacity-80"/>
+      <UModal v-model="youWin" prevent-close
+        :ui="{ background: 'bg-gray-500', base: '', padding: 'p-5', width: 'w-72 h-32', container: 'grid items-center' }">
+        <div class="text-xl font-bold m-2 p-2">Bravo... défi réussi !</div>
+        <div class="flex p-3 items-center justify-around">
+          <UButton v-if="replay !== 'no-replay'" :disabled="replay" variant="soft" @click="replay = true">
+            {{ replay ? 'Chargement...' : 'Rejouer' }}</UButton>
+          <UButton v-else @click="deepShuffle" variant="soft">Rejouer</UButton>
+          <NuxtLink to="/" class="text-teal-600 underline">Retour aux quizz</NuxtLink>
+        </div>
       </UModal>
     </div>
   </div>
@@ -62,6 +62,7 @@ const getPics = () => props.picsInit.map(picture => ({ ...picture, found: false 
 const getAnswers = () => props.picsInit.map(picture => picture.answer)
 
 const ready = ref(false)
+const shuffled = ref(false)
 const pictures = ref(getPics())
 const answers = ref(getAnswers())
 const youWin = computed(() => pictures.value.every(picture => picture.found))
@@ -112,15 +113,14 @@ const deepShuffle = () => {
     checkAnswer()
     nbFound = getNbFound()
   }
+  shuffled.value = true
 }
 const getNbFound = () => pictures.value.filter(picture => picture.found).length
-const imgProperties = (src: string) => {
-  return {
-    src: src,
-    alt: 'inconnu ' + src,
-    class: 'cursor-move hover:opacity-90 transition-all border-4 border-solid w-full',
-  }
-}
+const imgProperties = (src: string) => {return {
+  src: src,
+  alt: 'inconnu ' + src,
+  class: 'cursor-move hover:opacity-90 transition-all border-4 border-solid w-full',
+}}
 
 const orientationError = computed(() => {
   if (!ready.value || !screenOrientation.isSupported.value || !screenOrientation.orientation.value)

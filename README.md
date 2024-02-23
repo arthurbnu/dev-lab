@@ -1,52 +1,28 @@
-# Zooper
+# WiQuizz - et autres expérimentations sur les données
 
-Zooper is a beautiful personal portfolio template for developers, programmers, freelancers and designers.
-
-![Zooper template home preview](https://zooper.pages.dev/preview.jpg)
-
-
-## Features
-
-Full features blog 📝.
-CMS ready 🚀.
-Super fast ⚡.
-SEO friendly 📈.
-Fully responsive 📱.
-Dark mode 🌗.
-Syntax highlighting 🌈.
-Social media links 🔗.
-Code preview playground 🎮.
-Uses page 🧑‍💻
-Bookmarks 📑.
-
-## Roadmap
-
-Comments
-Tags
-Categories
-Pagination
-Sitemap
-RSS feeds
-Search
-Likes
+- Génération de quizz avec sparql et wikidata
+- Recherche sparql complétée avec l'api wikipedia
+- ... et autres projets en cours
 
 ## Tech Stack
 
 1. Nuxt JS
-2. Tailwind CSS
-3. Vue
-4. Nuxt Content Module
-5. Shiki JS ES
+2. Nuxt ui
+3. Nuxt Content Module
+4. Vue
+5. Quasar
+6. Tailwind CSS
+7. Vue draggable next
+8. Apexcharts
+9. Vue3 Lottie
+10. Morev - vue transitions
 
 ## Installation
 
-1. `git clone` this repo or click on `Use this template` button.
-2. `cd` into the project directory.
-3. Run `yarn install` to install the dependencies.
-4. Run `yarn dev` to start the development server.
+1. `git clone`
+2. `cd` dans le dossier créé
+3. `npm install` pour installer le dépendances 
+4. `npm run dev` pour lancer le server de dev 
 
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 
