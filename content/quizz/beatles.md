@@ -6,6 +6,7 @@ nbPics : 7
 answerLabel : "trackListLabel"
 badges : "musique"
 no_swap : true
+image : "beatles.jpg"
 ---
 
 

@@ -24,7 +24,7 @@
         :title="quizz.title" :description="quizz.description" bordered >
         <NuxtLink :to="'/quizz/' + quizz.name" class="border-teal-500">
           <div class="h-40 overflow-hidden">
-            <NuxtImg :src="quizzImg(quizz)" :alt="quizz.title" layout="fill" objectFit="cover" />
+            <NuxtImg :src="quizzImg(quizz)" :alt="quizz.title" layout="fill" objectFit="cover" height="300px" width="400px" class="m-auto"/>
           </div>
           <div class="p-4">
             <h2 class="text-xl font-bold">{{ quizz.title }}</h2>
@@ -55,7 +55,7 @@ console.log('allQuizz', allQuizz)
 const baseUrl = 'https://dev-lab-one.vercel.app/'
 const quizzImg = quizz => {
   const img = quizz.image ?? "quizz-sparql.png"
-  return baseUrl + "quizz/" + img
+  return  "quizz/" + img
 }
 const title  = "Quizz générés avec wikidata et sparql ";
 const description = "Le langage sparql permet de faire des requêtes sur des bases de données rdf telles que wikidata." +

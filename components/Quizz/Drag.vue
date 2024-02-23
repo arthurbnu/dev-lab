@@ -1,16 +1,15 @@
 
 <template>
   <div class="transition-all duration-700" :class="{ 'opacity-0': !ready }">
-    <transition-expand :delay="300" :duration="600" >
+    <transition-expand :delay="300" :duration="600">
       <p v-if="orientationError" class="text-center text-lg text-teal-600">
         <Icon name="heroicons:arrow-path-rounded-square" class="inline-block w-6 h-6 mr-2" />
         {{ orientationError }}
       </p>
       <div v-else class=" h-80 max-w-full">
-        <VueDraggableNext :list="pictures" @end="handleEnd" :move="handleMove"
-          animation="500" tag="ul"
-          class="flex flex-nowrap space-x-2 mb-4" :class="{'swap' : swap}">
-          <transition-group name="img-group" >
+        <VueDraggableNext :list="pictures" @end="handleEnd" :move="handleMove" animation="500" tag="ul"
+          class="flex flex-nowrap space-x-2 mb-4" :class="{ 'swap': swap }">
+          <transition-group name="img-group">
             <li v-for="(picture, id) in pictures" :key="picture.src" class="relative" :style="basisStyle">
               <span v-if="picture.found"
                 class="absolute w-full bg-teal-700/40 z-10 h-[calc(100%+110px)] grid place-content-center text-4xl border-b-2 border-yellow-300">
@@ -34,33 +33,39 @@
     </transition-expand>
     <div v-if="youWin">
       <AppFires class="opacity-60" />
-      <div class="absolute inset-0 flex justify-center items-center text-black z-50 text-center">
-        <div class="bg-white/80 rounded-lg shadow-lg p-5 w-80 ">
-          <span class="text-2xl font-bold m-1">Bravo !</span>
-          <p>Défi réussi !</p> <br>
-          <UButton color="primary" variant="soft" @click="shuffle(answers)">Rejouer</UButton>
-        </div>
-      </div>
+      <UModal v-model="youWin" prevent-close :ui="{ background : 'bg-gray-500', base: '' , padding : 'p-5', width : 'w-72'}">
+            <div class="text-xl font-bold m-2 p-2">Bravo... Défi réussi !</div>
+            <p></p> <br>
+            <div class="flex p-3 items-center justify-around">
+              <UButton v-if="replay !== 'no-replay'" :disabled="replay" variant="soft" @click="replay = true">
+                {{ replay ? 'Chargement...' : 'Rejouer' }}</UButton>
+              <UButton v-else @click="deepShuffle" variant="soft">Rejouer</UButton>
+              <NuxtLink to="/" class="text-teal-600 underline">Retour aux quizz</NuxtLink>
+            </div>
+      </UModal>
     </div>
   </div>
 </template>
 
 <script setup lang = "ts">
 
+import type { _backgroundColor } from '#tailwind-config/theme';
 import { ref, watchEffect, computed, onMounted } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 
 const props = defineProps<{
   picsInit: { src: string; answer: string; }[],
-  swap? : boolean,
-  easyMode?: boolean
+  swap?: boolean,
 }>()
 
+const getPics = () => props.picsInit.map(picture => ({ ...picture, found: false }))
+const getAnswers = () => props.picsInit.map(picture => picture.answer)
+
 const ready = ref(false)
-const pictures = ref(props.picsInit.map(picture => ({ ...picture, found: false })))
-const answers = ref(props.picsInit.map(picture => picture.answer))
+const pictures = ref(getPics())
+const answers = ref(getAnswers())
 const youWin = computed(() => pictures.value.every(picture => picture.found))
-const basisStyle = { 'flex-basis': `${100 / answers.value.length}%` }
+const basisStyle = computed(() => { return { 'flex-basis': `${100 / answers.value.length}%` } })
 const screenOrientation = useScreenOrientation()
 const acceptedOrientation: OrientationType[] = ['landscape-primary', 'landscape-secondary']
 const lastError = ref({ picture: '', answer: '' })
@@ -78,7 +83,7 @@ const handleMove = (e: any) => {
 }
 
 const handleEnd = (e: any) => {
-  if (props.swap) 
+  if (props.swap)
     return handleEndSwap(e)
   const chosenAnswer = answers.value[e.newIndex]
   const chosenPicture = pictures.value[e.newIndex]
@@ -86,10 +91,10 @@ const handleEnd = (e: any) => {
     lastError.value.answer = chosenAnswer
 }
 
-const handleEndSwap = (e: any) => {  
+const handleEndSwap = (e: any) => {
   const futureItem = pictures.value[lastIndex.value]
   const movingItem = pictures.value[movingIndex.value]
-  const _items = Object.assign([], pictures.value) as any[]
+  const _items = Object.assign([], pictures.value) as typeof pictures.value
   _items[lastIndex.value] = movingItem
   _items[movingIndex.value] = futureItem
   pictures.value = _items
@@ -100,12 +105,22 @@ const handleEndSwap = (e: any) => {
 }
 
 const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
+const deepShuffle = () => {
+  let nbFound = 2
+  while (nbFound > 1) {
+    shuffle(answers.value)
+    checkAnswer()
+    nbFound = getNbFound()
+  }
+}
 const getNbFound = () => pictures.value.filter(picture => picture.found).length
-const imgProperties = (src: string) => { return {
+const imgProperties = (src: string) => {
+  return {
     src: src,
     alt: 'inconnu ' + src,
     class: 'cursor-move hover:opacity-90 transition-all border-4 border-solid w-full',
-}}
+  }
+}
 
 const orientationError = computed(() => {
   if (!ready.value || !screenOrientation.isSupported.value || !screenOrientation.orientation.value)
@@ -119,12 +134,7 @@ onMounted(async () => {
   shuffle(pictures.value)
   ready.value = true
   await new Promise(resolve => setTimeout(resolve, 500))
-  let nbFound = 2
-  while (nbFound > 1) {
-    shuffle(answers.value)
-    checkAnswer()
-    nbFound = getNbFound()
-  } 
+  deepShuffle()
 });
 
 const checkAnswer = () => {
@@ -134,15 +144,23 @@ const checkAnswer = () => {
   }
 }
 
-const resetLastError =  async () => {
+const resetLastError = async () => {
   if (lastError.value.picture || lastError.value.answer) {
     await new Promise(resolve => setTimeout(resolve, 300))
     lastError.value = { picture: '', answer: '' }
   }
 }
 
+// Replay : trigger refetch in parent
+const replay = inject('replay', 'no-replay') as Ref<boolean> | 'no-replay'
+watch(() => props.picsInit, () => {
+  pictures.value = getPics()
+  answers.value = getAnswers()
+  deepShuffle()
+})
+
 watchEffect(() => checkAnswer())
-watchEffect(() => resetLastError())   // reset last error each time its value is not empty to trigger the animation
+watchEffect(() => resetLastError())   // reset last error whenever it changes to trigger the animation
 
 </script>
 
@@ -152,13 +170,9 @@ watchEffect(() => resetLastError())   // reset last error each time its value is
 }
 </style>
 
-<style scoped > 
+<style scoped > @import url("~/assets/mystyle.css");
 
-  @import url("~/assets/mystyle.css");
-  
-.swap .img-group-move {
-  transition: all .3s;
-}
-
-
+ .swap .img-group-move {
+   transition: all .3s;
+ }
 </style>

@@ -5,7 +5,7 @@ description : "Remettez les images de chaque Album au dessus du bon titre de cha
 nbPics : 7
 answerLabel : "trackListLabel"
 badges : "musique"
-
+image : "swift.jpg"
 ---
 
 ```sparql

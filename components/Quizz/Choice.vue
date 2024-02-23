@@ -1,6 +1,6 @@
 
 <template>
-    <section>
+    <section ref = "templateSection" class="scroll-mt-14">
         <!-- <div class="absolute w-full h-full z-0 opacity-20 filter blur-lg  bg-contain bg-center" :class="bgImageClass"></div> -->
         <div class="flex justify-center gap-3 mb-5 ">
             <div v-for="(pic, i) in picsRef" :key="i">
@@ -41,11 +41,14 @@
             </div>
 
             <!-- Partie terminée -->
-            <div v-if="end" ref = "wikiLinks" class="scroll-mt-2">
+            <div v-if="end" ref = "wikiLinks" class="scroll-mt-3">
                 <UIcon name="trophy" class="text-9xl text-teal-700" />
-                <h2 class="text-lg mb-4 ">Partie terminée ...
-                    <!-- bouton rejouer -->
-                </h2>
+                <div class="text-lg mb-4 flex gap-6 ">Partie terminée ...
+                    <UButton v-if = "replay !=='no-replay'" :disabled="replay" variant="soft" @click="replay = true">
+                        {{ replay ? 'Chargement...' : 'Rejouer'}}
+                    </UButton>
+                    <NuxtLink to="/" class="text-teal-700 underline">Retour aux quizz</NuxtLink>
+                </div>
                 Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
                 <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="animate-pulse" />
                 <div class="max-w-full my-5 bg-white/5 rounded-lg p-4">
@@ -72,21 +75,13 @@
 
 const currentIndex = ref(0)
 const currentPic = computed(() => picsRef.value[currentIndex.value])
-const bgImageClass = computed(() => `bg-[url('${currentPic.value.src}')]`)
-
 const imgContainer = ref(null)
+const templateSection = ref(null)
 const wikiLinks = ref(null)
 const { isSwiping, direction } = useSwipe(imgContainer, {
     onSwipeEnd: () => {
         if (direction.value === 'left' && currentIndex.value < picsRef.value.length - 1) currentIndex.value++
         if (direction.value === 'right' && currentIndex.value > 0) currentIndex.value--
-    }
-})
-
-watchEffect(() => {
-    if (isSwiping.value) {
-        // if (direction.value === 'left' && currentIndex.value < picsRef.value.length - 1) currentIndex.value++
-        // if (direction.value === 'right' && currentIndex.value > 0) currentIndex.value--
     }
 })
 
@@ -122,13 +117,13 @@ const getChoices = () => {
 
 const getImgClass = (pic) => {
     const baseClass = 'border-4 border-solid hover:scale-125 transition-all cursor-pointer'
-    // if (typeof pic.found === 'undefined') return baseClass
     if (!alreadyAnswered(pic)) return baseClass
     const foundClass = pic.found ? 'border-teal-700' : 'border-red-500'
     return [baseClass, foundClass].join(' ')
 }
 
-const picsRef = ref(props.pics.map(pic => ({ ...pic, found: undefined })))
+const getPics = () => props.pics.map(pic => ({ ...pic, found: undefined }))
+const picsRef = ref(getPics())
 const alreadyAnswered = pic => pic.found !== undefined
 const end = computed(() => picsRef.value.every(pic => alreadyAnswered(pic)) || (import.meta.env.DEV && alreadyAnswered(picsRef.value.at(-1))))
 const showAnswerTime = 800
@@ -147,6 +142,14 @@ watchEffect(() =>
     end.value && 
     setTimeout(() => wikiLinks.value.scrollIntoView({ behavior: 'smooth' }), 1000)
 )
+
+// Replay : trigger refetch in parent
+const replay = inject('replay', 'no-replay')
+watch(() => props.pics, () => {
+    picsRef.value = getPics()
+    currentIndex.value = 0
+    setTimeout(() => window.scrollTo({top : 30, behavior: 'smooth'}), 500)
+})
 
 </script>
 

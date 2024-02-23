@@ -9,6 +9,7 @@ imageLabel : "flag"
 small : true
 hide_title : true
 badges : "culture"
+image : "drapeaux.png"
 ---
 
 

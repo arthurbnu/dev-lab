@@ -4,11 +4,7 @@
     <QuizzRandomSparql 
       :quizz = "quizzContent"
       :data-name = "name"
-      :nbPics="quizzContent.nbPics" 
-      :quizzTemplate="quizzContent.quizzTemplate"
-      :sparqlQuery="sparqlRequest" 
-      :imageLabel = "quizzContent.imageLabel" 
-      :answerLabel="quizzContent.answerLabel"/>
+      :sparqlQuery="sparqlRequest" />
   </main>
 </template>
 

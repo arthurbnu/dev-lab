@@ -4,6 +4,7 @@ title : "Actrices ayant reçu un oscar "
 description : "Remettez les images au dessus du bon nom"
 nbPics : 10
 badges : "cinéma"
+image : "oscar.jpg"
 ---
 
 ```sparql

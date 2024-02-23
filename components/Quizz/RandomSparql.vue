@@ -3,13 +3,13 @@
   <div>
     <div v-if="error" class="text-red-500 hidden">{{ error }}</div>
     <transition-expand>
-      <QuizzGhostLoader v-if="pending" :nbItems="nbPics" class="w-[60vw] mx-auto my-8" />
+      <QuizzGhostLoader v-if="pending" :nbItems="quizz.nbPics" class="w-[60vw] mx-auto my-8" />
     </transition-expand>
-    <div v-if="quizzTemplate === 'drag'">
-      <QuizzDrag v-if="pics.length" :picsInit="pics" :easyMode="true" :class="{ 'opacity-0': pending }" :swap = "!quizz.no_swap"/>
-    </div>
-    <div v-else-if="quizzTemplate === 'choice'">
-      <QuizzChoice v-if="pics.length" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" :quizz = "quizz" />
+    <div v-if="pics.length">
+      <QuizzChoice v-if="quizz.quizzTemplate === 'choice'" 
+        :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" :quizz = "quizz" />
+      <QuizzDrag v-else 
+        :picsInit="pics" :class="{ 'opacity-0': pending }" :swap = "!quizz.no_swap"/>   <!-- // drag -->
     </div>
   </div>
 </template>
@@ -25,40 +25,19 @@ const defaultAnswerLabel = 'artisteLabels'
 const props = defineProps({
   quizz : {
     type: Object,
-    required: false
-  },
-  quizzTemplate: {
-    type: String,
-    required: false,
-    default: 'drag'   // drag | choice
+    required: true
   },
   sparqlQuery: {
     type: String,
     required: true
   },
-  nbPics: {
-    type: Number,
-    required: false,
-    default: 6
-  },
-  imageLabel: {
-    type: String,
-    required: false,
-    default: defaultImageLabel
-  },
-  answerLabel: {
-    type: String,
-    required: false,
-    default: defaultAnswerLabel
-  }
 })
 
-const limit = `LIMIT ${props.nbPics + 8}`
+const limit = `LIMIT ${props.quizz.nbPics + 8}`
 const sparqlQuery = props.sparqlQuery + limit
 
-const fullUrl = computed(() => baseUrl + encodeURIComponent(dateLine.value + sparqlQuery))
-
 const baseUrl = 'https://query.wikidata.org/sparql?query='
+const fullUrl = computed(() => baseUrl + encodeURIComponent(dateLine.value + sparqlQuery))
 
 const headers = { 'Accept': 'application/json' };
 const pending = ref(true)
@@ -87,34 +66,35 @@ watchEffect(() => {
   if (!items.value) return
   const receivedPictures = items.value.results.bindings.map((item) => {
     return {
-      src: item[props.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
-      answer: item[props.answerLabel ?? defaultAnswerLabel].value,
+      src: item[props.quizz.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
+      answer: item[props.quizz.answerLabel ?? defaultAnswerLabel].value,
       article: item.article?.value,
       name: item.itemLabel?.value ?? item.peintureLabel?.value
     }
   })
   const cleanPics = cleanResults(receivedPictures)
-  pics.value = cleanPics.length > props.nbPics ? cleanPics.slice(0, props.nbPics) : cleanPics
-  console.log('pics : ', pics.value)
+  pics.value = cleanPics.length > props.quizz.nbPics ? cleanPics.slice(0, props.quizz.nbPics) : cleanPics
 })
 
 const clientFetch = async () => {
   date.value = new Date().toLocaleString()
-  $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } })
+  await $fetch(fullUrl.value, { headers: { 'Accept': 'application/json' } })
     .then(response => items.value = response)
     .catch(error => error.value = error)
-    .finally(() => setTimeout(() => pending.value = false, 1000));
 }
 
-onMounted(() => {
-  if (!pics.value.length) {
-    clientFetch()
-  }
-  else {
-    setTimeout(() => pending.value = false, 1000)
+onMounted(() => !pics.value.length && clientFetch())                                      // erreur fetch initial (coté serveur)
+
+watchEffect(() => pics.value.length && setTimeout(() => pending.value = false, 700))      // délai pour charger les images
+
+// allow children to refetch
+const replay = ref(false)
+provide('replay', replay)
+watchEffect(async () => {
+  if (replay.value) {
+    await clientFetch()
+    replay.value = false
   }
 })
-
-
 
 </script>

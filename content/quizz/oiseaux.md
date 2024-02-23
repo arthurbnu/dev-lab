@@ -8,7 +8,7 @@ answerLabel : "itemLabel"
 small : true
 hide_title : true
 badges : "biologie"
-# image : "quizz-renaissance.png"
+image : "oiseaux2.png"
 ---
 
 
