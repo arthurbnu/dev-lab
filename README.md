@@ -1,10 +1,11 @@
 # WiQuizz 
 
 ## Game generator based on nuxt content and sparql - wikidata
+Forked from nuxt template [Zooper](https://github.com/fayazara/zooper)
 
 - Create a new game with just one md file
-- Use an existing quizz template (drag, swap, multiple choice question)
-- Get inspired by the existing responsive quizz templates and sparql queries.. 
+- Use an existing responsive quizz template (drag, swap, multichoice question)
+- Get inspired by the existing templates and sparql queries.. 
 - Add your own game template using the vuejs logic
 - See and play with the examples online : [WiQuizz](https://dev-lab-one.vercel.app/)
 
@@ -25,7 +26,8 @@
 
 To create a new Quizz, just add a new md file in the content folder
 - copy paste an existing file in content/quizz
-- fill the file with your own sparql request and settings
+- fill the file with your own sparql request and settings (game template, topic, title, options..)
+- easily create your sparql query online on https://query.wikidata.org/
 
 
 
