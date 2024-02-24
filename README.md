@@ -7,7 +7,7 @@ Forked from nuxt template [Zooper](https://github.com/fayazara/zooper)
 - Use an existing responsive quizz template (drag, swap, multichoice question)
 - Get inspired by the existing templates and sparql queries.. 
 - Add your own game template using the vuejs logic
-- See and play with the examples online : [WiQuizz](https://dev-lab-one.vercel.app/)
+- Play with the examples on [WiQuizz](https://dev-lab-one.vercel.app/)
 
 ## Tech Stack / nuxt modules
 
@@ -25,9 +25,9 @@ Forked from nuxt template [Zooper](https://github.com/fayazara/zooper)
 ## Usage
 
 To create a new Quizz, just add a new md file in the content folder
-- copy paste an existing file in content/quizz
+- copy paste an example file in content/quizz
 - fill the file with your own sparql request and settings (game template, topic, title, options..)
-- easily create your sparql query online on https://query.wikidata.org/
+- easily create your sparql query on https://query.wikidata.org/
 
 
 
