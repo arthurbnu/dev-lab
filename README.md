@@ -3,6 +3,8 @@
 ## Game generator based on nuxt content and sparql - wikidata
 Forked from nuxt template [Zooper](https://github.com/fayazara/zooper)
 
+![WiQuizz](https://dev-lab-one.vercel.app/quizz/quizz-renaissance2.png)
+
 - Create a new game with just one md file
 - Use an existing responsive quizz template (drag, swap, multichoice question)
 - Get inspired by the existing templates and sparql queries.. 
