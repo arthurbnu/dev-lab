@@ -29,7 +29,11 @@ Forked from nuxt template [Zooper](https://github.com/fayazara/zooper)
 To create a new Quizz, just add a new md file in the content folder
 - copy paste an example file in content/quizz
 - fill the file with your own sparql request and settings (game template, topic, title, options..)
-- Tip : easily create your sparql query on https://query.wikidata.org/
+
+## Tips
+
+- easily create your sparql query on https://query.wikidata.org/ and start from an example
+- eg : [Renaissance paintings with associated artists](https://w.wiki/9Gri)
 
 
 
