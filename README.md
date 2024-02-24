@@ -1,28 +1,30 @@
-# WiQuizz - et autres expérimentations sur les données
+# WiQuizz - Game generator based on nuxt content and sparql - wikidata
 
-- Génération de quizz avec sparql et wikidata
-- Recherche sparql complétée avec l'api wikipedia
-- ... et autres projets en cours
+- Create a new game with just one md file
+- Use an existing quizz template (drag, swap, multiple choice question)
+- Get inspired by the existing responsive quizz templates and sparql queries.. 
+- Add your own game template using the vuejs logic
+- See the examples online : [WiQuizz](https://dev-lab-one.vercel.app/)
 
-## Tech Stack
+## Tech Stack / nuxt modules
 
-1. Nuxt JS
-2. Nuxt ui
-3. Nuxt Content Module
-4. Vue
-5. Quasar
-6. Tailwind CSS
-7. Vue draggable next
-8. Apexcharts
-9. Vue3 Lottie
-10. Morev - vue transitions
+1. Structure : Nuxt content
+2. UI : Nuxt UI, Quasar, Tailwind
+3. Animation / interaction : Vue draggable next, Vue3 Lottie, Morev vue transitions
 
-## Installation
+## Install
 
 1. `git clone`
-2. `cd` dans le dossier créé
-3. `npm install` pour installer le dépendances 
-4. `npm run dev` pour lancer le server de dev 
+2. `cd` ..
+3. `npm install` 
+4. `npm run dev`
+
+## Usage
+
+To create a new Quizz, just add a new md file in the content folder
+- copy paste an existing file in content/quizz
+- fill the file with your own sparql request and settings
+
 
 
 
