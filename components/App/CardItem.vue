@@ -58,7 +58,6 @@
 <script setup lang="ts">
 
 import { ref, onMounted } from 'vue'
-// import q card quasar typescipt 
 import { QCard } from 'quasar'
 
 const props = defineProps({

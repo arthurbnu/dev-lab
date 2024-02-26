@@ -12,14 +12,6 @@
             :val="option.value" 
             :label="option.label ?? option.value" 
         />
-        <!-- <q-checkbox v-if = "autoComplete !== null" v-model = "modelAutoComplete" 
-        label = "Auto Complétion" class = "q-ml-lg" :disable="disableAutoComplete">
-        <q-tooltip anchor="bottom middle" self="top middle">
-            <div class="text-center">
-                <span> Recherche exacte si décoché</span>
-           </div>
-        </q-tooltip>
-        </q-checkbox> -->
     </span>
     <div ref = "tagsInputContainer">
         <div class="spinner q-pb-md">
@@ -48,7 +40,6 @@
             @keyup.escape = "resetSearch"
             :class = "{'sticky' : stickySearch && !autocompleteItems.length && !tag.length }"      
         >
-            <!--  slot  au dessus des résultats de recherche - Export csv-->
             <template v-slot:autocomplete-header v-if = " ! loading && autocompleteItems.length">
                     <q-btn
                     @click = "exportCSV"
@@ -64,7 +55,6 @@
                 </q-btn>
             </template>
         </vue-tags-input>
-        <!-- position sticky possible uniquement si pas de recherche en cours pour éviter dépassement de résultats  -->
         <div    
             v-if = "fetchError.message && ! loading" 
             :class="'axios-error level_' + [fetchError.level]"
@@ -88,10 +78,7 @@
 <script setup>
 import { ref, watch, onMounted, inject, computed} from 'vue';
 
-// La version de base de vue tags input n'est plus maintenue.. V2 only
 import VueTagsInput from "@sipec/vue3-tags-input";
-
-const toast = useToast()
 
 const props = defineProps({
     api: String,
@@ -139,16 +126,11 @@ const props = defineProps({
 // emit -> parent
 const emit = defineEmits(['tagsUpdate']);
 
-const deleteUser = user => tags.value = tags.value.filter(tag => tag.value !== user.value)
-
 // variables non réactives
 const defaultError = {message : '', level : 0};
 let mainInput = null,
     fetchController = new AbortController(),
     debounce = null;
-
-    // const envProd = inject('envProd');
-    const myLog = console.log
 
 const tag = ref(''),
 
@@ -241,7 +223,6 @@ const tag = ref(''),
     // Scroll si l'item sélecté n'est plus visible
     // Améliore la gestion du scroll de vue-tags-input
     const scrollSelect = (e) => {
-        // window not defined on server side
         if (typeof window === 'undefined') return
         if (e.ctrlKey) return   // pas de scroll désiré si ctrl + up/down - gestion de l'historique de recherche
         let selected = tagsInputContainer.value.querySelector('.ti-selected-item')
@@ -298,23 +279,9 @@ const tag = ref(''),
     const initItems = () => {
         if (mustResetSearch.value) return resetValues()
         fetchError.value = defaultError;
-        // scrollTop()
         loading.value = true;
         handleApi(lastRequestUrl.value);
     }
-
-    // Remonte jusqu'à la barre de recherche si trop éloigné
-    // let destinationScrollPosition = 0;
-    // const scrollTop = () => {
-    //     if (typeof window === 'undefined') return
-
-    //     let distance = Math.abs(window.scrollY - destinationScrollPosition);
-    //     if (distance > 150) {
-    //         currentTemplate.value.scrollIntoView();             // nécessaire pour le scroll smooth qui suit
-    //         window.scrollBy({top : - 80, behavior : 'smooth'})
-    //         destinationScrollPosition = window.scrollY;
-    //     }    
-    // }
 
     const noResultMessage = computed(() => {
         const criteriaIsUnknown = tag.value.includes('@') || ! selectedSearchOption.value       // @ => peut être une recherche par nom d'utilisateur
@@ -329,16 +296,11 @@ const tag = ref(''),
             fetchController.abort()
             fetchController = new AbortController()
             $fetch(currentRequestUrl, { signal : fetchController.signal, headers : {'Accept' : 'application/json'}}).then(response => {
-                myLog(response);
+                console.log(response);
                 autocompleteItems.value = props.handleResponse(response)
-                // if (! autocompleteItems.value || autocompleteItems.value.length === 0)
-                //     fetchError.value = noResultMessage.value
-                // simpler
                 if (! autocompleteItems.value?.length) 
                     fetchError.value = noResultMessage.value
                 else {
-                    // autocompleteItems.value.sort((it, it2) => it.text > it2.text ? 1 : -1)
-                    // simpler
                     autocompleteItems.value.sort((it, it2) => it.text.localeCompare(it2.text))
                     fetchError.value = defaultError
                 }
@@ -376,27 +338,12 @@ const tag = ref(''),
         autocompleteItems.value = [];   // si erreur, on réinitialise la liste de résultats
 
         console.warn('Erreur handleApi : '); 
-        myLog(e); 
+        console.log(e); 
     }
     
     const search = () => {
-        handleTemplateClick();  
         initItems(tag.value);
     }
-
-    // focus sur le champ de recherche sauf suppression ou survol de la carte User 
-    const handleTemplateClick = e => {
-        // if (! document.querySelector('.q-card:hover') && ! e?.target.classList.contains(classBtnDeleteCardUser)) 
-        //     mainInput.focus(); 
-    }  
-
-    let userSearchedFromParam = false;      // Utile juste une fois au chargement de la page quand le token MSAL est reçu. 
-    const loadUsersFromUrl = () => {
-        if (userSearchedFromParam || ! route.params.user || ! result.value ) return
-        tag.value= '@' + route.params.user.split(separatorUsersUrl).pop()   // pour le moment, on ne prend que le dernier user de la liste
-        userSearchedFromParam = true;
-    }
-
 
     // watchers
 
@@ -574,38 +521,5 @@ $negative : #ff0000;
     font-size: 1.2em;
     margin: 0 5px 0 7px;
 }
-
-// agent 
-// .my-ti--agent > div:first-child::before{
-//     content: "👮";
-//     font-size: 1.2em;
-//     margin: 0 5px 0 7px;
-// }
-
-// Autres groupes
-// 2   
-// 3   Agents 
-// 4    LAB
-// 5  | TECHNIQUE 24-24
-// 6  |  ACCES EXT
-
-// LAB
-// .my-ti-group- {
-//     &4 {
-//         & > div:first-child::before{
-//             content : "🍔";
-//             font-size: 1.2em;
-//             margin: 0 5px 0 7px;
-//         }
-
-//         &.my-ti-group-3 > div:first-child::before{
-//             content : "🍔 👮";
-//         }
-//     }
-
-// }
-
-
-
 
 </style>

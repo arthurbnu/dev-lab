@@ -49,8 +49,6 @@
 
 <script setup lang = "ts">
 
-import type { _backgroundColor } from '#tailwind-config/theme';
-import { ref, watchEffect, computed, onMounted } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 
 const props = defineProps<{
@@ -71,16 +69,16 @@ const screenOrientation = useScreenOrientation()
 const acceptedOrientation: OrientationType[] = ['landscape-primary', 'landscape-secondary']
 const lastError = ref({ picture: '', answer: '' })
 
-// swap
+// store moving indexes - used if option swap
 const movingIndex = ref(0)
 const lastIndex = ref(0)
 
 const handleMove = (e: any) => {
-  if (!props.swap) return true  // comportement par défaut : tous les index changent
+  if (!props.swap) return true  // default (no swap) : all indexes between current and future are updating
   const { index, futureIndex } = e.draggedContext
   movingIndex.value = index
   lastIndex.value = futureIndex
-  return false // swap : échange de 2 éléments
+  return false // swap : only current and future index are updating
 }
 
 const handleEnd = (e: any) => {

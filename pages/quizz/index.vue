@@ -2,7 +2,7 @@
 <template>
   <main class="min-h-screen">
     <AppHeader class="mb-5 text-center" :title="title" :description="description" />
-    <QuizzDrag :picsInit="picsInit" />
+    <QuizzDrag :picsInit="picsInit" :swap="true" />
   </main>
 </template>
 

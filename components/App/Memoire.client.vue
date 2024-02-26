@@ -107,17 +107,10 @@ onMounted(async () => {
 })
 
 const daysBetween = (date1: Date, date2: Date) => {
-    // Get 1 day in milliseconds
     const oneDay = 1000 * 60 * 60 * 24;
-
-    // Convert both dates to milliseconds
     const date1Ms = date1.getTime();
     const date2Ms = date2.getTime();
-
-    // Calculate the difference in milliseconds
     const differenceMs = date2Ms - date1Ms;
-
-    // Convert back to days and return
     return Math.round(differenceMs / oneDay);
 }
 
@@ -134,16 +127,7 @@ const nbMots = 15000, nbPages = 40
 const nbSemaines = Math.round(weeksBetween(new Date(), new Date(2024, 3, 15)))
 
 useSeoMeta({
-    title: title,
-    description,
-    author: "A B",
-    ogImage: "https://dev-lab-one.vercel.app/sparql/sparql-vuejs-personnes-wikipedia.png",
-    ogUrl: "https://dev-lab-one.vercel.app/sparql",
-    ogType: "website",
-    ogTitle: title,
-    ogDescription: description,
-    robots: "index, follow",
-    themeColor: "teal",
+    robots: "noindex, nofollow",
 });
 
 

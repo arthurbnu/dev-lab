@@ -50,25 +50,22 @@ const { data: allQuizz } = await useAsyncData("allQuizz", () =>
   queryContent("/quizz").find()
 );
 
-console.log('allQuizz', allQuizz)
-
 const baseUrl = 'https://dev-lab-one.vercel.app/'
 const quizzImg = quizz => {
   const img = quizz.image ?? "quizz-sparql.png"
   return  "quizz/" + img
 }
-const title  = "Quizz générés avec wikidata et sparql ";
-const description = "Le langage sparql permet de faire des requêtes sur des bases de données rdf telles que wikidata." +
-"Chaque quizz est généré à partir d'une requête sparql, les données changent à chaque rechargement de la page. " ;
+const title  = "Quizz dynamiques générés avec wikidata et sparql";
+const description = "Quizz wikidata créés avec sparql sur des thèmes variés : " + allQuizz.value.map(q => q.title).join(', ') ;
 
 useSeoMeta({
-  title: title,
+  title: "WiQuizz - " + title,
   description,
   author: "arthur.brody@bnu.fr",
   ogImage: baseUrl + "quizz/quizz-renaissance2.png",
   ogUrl: baseUrl,
   ogType: "website",
-  ogTitle: title,
+  ogTitle:  "WiQuizz - " + title,
   ogDescription: description,
   robots: "index, follow",
   themeColor: "teal",

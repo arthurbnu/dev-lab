@@ -9,15 +9,15 @@
       <QuizzChoice v-if="quizz.quizzTemplate === 'choice'" 
         :pics="pics" :nbChoices="4" :class="{ 'opacity-0': pending }" :quizz = "quizz" />
       <QuizzDrag v-else 
-        :picsInit="pics" :class="{ 'opacity-0': pending }" :swap = "!quizz.no_swap"/>   <!-- // drag -->
+        :picsInit="pics" :class="{ 'opacity-0': pending }" :swap = "!quizz.no_swap"/>
     </div>
   </div>
 </template>
 
-<script  setup>
+<script setup>
 const imgWidth = 300
 const date = ref('')
-const dateLine = computed(() => `# Requête sparql : ${date.value}`)  // to force refresh
+const dateLine = computed(() => `# Requête sparql : ${date.value}`)  // force refresh (cache)
 
 const defaultImageLabel = 'image'
 const defaultAnswerLabel = 'artisteLabels'
@@ -47,9 +47,9 @@ const pics = ref([])
 
 const cleanResults = (receivedPictures) =>
   receivedPictures.filter(picture =>
-    !picture.answer.includes('http')   // url pour auteur inconnu
-    && !picture.answer.includes('|')   // plusieurs auteurs
-    && !picture.src.includes('.tiff')  // format non supporté
+    !picture.answer.includes('http')   // unknown wikidata answer
+    && !picture.answer.includes('|')   // several authors for one picture
+    && !picture.src.includes('.tiff') 
   )
     // remove duplicate answers and duplicate pictures
     .filter((picture, index, self) =>
@@ -83,9 +83,9 @@ const clientFetch = async () => {
     .catch(error => error.value = error)
 }
 
-onMounted(() => !pics.value.length && clientFetch())                                      // erreur fetch initial (coté serveur)
+onMounted(() => !pics.value.length && clientFetch())                                      // fetch if no pics (server side error)
 
-watchEffect(() => pics.value.length && setTimeout(() => pending.value = false, 700))      // délai pour charger les images
+watchEffect(() => pics.value.length && setTimeout(() => pending.value = false, 700))      // let pics appear 
 
 // allow children to refetch
 const replay = ref(false)

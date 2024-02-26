@@ -8,8 +8,6 @@
         {{ tag }}
       </span>
     </div>
-
-    <!-- // 2 rows : one with a textarea containing the text to transform, the other with the result of the transformation -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="flex flex-col">
         <label for="inputText" class="text-lg font-bold">Texte à transformer</label>
@@ -26,15 +24,11 @@
 
 <script setup>
 
-import { ref, watchEffect } from 'vue'
-
 const inputText = ref("")
 const outputText = ref("")
 
-// ex : [00:35:27.060 --> 00:35:28.660] d'ailleurs on en parlera un peu dans le bouquin 
 watchEffect(() => {
   const inputLines = inputText.value.split("\n")
-  // remove 10 first characters
   const outputLines = inputLines.map(line => line.substring(line.indexOf("]") + 1))
   outputText.value = outputLines.join("")
 })

@@ -1,6 +1,5 @@
 <template>
   <div class="animate-pulse flex justify-around relative max-h-44 overflow-hidden gap-7" :class="{ 'hidden': !ready }">
-    <!-- <div class="absolute flex justify-center items-center w-full h-40 opacity-20 text-[30px] z-10 tracking-widest">Chargement des tableaux</div> -->
     <div v-for="index in range" :key="index + 'i'">
       <div class="relative w-24 h-28 rounded flex justify-center items-center mb-10 bg-slate-400 border-slate-200 border-4">
         <client-only>
@@ -17,8 +16,6 @@
 <script setup>
 
 import { Vue3Lottie } from 'vue3-lottie'
-
-import { ref, onMounted } from 'vue'
 
 const ready = ref(false)
 

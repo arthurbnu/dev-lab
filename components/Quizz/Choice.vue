@@ -1,7 +1,6 @@
 
 <template>
     <section ref = "templateSection" class="scroll-mt-14">
-        <!-- <div class="absolute w-full h-full z-0 opacity-20 filter blur-lg  bg-contain bg-center" :class="bgImageClass"></div> -->
         <div class="flex justify-center gap-3 mb-5 ">
             <div v-for="(pic, i) in picsRef" :key="i">
                 <div class="filter saturate-100 border-teal-600 border-solid" :class="{ 'border-b-2': currentIndex === i }">
@@ -24,9 +23,8 @@
                         </div>
                     </transition-slide>
                 </div>
-                <!-- <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="absolute z-10 bottom-0 w-full opacity-50" /> -->
             </div>
-            <!--  4 proposition de réponses -->
+            <!-- Answers -->
             <div class="flex justify-around gap-3 w-full mt-2 md:mt-5 mb-8">
                 <button v-for="(pic, i) in getChoices()" :key="i" @click="handleChoice(pic.answer)"
                     :disabled="alreadyAnswered(currentPic)"
@@ -39,8 +37,7 @@
                     {{ pic.answer }}
                 </button>
             </div>
-
-            <!-- Partie terminée -->
+            <!-- Game over -->
             <div v-if="end" ref = "wikiLinks" class="scroll-mt-3">
                 <UIcon name="trophy" class="text-9xl text-teal-700" />
                 <div class="text-lg mb-4 flex gap-6 ">Partie terminée ...
@@ -100,9 +97,7 @@ const props = defineProps({
     }
 })
 
-console.log('quizz', props.quizz.hide_title)
-
-// function that takes an answer (the good one) and adds 3 random wrong answers
+// takes an answer (the good one) and adds 3 random wrong answers
 const getChoices = () => {
     const pic = currentPic.value
     if (pic.choices) return pic.choices
@@ -152,11 +147,3 @@ watch(() => props.pics, () => {
 })
 
 </script>
-
-<style scoped>
-/* 
-section{
-    cursor: url('/quizz/pencil2.ico'), auto;
-} */
-
-</style>
