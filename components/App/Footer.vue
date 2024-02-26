@@ -5,7 +5,7 @@
   Voir sur ... 
     <NuxtLink target="_blank" to="https://vuejsexamples.com/wiquizz-a-game-generator-powered-by-nuxt-content-and-sparql-queries-from-wikidata/" 
       class="hover:text-primary-500 flex items-center">
-      <UAvatar src="https://vuejsexamples.com/favicon.ico" class="mr-2" size="xs"/>
+      <UAvatar src="/vuejsexamples.png" class="mr-2" size="xs"/>
       Vuejs examples
     </NuxtLink>
     <NuxtLink target="_blank" to="https://github.com/arthurbnu/dev-lab" 
