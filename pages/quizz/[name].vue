@@ -1,6 +1,6 @@
 <template>
   <main class="min-h-screen">
-    <AppHeader class="mb-6 text-center" :title="quizzContent.title" :description="quizzContent.description" />
+    <AppHeader class="mb-6 text-center" :title="quizzContent.title" :description="quizzContent.description" :icon="quizzContent.icon" />
     <QuizzRandomSparql 
       :quizz = "quizzContent"
       :data-name = "name"

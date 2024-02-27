@@ -7,6 +7,7 @@ answerLabel : "trackListLabel"
 badges : "musique"
 no_swap : true
 image : "beatles.jpg"
+icon: "i-lucide-music"
 ---
 
 

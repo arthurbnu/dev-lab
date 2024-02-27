@@ -5,6 +5,8 @@ description : "Remettez les images au dessus du bon nom"
 nbPics : 10
 badges : "cinéma"
 image : "oscar.jpg"
+icon: "i-lucide-film"
+
 ---
 
 ```sparql
@@ -12,7 +14,7 @@ image : "oscar.jpg"
 SELECT  ?date 
 (MD5(CONCAT(str(?artiste),str(RAND()))) as ?random)
 (SAMPLE(?image) AS ?image) 
-(GROUP_CONCAT(DISTINCT ?artisteLabel; SEPARATOR = " | ") AS ?artisteLabels) 
+(GROUP_CONCAT(DISTINCT ?artisteLabel; SEPARATOR = " | ") AS ?answerLabel) 
 (GROUP_CONCAT(DISTINCT ?recompenseLabel; SEPARATOR = " | ") AS ?recompenseLabels) 
 WHERE {
 ?artiste wdt:P31 wd:Q5;

@@ -17,14 +17,16 @@
         {{ tag }}
       </UBadge>
     </div>
-
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 m-auto">
       <QCard v-for="(quizz, id) in allQuizz" :key="id" :dark="true" 
         class="m-1 hover:scale-105 transition-all will-change-transform border-teal-400/20" 
         :title="quizz.title" :description="quizz.description" bordered >
         <NuxtLink :to="'/quizz/' + quizz.name" class="border-teal-500">
-          <div class="h-40 overflow-hidden">
-            <NuxtImg :src="quizzImg(quizz)" :alt="quizz.title" layout="fill" objectFit="cover" height="300px" width="400px" class="m-auto"/>
+          <div class="h-40 overflow-hidden relative">
+            <UAvatar v-if = "quizz.icon" class="absolute z-20 top-2 left-2 bg-gray-700" size="md">
+               <UIcon dynamic :name="quizz.icon"/>
+            </UAvatar>
+            <NuxtImg :src="quizzImg(quizz)" :alt="quizz.title" layout="fill" objectFit="cover" height="300" width="400" class="opacity-30"/>
           </div>
           <div class="p-4">
             <h2 class="text-xl font-bold">{{ quizz.title }}</h2>

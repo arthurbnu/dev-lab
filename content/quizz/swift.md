@@ -6,6 +6,7 @@ nbPics : 7
 answerLabel : "trackListLabel"
 badges : "musique"
 image : "swift.jpg"
+icon: "i-lucide-music"
 ---
 
 ```sparql

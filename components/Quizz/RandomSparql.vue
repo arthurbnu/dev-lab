@@ -20,7 +20,7 @@ const date = ref('')
 const dateLine = computed(() => `# Requête sparql : ${date.value}`)  // force refresh (cache)
 
 const defaultImageLabel = 'image'
-const defaultAnswerLabel = 'artisteLabels'
+const defaultAnswerLabel = 'answerLabel'
 
 const props = defineProps({
   quizz : {

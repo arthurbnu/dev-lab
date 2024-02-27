@@ -15,7 +15,7 @@
                 class="absolute w-full bg-teal-700/40 z-10 h-[calc(100%+110px)] grid place-content-center text-4xl border-b-2 border-yellow-300">
                 🥇
               </span>
-              <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full">
+              <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full bg-blue-400/20">
                 <NuxtImg v-if="!picture.src.includes('http')" v-bind="imgProperties(picture.src)" />
                 <img v-else v-bind="imgProperties(picture.src)" />
               </UChip>
@@ -117,7 +117,7 @@ const getNbFound = () => pictures.value.filter(picture => picture.found).length
 const imgProperties = (src: string) => {return {
   src: src,
   alt: 'inconnu ' + src,
-  class: 'cursor-move hover:opacity-90 transition-all border-4 border-solid w-full',
+  class: 'cursor-move hover:opacity-90 transition-all border-4 border-solid w-auto max-h-[40vh]',
 }}
 
 const orientationError = computed(() => {

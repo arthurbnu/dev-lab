@@ -9,6 +9,7 @@ small : true
 hide_title : true
 badges : "biologie"
 image : "oiseaux2.png"
+icon: "i-lucide-bird"
 ---
 
 

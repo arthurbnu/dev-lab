@@ -10,6 +10,7 @@ small : true
 hide_title : true
 badges : "culture"
 image : "drapeaux.png"
+icon: "i-lucide-flag"
 ---
 
 
