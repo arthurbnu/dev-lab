@@ -5,28 +5,28 @@
         <span class="text-teal-400 mr-4">WiQuizz</span>
         {{ title }}
       </h1>
-      <p class="text-left">
-        Le langage <NuxtLink to="https://fr.wikipedia.org/wiki/SPARQL" class="text-teal-400 underline" target="_blank">sparql</NuxtLink> 
+      <p class="text-left [&>a]:text-teal-400 [&>a]:underline">
+        Le langage <NuxtLink to="https://fr.wikipedia.org/wiki/SPARQL" target="_blank">sparql</NuxtLink> 
         permet de faire des requêtes sur des bases de données rdf telles que 
-        <NuxtLink to="https://www.wikidata.org/wiki/Wikidata:Main_Page"  class="text-teal-400 underline" target="_blank">wikidata</NuxtLink>.
+        <NuxtLink to="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank">wikidata</NuxtLink>.
         Chaque quizz est généré à partir d'une requête sparql, les données changent à chaque rechargement de la page.
       </p>
     </section>
-    <div class="space-y-4 text-center text-black mb-4">
+    <div class="my-4 text-center mb-4">
       <UBadge v-for="(tag, id) in tags" :key="id" class="m-1" color="primary" variant="outline">
         {{ tag }}
       </UBadge>
     </div>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 m-auto">
-      <QCard v-for="(quizz, id) in allQuizz" :key="id" :dark="true" 
+      <QCard v-for="(quizz, id) in allQuizz" :key="id" dark
         class="m-1 hover:scale-105 transition-all will-change-transform border-teal-400/20" 
         :title="quizz.title" :description="quizz.description" bordered >
         <NuxtLink :to="'/quizz/' + quizz.name" class="border-teal-500">
-          <div class="h-40 overflow-hidden relative">
+          <div class="h-48 lg:h-40 overflow-hidden relative">
             <UAvatar v-if = "quizz.icon" class="absolute z-20 top-2 left-2 bg-gray-700" size="md">
                <UIcon dynamic :name="quizz.icon"/>
             </UAvatar>
-            <NuxtImg :src="quizzImg(quizz)" :alt="quizz.title" layout="fill" objectFit="cover" height="300" width="400" class="opacity-30"/>
+            <NuxtImg :src="quizzImg(quizz)" :alt="quizz.title" height="300" width="400" class="opacity-30"/>
           </div>
           <div class="p-4">
             <h2 class="text-xl font-bold">{{ quizz.title }}</h2>

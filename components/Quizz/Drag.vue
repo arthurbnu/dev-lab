@@ -8,29 +8,34 @@
       </p>
       <div v-else class=" h-80 max-w-full">
         <VueDraggableNext :list="pictures" @end="handleEnd" :move="handleMove" animation="500" tag="ul"
-          class="flex flex-nowrap space-x-2 mb-4" :class="{ 'swap': swap }">
+          class="flex flex-nowrap space-x-5 mb-4" :class="{ 'swap': swap }">
           <transition-group name="img-group">
-            <li v-for="(picture, id) in pictures" :key="picture.src" class="relative" :style="basisStyle">
-              <span v-if="picture.found"
-                class="absolute w-full bg-teal-700/40 z-10 h-[calc(100%+110px)] grid place-content-center text-4xl border-b-2 border-yellow-300">
-                🥇
+            <li v-for="(picture, id) in pictures" :key="picture.src" class="relative cursor-move hover:opacity-90 transition-opacity" :style="basisStyle">
+              <span v-show="picture.found"
+                class="absolute w-full bg-teal-700/20 z-10 h-[calc(100%+110px)] grid place-content-center text-4xl border-b-2 border-yellow-300">
+                <!-- <UAvatar size="lg" class="border-teal-900 border- border-solid">
+                  <UIcon dynamic :name="'i-lucide-sparkles'" class="text-yellow-200"/>
+                </UAvatar> -->
               </span>
-              <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full bg-blue-400/20">
+              <UChip :color="picture.found ? 'teal' : 'gray'" :size="picture.found ? '2xl' : 'md'" class="w-full bg-blue-400/20 rounded-xl">
                 <NuxtImg v-if="!picture.src.includes('http')" v-bind="imgProperties(picture.src)" />
                 <img v-else v-bind="imgProperties(picture.src)" />
               </UChip>
             </li>
           </transition-group>
         </VueDraggableNext>
-        <ul v-auto-animate class="flex flex-nowrap space-x-2">
-          <li v-for="(answer, id) in answers" :key="answer"
-            class="grid place-content-center hover:opacity-90 transition-all bg-teal-900 h-20 border-4 border-teal-700 border-solid text-sm"
+        <!-- answers -->
+        <ul v-auto-animate class="flex flex-nowrap space-x-5">
+          <li v-for="answer in answers" :key="answer"
+            class="grid place-content-center rounded-xl h-20 border-2 border-teal-700 border-solid text-sm select-none group"
             :class="{ 'my-animation-shake': lastError.answer === answer }" :data-answer="answer" :style="basisStyle">
+            <UIcon dynamic name="i-lucide-arrow-up" class="text-gray-500 mx-auto mb-1 group-hover:animate-ping"/>
             {{ answer }}
           </li>
         </ul>
       </div>
     </transition-expand>
+    <!-- game won -->
     <div v-if="shuffled && youWin">
       <AppFires class="opacity-80"/>
       <UModal v-model="youWin" prevent-close
@@ -72,12 +77,14 @@ const lastError = ref({ picture: '', answer: '' })
 // store moving indexes - used if option swap
 const movingIndex = ref(0)
 const lastIndex = ref(0)
+const moveTriggered = ref(false)
 
 const handleMove = (e: any) => {
   if (!props.swap) return true  // default (no swap) : all indexes between current and future are updating
   const { index, futureIndex } = e.draggedContext
   movingIndex.value = index
   lastIndex.value = futureIndex
+  moveTriggered.value = true
   return false // swap : only current and future index are updating
 }
 
@@ -91,6 +98,7 @@ const handleEnd = (e: any) => {
 }
 
 const handleEndSwap = (e: any) => {
+  if (!moveTriggered.value) return
   const futureItem = pictures.value[lastIndex.value]
   const movingItem = pictures.value[movingIndex.value]
   const _items = Object.assign([], pictures.value) as typeof pictures.value
@@ -101,6 +109,7 @@ const handleEndSwap = (e: any) => {
   const chosenAnswer = answers.value[lastIndex.value]
   if (chosenAnswer !== movingItem.answer)
     lastError.value.answer = chosenAnswer
+  moveTriggered.value = false
 }
 
 const shuffle = (array: any[]) => array.sort(() => Math.random() - 0.5)
@@ -117,7 +126,7 @@ const getNbFound = () => pictures.value.filter(picture => picture.found).length
 const imgProperties = (src: string) => {return {
   src: src,
   alt: 'inconnu ' + src,
-  class: 'cursor-move hover:opacity-90 transition-all border-4 border-solid w-auto max-h-[40vh]',
+  class: 'border-4 border-solid w-auto max-h-[40vh]',
 }}
 
 const orientationError = computed(() => {
