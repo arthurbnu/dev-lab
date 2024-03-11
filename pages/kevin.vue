@@ -1,6 +1,6 @@
 <template>
     <h1>Non je n'ai toujours rien fait pour le moment</h1>
-    <em>et vous hein ??</em>
+    <em>et vous ??</em>
 </template>
 
 <style scoped>
