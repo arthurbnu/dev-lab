@@ -97,7 +97,7 @@ const props = defineProps({
     }
 })
 
-const showTitle = pic.name && pic.name != pic.answer
+const showTitle = pic => pic.name && pic.name != pic.answer
 
 // takes an answer (the good one) and adds 3 random wrong answers
 const getChoices = () => {
