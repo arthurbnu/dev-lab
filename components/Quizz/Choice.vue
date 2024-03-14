@@ -53,12 +53,12 @@
                     <ul>
                         <li v-for="(pic, i) in picsRef" :key="i"
                             class="flex items-center gap-3 mb-2 text-md hover:!bg-slate-400/10 rounded-md odd:bg-gray-700/10 p-2">
-                            <span class="basis-40" v-if = "showTitle(pic)">
+                            <span class="basis-40">
                                 {{ pic.answer }}
                             </span>
                             <UAvatar :src="pic.src" :alt="pic.answer" size="md" />
                             <a :href="pic.article ?? pic.src.split('?width')[0]" target="_blank"
-                                class="text-primary underline truncate md:w-80" :class="{'w-72' : showTitle(pic)}">{{ pic.name ?? pic.answer }}
+                                class="text-primary underline truncate md:w-80 w-72">{{ pic.name ?? pic.answer }}
                             </a>
                         </li>
                     </ul>
@@ -96,8 +96,6 @@ const props = defineProps({
         default: 4
     }
 })
-
-const showTitle = pic => pic.name && pic.name != pic.answer
 
 // takes an answer (the good one) and adds 3 random wrong answers
 const getChoices = () => {
