@@ -6,7 +6,7 @@ description :  ""
 nbPics : 12
 answerLabel : "itemLabel"
 small : true
-hide_title : true
+hideTitle : true
 badges : "biologie"
 image : "oiseaux2.png"
 icon: "i-lucide-bird"

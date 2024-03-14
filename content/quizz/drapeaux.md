@@ -7,8 +7,8 @@ nbPics : 12
 answerLabel : "countryLabel"
 imageLabel : "flag"
 small : true
-hide_title : true
-badges : "culture"
+hideTitle : true
+badges : "culture, géographie"
 image : "drapeaux.png"
 icon: "i-lucide-flag"
 ---

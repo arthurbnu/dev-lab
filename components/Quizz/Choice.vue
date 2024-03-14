@@ -15,7 +15,7 @@
                     <transition-slide :offset="['100%', 0]" group mode="in-out">                  
                         <div v-for="(pic, i) in picsRef" :key="i">
                             <div v-if="i === currentIndex">
-                                <cite class="text-center text-md mb-2 block w-full truncate min-h-[10px]" :class = "{'opacity-0' : quizz.hide_title}" >
+                                <cite class="text-center text-md mb-2 block w-full truncate min-h-[10px]" :class = "{'opacity-0' : quizz.hideTitle}" >
                                     {{ pic.name }}
                                 </cite>
                                 <img :src="pic.src" class="rounded m-auto object-contain w-full" :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]' " />
@@ -53,12 +53,12 @@
                     <ul>
                         <li v-for="(pic, i) in picsRef" :key="i"
                             class="flex items-center gap-3 mb-2 text-md hover:!bg-slate-400/10 rounded-md odd:bg-gray-700/10 p-2">
-                            <span class="basis-40" v-if = "!quizz.hide_title">
+                            <span class="basis-40" v-if = "showTitle(pic)">
                                 {{ pic.answer }}
                             </span>
                             <UAvatar :src="pic.src" :alt="pic.answer" size="md" />
                             <a :href="pic.article ?? pic.src.split('?width')[0]" target="_blank"
-                                class="text-primary underline truncate md:w-80" :class="{'w-72' : !quizz.hide_title}">{{ pic.name ?? pic.answer }}
+                                class="text-primary underline truncate md:w-80" :class="{'w-72' : showTitle(pic)}">{{ pic.name ?? pic.answer }}
                             </a>
                         </li>
                     </ul>
@@ -96,6 +96,8 @@ const props = defineProps({
         default: 4
     }
 })
+
+const showTitle = pic.name && pic.name != pic.answer
 
 // takes an answer (the good one) and adds 3 random wrong answers
 const getChoices = () => {
