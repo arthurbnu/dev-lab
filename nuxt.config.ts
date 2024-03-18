@@ -12,6 +12,8 @@ export default defineNuxtConfig({
    'nuxt-quasar-ui',
    '@formkit/auto-animate/nuxt',
    "@morev/vue-transitions/nuxt",
+   'nuxt3-leaflet',
+
   ],
 
   quasar: { 
