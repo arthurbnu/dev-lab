@@ -5,11 +5,17 @@
             <div v-for="(pic, i) in picsRef" :key="i">
                 <div class="filter saturate-100 border-teal-600 border-solid" :class="{ 'border-b-2': currentIndex === i }">
                     <UAvatar :src="pic.src" :alt="pic.answer" size="lg" :imgClass="getImgClass(pic)"
-                        @click="currentIndex = i" />
+                        @click="currentIndex = (quizz.timer && !end) ? currentIndex : i" />     <!-- click on avatar to change pic - only if no timer -->
                 </div>
             </div>
         </div>
+        <!-- Questions -->
         <div class="max-w-2xl m-auto">
+            <transition-scale v-if="quizz.timer" group class="block h-2" >
+                <template v-for="(pic, i) in picsRef" :key="i" >
+                    <AppTimeProgress @end = "handleChoice(getChoices()[0])" v-if="currentIndex === i && ! alreadyAnswered(currentPic)"/>
+                </template>
+            </transition-scale>
             <div class="bg-slate-800/40 p-2 pt-3 w-full rounded-lg relative" :class="quizz.small ? 'h-[42vh]' : 'h-[62vh]' ">
                 <div ref="imgContainer">
                     <transition-slide :offset="['100%', 0]" group mode="in-out">                  

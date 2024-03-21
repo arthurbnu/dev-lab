@@ -10,6 +10,7 @@ hideTitle : true
 small : true
 badges : "culture, géographie"
 icon: "i-lucide-globe"
+timer: true
 ---
 
 
