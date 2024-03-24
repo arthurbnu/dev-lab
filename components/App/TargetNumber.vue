@@ -3,8 +3,7 @@
     <span
       class="flex tabular-nums text-slate-900 dark:text-white text-5xl font-extrabold mb-2 [counter-set:_num_var(--num)] before:content-[counter(num)] animate-counter">
       <span class="sr-only">{{ targetNumber }}  </span>
-      <span class="flex text-white-900 " style="font-size: 21px; align-self: flex-end">
-        &nbsp heures d'occupation</span>
+      <span class="flex text-white-900 px-2" style="font-size: 21px; align-self: flex-end"> {{ text }}</span>
       <div> </div>
     </span>
   </div>
@@ -18,6 +17,10 @@ const props = defineProps({
     required: true,
     default: 1234,
   },
+  text : {
+    type : String,
+    default : "heures d'occupation"
+  }
 });
 
 
