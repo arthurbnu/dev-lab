@@ -1,10 +1,17 @@
 <template>
-    <div class="w-full h-[66vh]">
+    <div class="w-full h-[66vh]" @mousemove="handleMove" ref="container" @mouseleave="leaveContainer">
+        <div ref="lottieContainer"
+            class="hidden md:!block  w-16 rounded-xl transition-all ease-in-out duration-500 transition-transform-duration-700"
+            :class = "{'opacity-0 scale-80' : !hoveringContainer}">
+            <client-only>
+                <Vue3Lottie autoPlay animationLink="/quizz/zeppelin.json" class="scale-150"/>
+            </client-only>
+        </div>
         <div class="my-2">
-            <div class="text-center">
+            <div class="text-center font-light text-md tracking-wider">
                 Essaye de trouver ..
                 <transition-slide group class="inline-flex ml-2">
-                    <div v-for="(city, index) in cities" :key="index" v-show="index === currentIndex" 
+                    <div v-for="(city, index) in cities" :key="index" v-show="index === currentIndex"
                         class="bg-primary/50 rounded px-2 text-center">
                         {{ city.name }}
                     </div>
@@ -13,14 +20,15 @@
                     <span class="px-4" v-if="gameOver">Partie terminée ...</span>
                 </transition-slide>
             </div>
-            <div class="my-2 flex items-center justify-between space-between">
-                <!-- Ton marqueur est à ... {{ currentPoint ? currentDist : "..." }} km -->
-                Score <UProgress :value="currentPoint ? score : 0" :max="minDistOk" class="basis-[90%]" />
+            <div class="my-2 flex items-baseline gap-2">
+                Score
+                <UProgress :value="currentPoint ? score : 0" :max="minDistOk" class="flex-1" />
             </div>
         </div>
         <transition-scale>
-            <div v-if = "score" class="absolute w-[40%] m-auto top-[25vh] left-[30%] text-center text-primary/60 opacity-40 text-lg z-[1000]">
-                <AppTargetNumber :targetNumber="currentDist" text = "km" class="rounded-lg"></AppTargetNumber>
+            <div v-if="score"
+                class="absolute w-[46%] m-auto top-[25vh] left-[27%] text-center text-primary/60 opacity-40 text-lg z-[1000]">
+                <AppTargetNumber :targetNumber="currentDist" text="km" class="rounded-lg"></AppTargetNumber>
             </div>
         </transition-scale>
         <LMap ref="map" :zoom="zoom" :center="mapCenter" :maxZoom="zoom" @click="handleClick">
@@ -28,27 +36,29 @@
                 attribution="&amp;copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors"
                 layer-type="base" name="OpenStreetMap" />
 
-                <template v-if="currentPoint" >
-                    <!-- User point clicked -->
-                    <l-circle :lat-lng="currentPoint" color="blue" :radius = "10000"></l-circle>
+            <template v-if="currentPoint">
+                <!-- User point clicked -->
+                <l-circle :lat-lng="currentPoint" color="blue" :radius="10000"></l-circle>
 
-                    <!-- Answer -->
-                    <l-marker :lat-lng="answerCity.coords" :opacity="0.4">
-                        <l-tooltip class="m-3 w-60 max-w-full h-12 pb-2" >
-                            <h2 class="text-lg italic">{{ cities[currentIndex].name }} </h2>
-                            <h3 class="text-md text-teal-700 my-1">Point n° {{ currentIndex }}</h3>
-                        </l-tooltip>
-                    </l-marker>
-                    
-                    <l-polyline v-if = "polyline" :lat-lngs="polyline" :color="score > 0 ? 'green' : 'red'"></l-polyline>
-                    <l-circle :lat-lng="answerCity.coords" :color="score > 0 ? 'green' : 'red'" 
-                        :radius = "1000 * minDistOk" :stroke="false"></l-circle>
+                <!-- Answer -->
+                <l-marker :lat-lng="answerCity.coords" :opacity="0.4">
+                    <l-tooltip class="m-3 w-60 max-w-full h-12 pb-2">
+                        <h2 class="text-lg italic">{{ cities[currentIndex].name }} </h2>
+                        <h3 class="text-md text-teal-700 my-1">Point n° {{ currentIndex }}</h3>
+                    </l-tooltip>
+                </l-marker>
+
+                <l-polyline v-if="polyline" :lat-lngs="polyline" :color="score > 0 ? 'green' : 'red'"></l-polyline>
+                <l-circle :lat-lng="answerCity.coords" :color="score > 0 ? 'green' : 'red'" :radius="1000 * minDistOk"
+                    :stroke="false"></l-circle>
             </template>
         </LMap>
     </div>
 </template>
 
 <script setup>
+
+import { Vue3Lottie } from 'vue3-lottie'
 
 const zoom = ref(5)
 const mapCenter = ref([48, 2])
@@ -61,12 +71,25 @@ const waiting = ref(false)
 const minDistOk = 200
 const map = ref()
 const answerCity = computed(() => cities[currentIndex.value])
-const polyline = computed(()=> currentPoint.value && [answerCity.value.coords, [currentPoint.value.lat, currentPoint.value.lng]])
+const polyline = computed(() => currentPoint.value && [answerCity.value.coords, [currentPoint.value.lat, currentPoint.value.lng]])
 
 const gameOver = computed(() => currentIndex.value === cities.length - 1 && currentPoint.value)
 const score = computed(() => currentDist.value > minDistOk ? 0 : minDistOk - currentDist.value)
 
+const lottieContainer = ref(null)
+const container = ref(null)
+const hoveringContainer = ref(false)
+
 import cities from "@/assets/cities.json"
+
+async function handleMove(e) {
+    hoveringContainer.value = true
+    lottieContainer.value.style.marginLeft = `${e.screenX - container.value.offsetLeft - 30}px`
+}
+
+function leaveContainer() {
+    hoveringContainer.value = false
+}
 
 function handleClick(e) {
     if (waiting.value) return
