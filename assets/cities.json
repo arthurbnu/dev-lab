@@ -1,38 +1,386 @@
 [
     {
-        "name" : "Angoulème",
-        "coords" : [45.650002,	0.160000]       
+      "name": "Angoulême",
+      "region": "Nouvelle-Aquitaine",
+      "lat": "45.650002",
+      "lng": "0.160000"
     },
     {
-        "name" : "Clichy",
-        "coords" : [48.904400,	2.306400]       
-
+      "name": "Boulogne-sur-Mer",
+      "region": "Hauts-de-France",
+      "lat": "50.726398",
+      "lng": "1.614700"
     },
     {
-        "name" : "Antony",
-        "coords" : [48.753899,	2.297500]       
-
+      "name": "Clichy",
+      "region": "Hauts-de-Seine",
+      "lat": "48.904400",
+      "lng": "2.306400"
     },
     {
-        "name" : "Antibes",
-        "coords" : [43.580799,	7.123900]       
-
+      "name": "Antony",
+      "region": "Hauts-de-Seine",
+      "lat": "48.753899",
+      "lng": "2.297500"
     },
     {
-        "name" : "Pau",
-        "coords" : [43.299999,	-0.370000]       
-
+      "name": "Valence",
+      "region": "Auvergne-Rhône-Alpes",
+      "lat": "44.933300",
+      "lng": "4.891700"
     },
     {
-        "name" : "Nancy",
-        "coords" : [48.693600,	6.184600]       
-
+      "name": "Bourges",
+      "region": "Centre-Val de Loire",
+      "lat": "47.084400",
+      "lng": "2.396400"
     },
     {
-        "name" : "Metz",
-        "coords" : [49.120277,	6.177778]       
-
+      "name": "Ajaccio",
+      "region": "Corse",
+      "lat": "41.926701",
+      "lng": "8.736900"
+    },
+    {
+      "name": "Colmar",
+      "region": "Grand Est",
+      "lat": "48.081699",
+      "lng": "7.355600"
+    },
+    {
+      "name": "Drancy",
+      "region": "Île-de-France",
+      "lat": "48.930000",
+      "lng": "2.450000"
+    },
+    {
+      "name": "Mérignac",
+      "region": "Nouvelle-Aquitaine",
+      "lat": "44.838600",
+      "lng": "-0.643600"
+    },
+    {
+      "name": "Saint-Nazaire",
+      "region": "Pays de la Loire",
+      "lat": "47.280602",
+      "lng": "-2.208600"
+    },
+    {
+      "name": "Cannes",
+      "region": "Provence-Alpes-Côte d'Azur",
+      "lat": "43.551300",
+      "lng": "7.012800"
+    },
+    {
+      "name": "La Rochelle",
+      "region": "Nouvelle-Aquitaine",
+      "lat": "46.159100",
+      "lng": "-1.151700"
+    },
+    {
+      "name": "Antibes",
+      "region": "Provence-Alpes-Côte d'Azur",
+      "lat": "43.580799",
+      "lng": "7.123900"
+    },
+    {
+      "name": "Champigny-sur-Marne",
+      "region": "Île-de-France",
+      "lat": "48.817200",
+      "lng": "2.515600"
+    },
+    {
+      "name": "Aubervilliers",
+      "region": " Île-de-France",
+      "lat": "48.913101",
+      "lng": "2.383100"
+    },
+    {
+      "name": "Pau",
+      "region": "Nouvelle-Aquitaine",
+      "lat": "43.299999",
+      "lng": "-0.370000"
+    },
+    {
+      "name": "Colombes",
+      "region": "Île-de-France",
+      "lat": "48.923599",
+      "lng": "2.252200"
+    },
+    {
+      "name": "Courbevoie",
+      "region": "Île-de-France",
+      "lat": "48.897800",
+      "lng": "2.253100"
+    },
+    {
+      "name": "Poitiers",
+      "region": "Nouvelle-Aquitaine",
+      "lat": "46.580002",
+      "lng": "0.340000"
+    },
+    {
+      "name": "Créteil",
+      "region": "Île-de-France",
+      "lat": "48.791100",
+      "lng": "2.462800"
+    },
+    {
+      "name": "Vitry-sur-Seine",
+      "region": "Île-de-France",
+      "lat": "48.787498",
+      "lng": "2.392800"
+    },
+    {
+      "name": "Nanterre",
+      "region": "Île-de-France",
+      "lat": "48.898800",
+      "lng": "2.196900"
+    },
+    {
+      "name": "Tourcoing",
+      "region": "Hauts-de-France",
+      "lat": "50.723907",
+      "lng": "3.161168"
+    },
+    {
+      "name": "Roubaix",
+      "region": "Hauts-de-France",
+      "lat": "50.690102",
+      "lng": "3.181670"
+    },
+    {
+      "name": "Nancy",
+      "region": "Grand East",
+      "lat": "48.693600",
+      "lng": "6.184600"
+    },
+    {
+      "name": "Montreuil",
+      "region": "Seine-Saint-Denis",
+      "lat": "48.861099",
+      "lng": "2.443600"
+    },
+    {
+      "name": "Saint-Paul",
+      "region": "Réunion",
+      "lat": "-21.009701",
+      "lng": "55.269699"
+    },
+    {
+      "name": "Caen",
+      "region": "Normandie",
+      "lat": "49.180000",
+      "lng": "-0.370000"
+    },
+    {
+      "name": "Rouen",
+      "region": "Normandie",
+      "lat": "49.439999",
+      "lng": "1.100000"
+    },
+    {
+      "name": "Orléans",
+      "region": "Centre-Val de Loire",
+      "lat": "47.902500",
+      "lng": "1.909000"
+    },
+    {
+      "name": "Besançon",
+      "region": "Bourgogne-Franche-Comté",
+      "lat": "47.240002",
+      "lng": "6.020000"
+    },
+    {
+      "name": "Metz",
+      "region": "Grand Est",
+      "lat": "49.120277",
+      "lng": "6.177778"
+    },
+    {
+      "name": "Perpignan",
+      "region": "Occitanie",
+      "lat": "42.698601",
+      "lng": "2.895600"
+    },
+    {
+      "name": "Tours",
+      "region": "Centre-Val de Loire",
+      "lat": "47.243599",
+      "lng": "0.689200"
+    },
+    {
+      "name": "Limoges",
+      "region": "Nouvelle-Aquitaine",
+      "lat": "45.835300",
+      "lng": "1.262500"
+    },
+    {
+      "name": "Clermont-Ferrand",
+      "region": "Auvergne-Rhône-Alpes",
+      "lat": "45.783100",
+      "lng": "3.082400"
+    },
+    {
+      "name": "Aix-en-Provence",
+      "region": "Provence-Alpes-Côte d'Azur",
+      "lat": "43.526302",
+      "lng": "5.445429"
+    },
+    {
+      "name": "Villeurbanne",
+      "region": "Auvergne-Rhône-Alpes",
+      "lat": "45.766701",
+      "lng": "4.880300"
+    },
+    {
+      "name": "Angers",
+      "region": "Anjou",
+      "lat": "47.473614",
+      "lng": "-0.554167"
+    },
+    {
+      "name": "Nîmes",
+      "region": "Occitanie",
+      "lat": "43.838001",
+      "lng": "4.361000"
+    },
+    {
+      "name": "Dijon",
+      "region": "Bourgogne-Franche-Comté",
+      "lat": "47.316666",
+      "lng": "5.016667"
+    },
+    {
+      "name": "Grenoble",
+      "region": "Auvergne-Rhône-Alpes",
+      "lat": "45.171547",
+      "lng": "5.722387"
+    },
+    {
+      "name": "Saint-Étienne",
+      "region": "Auvergne-Rhône-Alpes",
+      "lat": "45.434700",
+      "lng": "4.390300"
+    },
+    {
+      "name": "Toulon",
+      "region": "Provence-Alpes-Côte d'Azur",
+      "lat": "43.125832",
+      "lng": "5.930556"
+    },
+    {
+      "name": "Le Havre",
+      "region": "Normandie",
+      "lat": "49.490002",
+      "lng": "0.100000"
+    },
+    {
+      "name": "Reims",
+      "region": "Grand Est",
+      "lat": "49.262798",
+      "lng": "4.034700"
+    },
+    {
+      "name": "Montpellier",
+      "region": "Occitan",
+      "lat": "43.611900",
+      "lng": "3.877200"
+    },
+    {
+      "name": "Strasbourg",
+      "region": "Grand Est",
+      "lat": "48.580002",
+      "lng": "7.750000"
+    },
+    {
+      "name": "Toulouse",
+      "region": "Occitanie",
+      "lat": "43.604500",
+      "lng": "1.444000"
+    },
+    {
+      "name": "Vierzon",
+      "region": "Centre-Val de Loire",
+      "lat": "47.221996",
+      "lng": "2.067849"
+    },
+    {
+      "name": "Le Mans",
+      "region": "Pays de la Loire",
+      "lat": "48.008224",
+      "lng": "0.209856"
+    },
+    {
+      "name": "Avignon",
+      "region": "Provence",
+      "lat": "43.949318",
+      "lng": "4.805528"
+    },
+    {
+      "name": "Dunkerque",
+      "region": "Hauts-de-France",
+      "lat": "51.050030",
+      "lng": "2.397766"
+    },
+    {
+      "name": "Menton",
+      "region": "Provence-Alpes-Côte d'Azur",
+      "lat": "43.774483",
+      "lng": "7.497540"
+    },
+    {
+      "name": "Bastia",
+      "region": "Haute-Corse",
+      "lat": "42.697285",
+      "lng": "9.450881"
+    },
+    {
+      "name": "Le Cannet",
+      "region": "Cannes",
+      "lat": "43.552849",
+      "lng": "7.017369"
+    },
+    {
+      "name": "Beauvais",
+      "region": "Hauts-de-France",
+      "lat": "49.431744",
+      "lng": "2.089773"
+    },
+    {
+      "name": "Mulhouse",
+      "region": "Grand Est",
+      "lat": "47.750839",
+      "lng": "7.335888"
+    },
+    {
+      "name": "Boulogne-Billancourt",
+      "region": "Île-de-France",
+      "lat": "48.843933",
+      "lng": "2.247391"
+    },
+    {
+      "name": "Montauban",
+      "region": "Occitanie",
+      "lat": "44.022125",
+      "lng": "1.352960"
+    },
+    {
+      "name": "Amiens",
+      "region": "Hauts-de-France",
+      "lat": "49.894066",
+      "lng": "2.295753"
+    },
+    {
+      "name": "Laval",
+      "region": "Mayenne",
+      "lat": "48.101929",
+      "lng": "-0.766296"
+    },
+    {
+      "name": "Versailles",
+      "region": "Yvelines",
+      "lat": "48.801407",
+      "lng": "2.130122"
     }
-
-    
-]
+  ]
