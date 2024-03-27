@@ -27,25 +27,29 @@
                 <UProgress :value="totalScore" :max="minDistOk * cities.length" class="flex-1" />
             </div>
         </div>
-        <transition-scale>
-            <div v-if="waiting"
-                class="absolute w-[46%] m-auto top-[25vh] left-[27%] text-center text-primary/60 opacity-40 text-lg z-[1000]">
-                <AppTargetNumber :targetNumber="currentDist" text="km" class="rounded-lg"></AppTargetNumber>
-            </div>
-        </transition-scale>
+        <UModal v-model="waiting" class="z-[1000] opacity-60" :overlay="false" :transition="false"
+            :ui="{ width: 'w-72', container: 'grid items-center' }">
+            <AppTargetNumber :targetNumber="currentDist" text="km" class="rounded-lg"></AppTargetNumber>
+        </UModal>
         <div class="flex w-full h-full gap-x-2">
             <!-- Icon markers filled when an answer is given -->
             <div class="h-full w-[50px] md:w-[60px] flex gap-1">
-                <div v-for="i of nbCities" :key="i" class="grid basis-full place-items-center bg-slate-300/20 rounded opacity-60 transition-all duration-500 scale-0"
-                :class="{ '!scale-100': currentIndex % nbCities >= i-1 }">
-                    <UIcon name="i-lucide-map-pin" size="xl" class="text-gray-500 text-2xl"/>
+                <div v-for="i of nbCities" :key="i"
+                    class="grid basis-full place-items-center bg-slate-300/20 rounded opacity-30 transition-all duration-500 scale-50"
+                    :class="{ '!scale-100 !opacity-80': currentIndex % nbCities >= i - 1 }">
+                    <UIcon name="i-lucide-map-pin" size="xl" class="text-gray-500 text-2xl" />
                 </div>
             </div>
-            <div class="flex-1">
-                <LMap :zoom :center :maxZoom="zoom" @click="handleClick">
-                    <LTileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            <div class="flex-1 p-2 md:p-4 bg-slate-300/20">
+                <LMap :zoom :center @click="handleClick">
+                    <!-- <LTileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution="&amp;copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors"
-                        layer-type="base" name="OpenStreetMap" />
+                        layer-type="base" name="OpenStreetMap"/> -->
+
+                    <l-control-layers />
+                    <l-wms-tile-layer v-for="layer in layers" :key="layer.name"
+                        url="http://ows.mundialis.de/services/service?" :layers="layer.layers" :visible="layer.visible"
+                        :name="layer.name" layer-type="base" />
 
                     <template v-if="currentPoint">
                         <!-- User point clicked -->
@@ -75,6 +79,17 @@
 // Leaflet map settings
 const zoom = ref(5)
 const center = ref([48, 2])
+
+const layers = [
+    {
+        name: 'Hillshade',
+        visible: true,
+        layers: 'SRTM30-Colored-Hillshade',
+        //   format: 'image/png',
+        //   transparent: true,
+        //   attribution: "Weather data © 2012 IEM Nexrad"
+    },
+]
 
 // Current city and answer
 import citiesJson from "@/assets/cities.json"
@@ -114,7 +129,9 @@ function handleMove(e) {
     lastXMove.value = e.screenX
 }
 
-onMounted(() => cities.value = selectCities())
+onMounted(() => {
+    cities.value = selectCities()
+})
 
 function reset() {
     waiting.value = false
