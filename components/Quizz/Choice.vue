@@ -54,9 +54,9 @@
                 </div>
                 Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
                 <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="animate-pulse" />
-                <div class="max-w-full my-5 bg-white/5 rounded-lg p-4">
+                <div class="max-w-full my-5 bg-white/5 rounded-lg p-4 mb-40">
                     <div class="text-xl mb-5">Liens Wikipédia</div>
-                    <ul>
+                    <ul class="my-animate-children-appear">
                         <li v-for="(pic, i) in picsRef" :key="i"
                             class="flex items-center gap-3 mb-2 text-md hover:!bg-slate-400/10 rounded-md odd:bg-gray-700/10 p-2">
                             <span class="basis-40">
@@ -153,3 +153,28 @@ watch(() => props.pics, () => {
 })
 
 </script>
+
+<style scoped>
+@keyframes appear {
+  from {
+    opacity: 0;
+    scale: .8
+  }
+  to {
+    opacity: 1;
+    scale: 1
+  }
+}
+
+.my-animate-children-appear>* {
+  animation: appear linear both;
+  animation-timeline: view();
+  animation-range: entry 25% cover 50%;
+}
+@media (prefers-reduced-motion) {
+  .my-animate-children-appear>* {
+    animation: none;
+  }
+}
+
+</style>
