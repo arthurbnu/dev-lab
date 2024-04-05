@@ -38,7 +38,6 @@ const baseUrl = 'https://query.wikidata.org/sparql?query='
 const fullUrl = computed(() => baseUrl + encodeURIComponent(dateLine.value + sparqlQuery))
 
 const headers = { 'Accept': 'application/json' };
-const ready = ref(false)
 const { data: items, error: error } = await useFetch(fullUrl, { headers: headers, server: false });
 
 const pics = ref([])
@@ -85,6 +84,7 @@ watchEffect(async () => {
 })
 
 // let pics appear 
+const ready = ref(false)
 watchEffect(() => {
   if (pics.value.length) {
     setTimeout(() => {
