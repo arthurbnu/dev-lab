@@ -154,7 +154,7 @@ watch(() => props.pics, () => {
 
 </script>
 
-<style scoped>
+<style>
 @keyframes appear {
   from {
     opacity: 0;
