@@ -129,9 +129,7 @@ function handleMove(e) {
     lastXMove.value = e.screenX
 }
 
-onMounted(() => {
-    cities.value = selectCities()
-})
+onMounted(() => cities.value = selectCities())
 
 function reset() {
     waiting.value = false
