@@ -24,7 +24,7 @@
         <!-- <h2 v-if="error" class="text-red-500">{{ error }}</h2> -->
         <ul v-auto-animate>
             <li v-for="item in result?.pages" :key="item.id" @click="currentKey = item.id"
-                class="w-full flex items-center m-1  p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2">
+                class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2">
                 <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'"
                     class="w-12 h-12 mr-2 bg-white" size="md" />
                 <div>
@@ -35,15 +35,14 @@
                     <p class="text-sm text-gray-400  mr-2">{{ item.description }}</p>
 
                     <div v-if="currentKey === item.id" class="bg-slate-600/20 p-2 rounded-lg my-2" :class="{ 'opacity-20': pendingSparql }">
-                        <label class="text-primary-300">Propriétés wikidata</label> <br>
-                        <fieldset v-for="wikiItem in sparqlResult?.results.bindings" class="space-y-3 flex flex-col [&>label]:font-bold" >
-                            <template v-if = "wikiItem.lieuxLabel.value || wikiItem.date || wikiItem.debut || wikiItem.fin">
-                                <label>Lieu</label>{{ wikiItem.lieuxLabel?.value }}
-                                <label >Date</label> {{ toDate(wikiItem.date?.value)}}
-                                <label>Début</label>{{ toDate(wikiItem.debut?.value) }}
-                                <label>Fin</label>{{ toDate(wikiItem.fin?.value) }}
+                        <label class="text-primary-300">Propriétés wikidata - lieux et dates</label> <br>
+                        <fieldset v-for="wikiItem in sparqlResult?.results.bindings" class="space-y-3 flex flex-col" >
+                            <label v-if = "wikiItem.lieuxLabel.value">Lieu : {{ wikiItem.lieuxLabel.value }}</label>
+                            <template v-for="prop in placeProperties">
+                                <label v-if="wikiItem[prop.label]?.value">
+                                    {{ prop.label }} : {{ toDate(wikiItem[prop.label]?.value) }}
+                                </label>
                             </template>
-                            <span v-else class="text-red-500/50"> Aucune information trouvée</span>
                         </fieldset>
                         <!-- <pre>
                             {{  sparqlResult?.results.bindings }}
@@ -53,7 +52,7 @@
             </li>
         </ul>
         <!-- <pre>
-            {{ result }}
+            {{  result}}
         </pre> -->
     </main>
 </template>
@@ -61,7 +60,7 @@
 <script setup>
 import { refDebounced } from '@vueuse/core'
 
-// params
+// search params
 const lang = ref('fr')
 const nbMax = ref(20)
 
@@ -78,33 +77,68 @@ const { data: result, error: error, execute: execute, pending: pending } =
 const currentKey= ref(null)
 const baseUrl = 'https://query.wikidata.org/sparql?query='
 
+const placeProperties = [
+    {
+        id: "P585",             // Point in time
+        label: 'date'
+    },
+    {
+        id: "P569",
+        label: 'naissance'
+    },
+    {
+        id: "P570",
+        label: 'mort'
+    },
+    {
+        id: "P580",
+        label: 'debut'
+    },
+    {
+        id: "P582",
+        label: 'fin'
+    },
+    {
+        id: "P571",             // inception
+        label: 'creation'
+    },
+    {
+        id: "P577",
+        label: 'publication'
+    }
+]
+
+const optionalProperties = placeProperties.map(prop => `OPTIONAL{ ?item wdt:${prop.id} ?${prop.label} }`)
+
 // from page id
 const sparqlQuery = computed(
     () => `
-    select ?item ?itemLabel ?date ?debut ?fin  
+    select ?item ?itemLabel ?date ?debut ?fin  ?publication ?creation ?naissance ?mort ?pageId
     (GROUP_CONCAT(distinct ?lieuLabel;separator=" | ") as ?lieuxLabel) 
     where {
         SERVICE wikibase:mwapi {
-            bd:serviceParam wikibase:endpoint "fr.wikipedia.org" .
+            bd:serviceParam wikibase:endpoint "${lang.value}.wikipedia.org" .
             bd:serviceParam wikibase:api "Generator" .
             bd:serviceParam mwapi:generator "revisions" .
             bd:serviceParam mwapi:pageids "${currentKey.value}" .
             ?item wikibase:apiOutputItem mwapi:item .
         }
+
+        bind( uri(concat("https://www.wikidata.org/entity/", ?item)) as ?itemUri)
+     #   bind( uri(concat("https://www.wikidata.org/wiki/", ?item)) as ?itemLink)
+     #   bind( uri(concat("https://www.wikidata.org/wiki/Special:EntityData/", ?item, ".json")) as ?itemData
+     #   bind("${currentKey.value}" as ?pageId)
         
-        OPTIONAL{ ?item wdt:P585  ?date }    # Point in time
-        OPTIONAL{ ?item wdt:P580 ?debut }
-        OPTIONAL{ ?item wdt:P582 ?fin }
         OPTIONAL{ ?item wdt:P276 ?lieu}
+        ${optionalProperties.join('\n')}
         
         SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang.value}". }
-          
         SERVICE wikibase:label {
             bd:serviceParam wikibase:language "${lang.value}".
             ?lieu rdfs:label ?lieuLabel.
         }
     }
-    GROUP BY ?item ?itemLabel ?date ?debut ?fin 
+    GROUP BY ?item ?itemLabel ?date ?debut ?fin ?publication ?creation ?naissance ?mort ?pageId
     `
 )   
 
