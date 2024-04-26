@@ -3,27 +3,25 @@
     <main class="space-y-4">
         <div class="flex items-baseline gap-3">
             <h1 class="text-2xl">Recherche Wikipédia
-                <span class="text-sm m-3 text-gray-400">Trouver un article par son titre</span>
+                <span class="text-sm m-3 text-gray-400">Et vérifications des propriétés wikidata correspondantes</span>
             </h1>
         </div>
         <div class="flex items-center gap-3 [&>label]:ml-6 [&>label]:text-gray-400 bg-slate-600/20 p-2 rounded-lg">
             <UIcon name="i-lucide-settings" class="text-gray-500 text-xl" />
             <fieldset>Paramètres</fieldset>
             <label>Langue</label>
-            <UInput v-model="lang" icon="i-lucide-globe" placeholder="fr" rounded color="primary" size="sm"
-                class="w-20" />
+            <USelect v-model="lang" :options="['fr', 'en', 'de', 'es', 'it']" color="primary" icon="i-lucide-globe" size="sm" class="[&>*]:!text-teal-500" />
             <label>Résultats max</label>
             <span class="inline-block w-4">{{ nbMax }}</span>
             <URange v-model="nbMax" :min="1" :max="50" color="primary" size="sm" class="w-32" />
             <!-- uselect instead -->
-            <!-- <USelect v-model="lang" :options="['fr', 'en', 'de', 'es']" color="primary" size="sm" class="w-20 [&>*]:!bg-teal-400/20" /> -->
         </div>
         <UInput v-model="search" icon="i-lucide-search" placeholder="Rechercher un article" rounded color="primary"
             :class="{ 'animate-pulse': pending }" />
 
         <!-- <h2 v-if="error" class="text-red-500">{{ error }}</h2> -->
         <ul v-auto-animate>
-            <li v-for="item in result?.pages" :key="item.id" @click="currentKey = item.id"
+            <li v-for="item in result?.pages" :key="item.id" @click="selectedResult = {id: item.id, key: item.key}"
                 class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2">
                 <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'"
                     class="w-12 h-12 mr-2 bg-white" size="md" />
@@ -32,18 +30,39 @@
                         class="hover:text-teal-500 hover:underline">
                         {{ item.title }}
                     </a>
-                    <p class="text-sm text-gray-400  mr-2">{{ item.description }}</p>
+                    <p class="text-gray-400">{{ item.description }}</p>
 
-                    <div v-if="currentKey === item.id" class="bg-slate-600/20 p-2 rounded-lg my-2" :class="{ 'opacity-20': pendingSparql }">
-                        <label class="text-primary-300">Propriétés wikidata - lieux et dates</label> <br>
-                        <fieldset v-for="wikiItem in sparqlResult?.results.bindings" class="space-y-3 flex flex-col" >
-                            <label v-if = "wikiItem.lieuxLabel.value">Lieu : {{ wikiItem.lieuxLabel.value }}</label>
-                            <template v-for="prop in placeProperties">
-                                <label v-if="wikiItem[prop.label]?.value">
-                                    {{ prop.label }} : {{ toDate(wikiItem[prop.label]?.value) }}
-                                </label>
-                            </template>
-                        </fieldset>
+                    <!--  Propriétés wikidata -->
+                    <div v-if="selectedResult.id === item.id" class="bg-slate-600/20 p-2 rounded-lg my-2" :class="{ 'opacity-20': pendingSparql }">
+                        <label v-if="!sparqlResult?.results.bindings[0].notEmpty" class="text-orange-600">Pas de lieu / date trouvé</label>
+                        <div v-else>
+                            <label class="text-primary-300">Propriétés wikidata</label> <br>
+                            <fieldset v-for="wikiItem in sparqlResult?.results.bindings" class="space-y-3 flex flex-col" >
+                                Lieux
+                                <template v-for="prop in placeProperties">
+                                    <label v-if="!!wikiItem[prop.label + 'Labels']?.value">
+                                        {{ prop.label }} : {{ wikiItem[prop.label + 'Labels']?.value }}
+                                    </label>
+                                </template>
+                                <br><br>
+                                Dates
+                                <template v-for="prop in timeProperties">
+                                    <label v-if="!!wikiItem[prop.label]?.value">
+                                        {{ prop.label }} : {{ toDate(wikiItem[prop.label]?.value) }}
+                                    </label>
+                                </template>
+                            </fieldset>
+                        </div>
+                        <!--  link towards request  -->
+                        <a :href="`${baseUrl}/#${encodeURIComponent(sparqlQuery)}`" target="_blank"
+                            class="text-primary-300 underline flex items-center gap-2">
+                            <UAvatar size="xs" :src="`https://logo.clearbit.com/${baseUrl}`"/>
+                            Voir la requête</a>
+                            <!--  link to wikidata entity -->
+                        <!-- <a :href="wikiItem?.item.value" target="_blank"
+                            class="text-primary-300 underline flex items-center gap-2">
+                            <UAvatar size="xs" :src="`https://logo.clearbit.com/www.wikidata.org`"/>
+                            Voir l'entité wikidata</a> -->
                         <!-- <pre>
                             {{  sparqlResult?.results.bindings }}
                         </pre> -->
@@ -65,19 +84,18 @@ const lang = ref('fr')
 const nbMax = ref(20)
 
 // wiki rest.php
-const url = computed(() => `https://${lang.value}.wikipedia.org/w/rest.php/v1/search/title?q=`)
+const url = computed(() => `https://${lang.value}.wikipedia.org/w/rest.php/v1/search/title`)
 const search = ref('')
 const debounceSearch = refDebounced(search, 200)
-const searcUrl = computed(() => url.value + debounceSearch.value + `&limit=${nbMax.value}`)
 
-const { data: result, error: error, execute: execute, pending: pending } = 
-    await useFetch(searcUrl, { immediate: false})
+const { data: result, error: error, pending: pending } = 
+    await useFetch(url, { immediate: false, params: {q: debounceSearch, limit: nbMax} })
 
 // sparql
-const currentKey= ref(null)
-const baseUrl = 'https://query.wikidata.org/sparql?query='
+const selectedResult = ref({id: null, key: null})
+const baseUrl = 'https://query.wikidata.org'
 
-const placeProperties = [
+const timeProperties = [
     {
         id: "P585",             // Point in time
         label: 'date'
@@ -108,59 +126,90 @@ const placeProperties = [
     }
 ]
 
-const optionalProperties = placeProperties.map(prop => `OPTIONAL{ ?item wdt:${prop.id} ?${prop.label} }`)
+const placeProperties= [
+    {
+        id: "P276",             // location
+        label: 'lieu'
+    },
+    {
+        id: "P131",             // located in the administrative territorial entity
+        label: 'localisation_administrative'
+    },
+    {
+        id: "P706",             // located in the administrative territorial entity
+        label: 'localisation_géographique'
+    },
+    {
+        id: "P17",              // country
+        label: 'pays'
+    },
+    {
+        id: "P27",              
+        label: 'pays_nationalité'
+    },
+    {
+        id: "P495",              
+        label: 'origine'
+    },
+    {
+        id: 'P8411',            // se déroule dans l'environnement
+        label: 'environnement'
+    }
+
+
+]
+
+
+
+        // FAIRE PAREIL AVEC LES PUBLICATIONS ... PUIS ENVOYER POUR TEST
+
+
+
+const optionalProperties = timeProperties.map(prop => `OPTIONAL{ ?item wdt:${prop.id} ?${prop.label} }`)
+const selectProperties = timeProperties.map(prop => `?${prop.label}`)
+
+const selectPlaceProperties = placeProperties.map(prop => `?${prop.label}`)
+const optionalPlaceProperties = placeProperties.map(prop => `OPTIONAL{ ?item wdt:${prop.id} ?${prop.label} }`)
+
+const placeLabel = placeProperties.map(prop => `?${prop.label}Labels`)
+const groupConcatPlace = placeProperties.map(prop => `(GROUP_CONCAT(distinct ?${prop.label}Label;separator=" | ") as ?${prop.label}Labels)`)
+const rdfsPlaceLabel = placeProperties.map(prop => `?${prop.label} rdfs:label ?${prop.label}Label.`)
 
 // from page id
-const sparqlQuery = computed(
-    () => `
-    select ?item ?itemLabel ?date ?debut ?fin  ?publication ?creation ?naissance ?mort ?pageId
-    (GROUP_CONCAT(distinct ?lieuLabel;separator=" | ") as ?lieuxLabel) 
-    where {
-        SERVICE wikibase:mwapi {
-            bd:serviceParam wikibase:endpoint "${lang.value}.wikipedia.org" .
-            bd:serviceParam wikibase:api "Generator" .
-            bd:serviceParam mwapi:generator "revisions" .
-            bd:serviceParam mwapi:pageids "${currentKey.value}" .
-            ?item wikibase:apiOutputItem mwapi:item .
-        }
+const sparqlQuery = computed(() => 
+    `#title: Requête pour la page ${selectedResult.value.key} - langue ${lang.value}
+    SELECT ?item ?itemLabel ?notEmpty ${selectProperties.join(' ')} 
+    ${groupConcatPlace.join('\n')}
+        WHERE {
+            SERVICE wikibase:mwapi {
+                bd:serviceParam wikibase:endpoint "${lang.value}.wikipedia.org" .
+                bd:serviceParam wikibase:api "Generator" .
+                bd:serviceParam mwapi:generator "revisions" .
+                bd:serviceParam mwapi:pageids "${selectedResult.value.id}" .
+                ?item wikibase:apiOutputItem mwapi:item .
+            }
 
-        bind( uri(concat("https://www.wikidata.org/entity/", ?item)) as ?itemUri)
-     #   bind( uri(concat("https://www.wikidata.org/wiki/", ?item)) as ?itemLink)
-     #   bind( uri(concat("https://www.wikidata.org/wiki/Special:EntityData/", ?item, ".json")) as ?itemData
-     #   bind("${currentKey.value}" as ?pageId)
-        
-        OPTIONAL{ ?item wdt:P276 ?lieu}
-        ${optionalProperties.join('\n')}
-        
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang.value}". }
-        SERVICE wikibase:label {
-            bd:serviceParam wikibase:language "${lang.value}".
-            ?lieu rdfs:label ?lieuLabel.
+            # BIND( uri(concat("https://www.wikidata.org/entity/", ?item)) as ?itemUri)
+            
+            ${optionalProperties.join('\n')}
+            ${optionalPlaceProperties.join('\n')}
+            
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang.value}". }
+            SERVICE wikibase:label {
+                bd:serviceParam wikibase:language "${lang.value}".
+                ?lieu rdfs:label ?lieuLabel.
+                ${rdfsPlaceLabel.join('\n')}
+            }
+            BIND( COALESCE(${selectProperties.join(', ')}, ${placeLabel.join(', ')}) as ?notEmpty)
         }
-    }
-    GROUP BY ?item ?itemLabel ?date ?debut ?fin ?publication ?creation ?naissance ?mort ?pageId
+    GROUP BY ?item ?itemLabel ?notEmpty ${selectProperties.join(' ')} 
     `
 )   
 
-// from key
-// const sparqlQuery = computed(
-//     () => `
-//     select ?item ?itemLabel ?date ?debut ?fin ?lieu where {
-//         <https://${lang.value}.wikipedia.org/wiki/${currentKey.value}> schema:about ?item .
-        
-//         OPTIONAL{ ?item wdt:P585 ?date }    # Point in time
-//         OPTIONAL{ ?item wdt:P580 ?debut }
-//         OPTIONAL{ ?item wdt:P582 ?fin }
-//         OPTIONAL{ ?item wdt:P276 ?lieu}
-        
-//         SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang.value}". }
-//     }`
-// )
-
-const sparqlUrl = computed(() => baseUrl + encodeURIComponent(sparqlQuery.value))
 const headers = { 'Accept': 'application/json' };
-const {data: sparqlResult, error: sparqlError, execute: executeSparql, pending: pendingSparql} = 
-    await useFetch(sparqlUrl, {immediate: false, headers: headers})
+const encodedParams = computed(() => {return {query: sparqlQuery.value}})
+const {data: sparqlResult, error: sparqlError, pending: pendingSparql} = 
+    await useFetch(`${baseUrl}/sparql`, {immediate: false, headers: headers, params: encodedParams})
 
 watchEffect(() => {
     console.log('sparqlResult', sparqlResult.value)
