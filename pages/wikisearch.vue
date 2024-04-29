@@ -7,20 +7,24 @@
             </h1>
         </div>
         <!-- Paramètres -->
-        <div class="flex items-center gap-3 [&>label]:ml-6 [&>label]:text-gray-400 bg-slate-600/20 p-2 rounded-lg">
+        <div class="flex items-center gap-3 md:[&>label]:ml-6 [&>label]:text-gray-400 bg-slate-600/20 p-2 rounded-lg">
             <UIcon name="i-lucide-settings" class="text-gray-500 text-xl" />
             <fieldset>Paramètres</fieldset>
             <label>Langue</label>
             <USelect v-model="lang" :options="['fr', 'en', 'de', 'es', 'it']" color="primary" icon="i-lucide-globe"
-                size="sm" class="[&>*]:!text-primary-500" />
+                size="sm" class="[&>*]:!text-primary-500 mr-4" />
             <label>Résultats max</label>
             <span class="inline-block w-4">{{ nbMax }}</span>
-            <URange v-model="nbMax" :min="1" :max="50" color="primary" size="sm" class="w-32" />
+            <URange v-model="nbMax" :min="1" :max="50" color="primary" size="sm" class="w-32 mr-6" />
+            <span class="flex-1 md:text-right">
+                <UButton @click="open = !open" variant="soft" icon="i-lucide-info" color="primary" class="px-4" size="sm" >Infos</UButton>
+            </span>
         </div>
         <UInput v-model="search" icon="i-lucide-search" placeholder="Rechercher un article" rounded color="primary"
             :class="{ 'animate-pulse': pending }" />
 
         <!-- <h2 v-if="error" class="text-red-500">{{ error }}</h2> -->
+        <!-- Résultats -->
         <ul v-auto-animate>
             <li v-for="item in result?.pages" :key="item.id" @click="selectedResult = { id: item.id, key: item.key }"
                 class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2 cursor-pointer">
@@ -69,11 +73,35 @@
                 </div>
             </li>
         </ul>
+
+        <!-- modal - propriétés -->
+        <UModal v-model="open" :transition="false" :ui="{width: 'w-[80vw]'}" class="[&>*]:text-black">
+            <div class="p-4">
+                <UIcon name="i-lucide-info" class="text-primary-500 align-middle mb-1" size="xl" />
+                <span class="ml-2">Cliquer sur un résultat de recherche pour afficher les propriétés wikidata suivantes</span>
+                <div class="p-2">
+                    <h4>Lieux</h4>
+                    <UTable :rows="placeProperties" class="[&>table>thead]:hidden bg-slate-500/10 rounded">
+                        <template #id-data="{ row }">
+                            <a :href="`https://www.wikidata.org/wiki/Property:${row.id}`" target="_blank" class="text-primary-700 underline">{{ row.id }}</a>
+                        </template>
+                    </UTable>
+                    <h4>Dates</h4>
+                    <UTable :rows="timeProperties" class="[&>table>thead]:hidden bg-slate-500/10 rounded">
+                        <template #id-data="{ row }">
+                            <a :href="`https://www.wikidata.org/wiki/Property:${row.id}`" target="_blank" class="text-primary-700 underline">{{ row.id }}</a>
+                        </template>
+                    </UTable>
+                </div>
+            </div>
+        </UModal>
     </main>
 </template>
 
 <script setup>
 import { refDebounced } from '@vueuse/core'
+
+const open = ref(false)
 
 // search params
 const lang = ref('fr')
@@ -84,8 +112,7 @@ const url = computed(() => `https://${lang.value}.wikipedia.org/w/rest.php/v1/se
 const search = ref('')
 const debounceSearch = refDebounced(search, 200)
 
-const { data: result, error: error, pending: pending } =
-    await useFetch(url, { immediate: false, params: { q: debounceSearch, limit: nbMax } })
+const { data: result, error: error, pending: pending } = await useFetch(url, { immediate: false, params: { q: debounceSearch, limit: nbMax } })
 
 // sparql
 const selectedResult = ref({ id: null, key: null })
@@ -161,29 +188,23 @@ function optionalProps(properties) {
     return properties.map(prop => `OPTIONAL{ ?item wdt:${prop.id} ?${prop.label} }`)
 }
 function groupProps(properties) {
-    return properties.map(prop => `(GROUP_CONCAT(distinct ?${prop.label}Label;separator=" | ") as ?${prop.label}Labels)`)
+    return properties.map(prop => `(GROUP_CONCAT(distinct ?${prop.label}Label; separator=" | ") as ?${prop.label}Labels)`)
 }
 function labelProps(properties) {
     return properties.map(prop => `?${prop.label} rdfs:label ?${prop.label}Label.`)
 }
 
-// const used in sparql query
-const optional = {
-    time: optionalProps(timeProperties),
-    place: optionalProps(placeProperties)
+function timeAndPlace(fn) {
+    return {
+        time: fn(timeProperties),
+        place: fn(placeProperties)
+    }
 }
-const group = {
-    time: groupProps(timeProperties),
-    place: groupProps(placeProperties)
-}
-const label = {
-    time: labelProps(timeProperties),
-    place: labelProps(placeProperties)
-}
-const select = {
-    time: selectProps(timeProperties),
-    place: selectProps(placeProperties)
-}
+
+const optional = timeAndPlace(optionalProps)
+const group = timeAndPlace(groupProps)
+const label = timeAndPlace(labelProps)
+const select = timeAndPlace(selectProps)
 
 // wikidata props from page id
 const sparqlQuery = computed(() =>
@@ -221,9 +242,9 @@ const sparqlQuery = computed(() =>
 )
 
 const headers = { 'Accept': 'application/json' };
-const encodedParams = computed(() => { return { query: sparqlQuery.value } })
+const queryParams = computed(() => { return { query: sparqlQuery.value } })
 const { data: sparqlResult, error: sparqlError, pending: pendingSparql } =
-    await useFetch(`${baseUrl}/sparql`, { immediate: false, headers: headers, params: encodedParams })
+    await useFetch(`${baseUrl}/sparql`, { immediate: false, headers: headers, params: queryParams })
 
 watchEffect(() => {
     console.log('sparqlResult', sparqlResult.value)
