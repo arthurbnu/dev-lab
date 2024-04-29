@@ -1,0 +1,63 @@
+{
+    "time": [
+        {
+            "id": "P585",
+            "label": "date"
+        },
+        {},
+        {
+            "id": "P569",
+            "label": "naissance"
+        },
+        {
+            "id": "P570",
+            "label": "mort"
+        },
+        {
+            "id": "P580",
+            "label": "debut"
+        },
+        {
+            "id": "P582",
+            "label": "fin"
+        },
+        {
+            "id": "P571",
+            "label": "creation"
+        },
+        {
+            "id": "P577",
+            "label": "publication"
+        }
+    ],
+    "place": [
+        {
+            "id": "P276",
+            "label": "lieu"
+        },
+        {
+            "id": "P131",
+            "label": "localisation_administrative"
+        },
+        {
+            "id": "P706",
+            "label": "localisation_géographique"
+        },
+        {
+            "id": "P17",
+            "label": "pays"
+        },
+        {
+            "id": "P27",
+            "label": "pays_nationalité"
+        },
+        {
+            "id": "P495",
+            "label": "origine"
+        },
+        {
+            "id": "P8411",
+            "label": "environnement"
+        }
+    ]
+}

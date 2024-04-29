@@ -17,7 +17,8 @@
             <span class="inline-block w-4">{{ nbMax }}</span>
             <URange v-model="nbMax" :min="1" :max="50" color="primary" size="sm" class="w-32 mr-6" />
             <span class="flex-1 md:text-right">
-                <UButton @click="open = !open" variant="soft" icon="i-lucide-info" color="primary" class="px-4" size="sm" >Infos</UButton>
+                <UButton @click="open = !open" variant="soft" icon="i-lucide-info" color="primary" class="px-4"
+                    size="sm">Infos</UButton>
             </span>
         </div>
         <UInput v-model="search" icon="i-lucide-search" placeholder="Rechercher un article" rounded color="primary"
@@ -75,19 +76,13 @@
         </ul>
 
         <!-- modal - propriétés -->
-        <UModal v-model="open" :transition="false" :ui="{width: 'w-[80vw]'}" class="[&>*]:text-black">
+        <UModal v-model="open" :transition="false" :ui="{ width: 'w-[80vw]' }" class="[&>*]:text-black p-2">
             <div class="p-4">
                 <UIcon name="i-lucide-info" class="text-primary-500 align-middle mb-1" size="xl" />
                 <span class="ml-2">Cliquer sur un résultat de recherche pour afficher les propriétés wikidata suivantes</span>
-                <div class="p-2">
-                    <h4>Lieux</h4>
-                    <UTable :rows="placeProperties" class="[&>table>thead]:hidden bg-slate-500/10 rounded">
-                        <template #id-data="{ row }">
-                            <a :href="`https://www.wikidata.org/wiki/Property:${row.id}`" target="_blank" class="text-primary-700 underline">{{ row.id }}</a>
-                        </template>
-                    </UTable>
-                    <h4>Dates</h4>
-                    <UTable :rows="timeProperties" class="[&>table>thead]:hidden bg-slate-500/10 rounded">
+                <div v-for="(properties, i) in [placeProperties, timeProperties]" :key="i">
+                    <h4>{{ i === 0 ? 'Lieux' : 'Dates' }}</h4>
+                    <UTable :rows="properties" class="[&>table>thead]:hidden bg-slate-500/10 rounded [&>table>tbody>tr>td:last-child]:text-right">
                         <template #id-data="{ row }">
                             <a :href="`https://www.wikidata.org/wiki/Property:${row.id}`" target="_blank" class="text-primary-700 underline">{{ row.id }}</a>
                         </template>
@@ -100,6 +95,8 @@
 
 <script setup>
 import { refDebounced } from '@vueuse/core'
+import jsonProperties from "@/assets/properties.json"
+const {time: timeProperties,place:  placeProperties} = jsonProperties
 
 const open = ref(false)
 
@@ -117,68 +114,6 @@ const { data: result, error: error, pending: pending } = await useFetch(url, { i
 // sparql
 const selectedResult = ref({ id: null, key: null })
 const baseUrl = 'https://query.wikidata.org'
-
-const timeProperties = [
-    {
-        id: "P585",             // Point in time
-        label: 'date'
-    },
-    {
-        id: "P569",
-        label: 'naissance'
-    },
-    {
-        id: "P570",
-        label: 'mort'
-    },
-    {
-        id: "P580",
-        label: 'debut'
-    },
-    {
-        id: "P582",
-        label: 'fin'
-    },
-    {
-        id: "P571",             // inception
-        label: 'creation'
-    },
-    {
-        id: "P577",
-        label: 'publication'
-    }
-]
-
-const placeProperties = [
-    {
-        id: "P276",             // location
-        label: 'lieu'
-    },
-    {
-        id: "P131",             // located in the administrative territorial entity
-        label: 'localisation_administrative'
-    },
-    {
-        id: "P706",
-        label: 'localisation_géographique'
-    },
-    {
-        id: "P17",              // country
-        label: 'pays'
-    },
-    {
-        id: "P27",
-        label: 'pays_nationalité'
-    },
-    {
-        id: "P495",
-        label: 'origine'
-    },
-    {
-        id: 'P8411',            // environnement
-        label: 'environnement'
-    }
-]
 
 // functions to generate sparql query
 function selectProps(properties) {
