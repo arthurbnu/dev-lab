@@ -27,8 +27,8 @@
                 <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'"
                     class="w-12 h-12 mr-2 bg-white" size="md" />
                 <div>
-                    <a :href="`https://${lang}.wikipedia.org/wiki/${item.key}`" target="_blank" title = "Voir l'article Wikipédia"
-                        class="hover:text-primary-500 hover:underline">
+                    <a :href="`https://${lang}.wikipedia.org/wiki/${item.key}`" target="_blank"
+                        title="Voir l'article Wikipédia" class="hover:text-primary-500 hover:underline">
                         {{ item.title }}
                     </a>
                     <p class="text-gray-400">{{ item.description }}</p>
@@ -46,8 +46,7 @@
                                 class="text-white hover:text-primary-500 underline">
                                 Voir l'entité wikidata</a>
                         </label> <br>
-                        <fieldset v-for="wikiItem in sparqlResult?.results.bindings"
-                            class="space-y-3 flex flex-col">
+                        <fieldset v-for="wikiItem in sparqlResult?.results.bindings" class="space-y-3 flex flex-col">
                             <label class="text-primary-500 flex items-center gap-2">
                                 <UIcon name="i-lucide-map" />Lieux
                             </label>
@@ -237,5 +236,17 @@ function toDate(date) {
     const stringDate = new Date(date).toLocaleDateString()
     return stringDate !== 'Invalid Date' ? stringDate : date
 }
+
+const title = 'Recherche Wikipédia + propriétés wikidata'
+const description = 'Interface de recherche pour Wikipédia et affichage des propriétés wikidata correspondantes - dates et lieux'
+useSeoMeta({
+    title: title,
+    description,
+    author: "A B",
+    ogImage: "https://dev-lab-one.vercel.app/sparql/wikisearch.png",
+    ogUrl: "https://dev-lab-one.vercel.app/wikisearch",
+    ogTitle: title,
+    ogDescription: description,
+});
 
 </script>
