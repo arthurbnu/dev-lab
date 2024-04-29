@@ -6,6 +6,7 @@
                 <span class="text-sm m-3 text-gray-400">Et vérifications des propriétés wikidata correspondantes</span>
             </h1>
         </div>
+        <!-- Paramètres -->
         <div class="flex items-center gap-3 [&>label]:ml-6 [&>label]:text-gray-400 bg-slate-600/20 p-2 rounded-lg">
             <UIcon name="i-lucide-settings" class="text-gray-500 text-xl" />
             <fieldset>Paramètres</fieldset>
@@ -15,7 +16,6 @@
             <label>Résultats max</label>
             <span class="inline-block w-4">{{ nbMax }}</span>
             <URange v-model="nbMax" :min="1" :max="50" color="primary" size="sm" class="w-32" />
-            <!-- uselect instead -->
         </div>
         <UInput v-model="search" icon="i-lucide-search" placeholder="Rechercher un article" rounded color="primary"
             :class="{ 'animate-pulse': pending }" />
@@ -23,11 +23,11 @@
         <!-- <h2 v-if="error" class="text-red-500">{{ error }}</h2> -->
         <ul v-auto-animate>
             <li v-for="item in result?.pages" :key="item.id" @click="selectedResult = { id: item.id, key: item.key }"
-                class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2">
+                class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2 cursor-pointer">
                 <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'"
                     class="w-12 h-12 mr-2 bg-white" size="md" />
                 <div>
-                    <a :href="`https://${lang}.wikipedia.org/wiki/${item.key}`" target="_blank"
+                    <a :href="`https://${lang}.wikipedia.org/wiki/${item.key}`" target="_blank" title = "Voir l'article Wikipédia"
                         class="hover:text-primary-500 hover:underline">
                         {{ item.title }}
                     </a>
