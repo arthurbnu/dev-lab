@@ -34,9 +34,6 @@
                     <p class="text-gray-400">{{ item.description }}</p>
 
                     <!--  Propriétés wikidata -->
-                    <a :href="`${baseUrl}/#${encodeURIComponent(sparqlQuery)}`" target="_blank"
-                        class="text-white hover:text-primary-300 underline flex items-center gap-2">
-                        Voir la requête</a>
                     <div v-if="selectedResult.id === item.id" class="bg-slate-600/20 p-2 rounded-lg my-2"
                         :class="{ 'opacity-20': pendingSparql }">
                         <label class="text-primary-300 flex items-center gap-2">
