@@ -1,0 +1,407 @@
+{
+    "time": [
+        {
+            "id": "P524",
+            "label": "période de disparition"
+        },
+        {
+            "id": "P2669",
+            "label": "date de fin de service"
+        },
+        {
+            "id": "P1619",
+            "label": "date d_ouverture officielle"
+        },
+        {
+            "id": "P8555",
+            "label": "date de début au plus tard"
+        },
+        {
+            "id": "P10135",
+            "label": "date d_enregistrement"
+        },
+        {
+            "id": "P813",
+            "label": "date de consultation"
+        },
+        {
+            "id": "P7125",
+            "label": "date du dernier"
+        },
+        {
+            "id": "P8554",
+            "label": "date de fin au plus tot"
+        },
+        {
+            "id": "P9667",
+            "label": "date de démission"
+        },
+        {
+            "id": "P12506",
+            "label": "date de fin au plus tard"
+        },
+        {
+            "id": "P576",
+            "label": "date de dissolution_ou_d_abolition ou de démolition"
+        },
+        {
+            "id": "P730",
+            "label": "date de mise hors service"
+        },
+        {
+            "id": "P7589",
+            "label": "date de promulgation ou signature de l_acte"
+        },
+        {
+            "id": "P12686",
+            "label": "category for this time births"
+        },
+        {
+            "id": "P12687",
+            "label": "category for this time deaths"
+        },
+        {
+            "id": "P585",
+            "label": "date"
+        },
+        {
+            "id": "P569",
+            "label": "date de naissance"
+        },
+        {
+            "id": "P574",
+            "label": "date de description scientifique"
+        },
+        {
+            "id": "P580",
+            "label": "date de début"
+        },
+        {
+            "id": "P582",
+            "label": "date de fin"
+        },
+        {
+            "id": "P523",
+            "label": "période d_apparition"
+        },
+        {
+            "id": "P1636",
+            "label": "date de bapteme"
+        },
+        {
+            "id": "P4602",
+            "label": "date d_enterrement ou de crémation"
+        },
+        {
+            "id": "P7124",
+            "label": "date du premier"
+        },
+        {
+            "id": "P9946",
+            "label": "date de l_homologation du testament"
+        },
+        {
+            "id": "P571",
+            "label": "date de fondation ou de création"
+        },
+        {
+            "id": "P570",
+            "label": "date de mort"
+        },
+        {
+            "id": "P2032",
+            "label": "fin de la période d_activité"
+        },
+        {
+            "id": "P746",
+            "label": "date de disparition"
+        },
+        {
+            "id": "P6949",
+            "label": "date d_annonce publique"
+        },
+        {
+            "id": "P8556",
+            "label": "date d_extinction"
+        },
+        {
+            "id": "P9448",
+            "label": "introduit en"
+        },
+        {
+            "id": "P729",
+            "label": "date de mise en service"
+        },
+        {
+            "id": "P3999",
+            "label": "date de cloture ou fermeture"
+        },
+        {
+            "id": "P577",
+            "label": "date de publication"
+        },
+        {
+            "id": "P1191",
+            "label": "date de la première représentation"
+        },
+        {
+            "id": "P2031",
+            "label": "début de la période d_activité"
+        },
+        {
+            "id": "P7588",
+            "label": "date d_entrée en vigueur"
+        }
+    ],
+
+    "place": [
+        {
+            "id": "P27",
+            "label": "pays de nationalité"
+        },
+        {
+            "id": "P840",
+            "label": "lieu de l_action"
+        },
+        {
+            "id": "P915",
+            "label": "lieu du tournage"
+        },
+        {
+            "id": "P1444",
+            "label": "destination du parcours"
+        },
+        {
+            "id": "P1532",
+            "label": "pays de nationalité sportive"
+        },
+        {
+            "id": "P2541",
+            "label": "zone opérationnelle"
+        },
+        {
+            "id": "P2632",
+            "label": "lieu de détention"
+        },
+        {
+            "id": "P2842",
+            "label": "lieu du mariage"
+        },
+        {
+            "id": "P7153",
+            "label": "lieu important"
+        },
+        {
+            "id": "P8546",
+            "label": "lieu d_enregistrement"
+        },
+        {
+            "id": "P1001",
+            "label": "ressort territorial"
+        },
+        {
+            "id": "P1071",
+            "label": "lieu de fabrication"
+        },
+        {
+            "id": "P3018",
+            "label": "se trouve dans l_aire protégée"
+        },
+        {
+            "id": "P11747",
+            "label": "holds diplomatic passport of"
+        },
+        {
+            "id": "P11600",
+            "label": "identifiant Rate Your Music d_un lieu"
+        },
+        {
+            "id": "P6885",
+            "label": "région historique"
+        },
+        {
+            "id": "P937",
+            "label": "lieu de travail"
+        },
+        {
+            "id": "P669",
+            "label": "voie"
+        },
+        {
+            "id": "P4552",
+            "label": "chaîne de montagnes"
+        },
+        {
+            "id": "P19",
+            "label": "lieu de naissance"
+        },
+        {
+            "id": "P495",
+            "label": "pays d_origine"
+        },
+        {
+            "id": "P483",
+            "label": "studio d_enregistrement"
+        },
+        {
+            "id": "P119",
+            "label": "lieu de sépulture"
+        },
+        {
+            "id": "P131",
+            "label": "localisation administrative"
+        },
+        {
+            "id": "P263",
+            "label": "résidence officielle"
+        },
+        {
+            "id": "P740",
+            "label": "lieu de fondation"
+        },
+        {
+            "id": "P4614",
+            "label": "bassin versant"
+        },
+        {
+            "id": "P2974",
+            "label": "habitat"
+        },
+        {
+            "id": "P276",
+            "label": "lieu"
+        },
+        {
+            "id": "P115",
+            "label": "stade"
+        },
+        {
+            "id": "P1376",
+            "label": "capitale de"
+        },
+        {
+            "id": "P8411",
+            "label": "se déroule dans l_environnement"
+        },
+        {
+            "id": "P9600",
+            "label": "histoire orale sur"
+        },
+        {
+            "id": "P30",
+            "label": "continent"
+        },
+        {
+            "id": "P4661",
+            "label": "lac de barrage"
+        },
+        {
+            "id": "P1885",
+            "label": "cathédrale"
+        },
+        {
+            "id": "P65",
+            "label": "lieu de découverte astronomique"
+        },
+        {
+            "id": "P485",
+            "label": "archivé par"
+        },
+        {
+            "id": "P4688",
+            "label": "unité géomorphologique"
+        },
+        {
+            "id": "P504",
+            "label": "port d_attache"
+        },
+        {
+            "id": "P5248",
+            "label": "lieu d_évacuation des blessés"
+        },
+        {
+            "id": "P8047",
+            "label": "État pavillon"
+        },
+        {
+            "id": "P189",
+            "label": "lieu de découverte"
+        },
+        {
+            "id": "P9813",
+            "label": "conteneur"
+        },
+        {
+            "id": "P17",
+            "label": "pays"
+        },
+        {
+            "id": "P927",
+            "label": "région anatomique"
+        },
+        {
+            "id": "P1158",
+            "label": "site d_atterrissage"
+        },
+        {
+            "id": "P8764",
+            "label": "port d_escale"
+        },
+        {
+            "id": "P159",
+            "label": "siège"
+        },
+        {
+            "id": "P66",
+            "label": "foyer ancestral"
+        },
+        {
+            "id": "P291",
+            "label": "lieu de publication"
+        },
+        {
+            "id": "P551",
+            "label": "résidence"
+        },
+        {
+            "id": "P4647",
+            "label": "lieu de la première représentation"
+        },
+        {
+            "id": "P706",
+            "label": "localisation géographique"
+        },
+        {
+            "id": "P206",
+            "label": "baigné par"
+        },
+        {
+            "id": "P2825",
+            "label": "via"
+        },
+        {
+            "id": "P3842",
+            "label": "entité territoriale administrative actuelle"
+        },
+        {
+            "id": "P8138",
+            "label": "situé dans l_entité territoriale statistique"
+        },
+        {
+            "id": "P1427",
+            "label": "point de départ"
+        },
+        {
+            "id": "P833",
+            "label": "en correspondance avec"
+        },
+        {
+            "id": "P931",
+            "label": "localité desservie par cette infrastructure de transport"
+        },
+        {
+            "id": "P20",
+            "label": "lieu de mort"
+        }
+    ]
+}

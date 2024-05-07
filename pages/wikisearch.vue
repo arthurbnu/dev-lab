@@ -38,7 +38,7 @@
                     </a>
                     <p class="text-gray-400">{{ item.description }}</p>
 
-                    <!--  Propriétés wikidata -->
+                    <!--  Propriétés wikidata trouvées pour le résultat cliqué -->
                     <div v-if="selectedResult.id === item.id" class="bg-slate-600/20 p-2 rounded-lg my-2"
                         :class="{ 'opacity-20': pendingSparql }">
                         <label class="text-primary-300 flex items-center gap-2">
@@ -75,7 +75,7 @@
             </li>
         </ul>
 
-        <!-- modal - propriétés -->
+        <!-- modal Infos - propriétés -->
         <UModal v-model="open" :transition="false" :ui="{ width: 'w-[80vw]' }" class="[&>*]:text-black p-2">
             <div class="p-4">
                 <UIcon name="i-lucide-info" class="text-primary-500 align-middle mb-1" size="xl" />
@@ -95,8 +95,14 @@
 
 <script setup>
 import { refDebounced } from '@vueuse/core'
-import jsonProperties from "@/assets/properties.json"
-const {time: timeProperties,place:  placeProperties} = jsonProperties
+import jsonProperties from "@/assets/all_properties.json"
+var {time: timeProperties, place:  placeProperties} = jsonProperties
+// replace spaces in labels
+// function removeLabelSpaces(arr) {
+//     return arr.map(prop => ({ ...prop, label: prop.label.replace(/ /g, '_') }))
+// }
+// timeProperties = removeLabelSpaces(timeProperties)
+// placeProperties = removeLabelSpaces(placeProperties)
 
 const open = ref(false)
 
@@ -159,8 +165,6 @@ const sparqlQuery = computed(() =>
                 ?item wikibase:apiOutputItem mwapi:item .
             }
 
-            # BIND( uri(concat("https://www.wikidata.org/entity/", ?item)) as ?itemUri)
-            
             ${optional.time.join('\n')}
             ${optional.place.join('\n')}
             
@@ -181,10 +185,6 @@ const queryParams = computed(() => { return { query: sparqlQuery.value } })
 const { data: sparqlResult, error: sparqlError, pending: pendingSparql } =
     await useFetch(`${baseUrl}/sparql`, { immediate: false, headers: headers, params: queryParams })
 
-watchEffect(() => {
-    console.log('sparqlResult', sparqlResult.value)
-})
-
 function toDate(date) {
     if (date.includes('|')) {
         return date.split(' | ').map(d => toDate(d)).join(' | ')
@@ -198,7 +198,6 @@ const description = 'Interface de recherche pour Wikipédia et affichage des pro
 useSeoMeta({
     title: title,
     description,
-    author: "A B",
     ogImage: "https://dev-lab-one.vercel.app/sparql/wikisearch.png",
     ogUrl: "https://dev-lab-one.vercel.app/wikisearch",
     ogTitle: title,
