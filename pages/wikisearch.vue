@@ -95,7 +95,7 @@
 
 <script setup>
 import { refDebounced } from '@vueuse/core'
-import jsonProperties from "@/assets/all_properties.json"
+import jsonProperties from "@/assets/properties.json"
 var {time: timeProperties, place:  placeProperties} = jsonProperties
 // replace spaces in labels
 // function removeLabelSpaces(arr) {
