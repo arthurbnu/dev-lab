@@ -1,29 +1,35 @@
 <template>
-  <main class="bg-teal-400/5 p-4">
-    <h1 class="flex items-center gap-2 text-lg">
-      <img :src = "imgUrl" alt="Logo wikidata" class="h-5">
+  <main class="bg-teal-400/5 p-4 space-y-8">
+    <h1 class="flex items-center gap-2 text-2xl">
+      <UAvatar v-for = "logo in logos" :src="'https://logo.clearbit.com/' + logo" class="w-12 h-12 mr-2 bg-white" size="md" />
       {{ title }}
     </h1>
-    <h2 class="opacity-75">{{ description }}</h2>
+    <h2 class="opacity-75 h-5 text-lg">{{ description }}</h2>
 
-    <section>
-      <transition-scale group tag="div" class="space-y-4" :delay="200">
-      <span v-for="(tag, id) in shownTags" :key="id"
-        class="bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
+    <!-- <section> -->
+    <transition-scale group tag="div" class="space-y-" :delay="200">
+      <span v-for="(tag, id) in shownTags" :key="id" class="bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
         {{ tag }}
       </span>
     </transition-scale>
+    <!-- </section> -->
+
+    <section class="border-teal-300 border-solid border-l-4 pl-3">
+      <p>Liens utiles</p>
+      <div class="text-teal-400 flex gap-10">
+        <a v-for="(link, i) in links" :href="link.url" target="_blank">{{ link.name }}</a>
+      </div>
     </section>
 
     <section class="my-10">
       <ContentList path="/wikidatathon" v-slot="{ list }">
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
-          <ContentRenderer :value="data" >
-            <code ref = "spql" class="hidden" :data-title="item.title">{{data.body.children[0].props.code}}</code>
-            <ContentRendererMarkdown :value="data" ref="md"
-              class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7" 
-              :class="{'hidden' : indexRequest !== id}"
-            />
+          <ContentRenderer :value="data">
+            <a :href="'https://query.wikidata.org/#' + encodeURIComponent(data.body.children[0].props.code)" target="_blank" class=" flex items-center">
+              <UAvatar :src="'https://logo.clearbit.com/wikidata.org'" class="mr-2 bg-white" size="sm" />
+              Voir la Requête
+            </a>
+            <ContentRendererMarkdown :value="data" ref="md" class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7 mt-2" :class="{ 'hidden': indexRequest !== id }" />
           </ContentRenderer>
         </ContentQuery>
       </ContentList>
@@ -51,14 +57,38 @@ const tags = [
   "Urfist",
 ];
 
+const logos = [
+  "wikipedia.org",
+  "wikidata.org",
+  "openrefine.org/",
+  // "bnu.fr",
+]
+
+
+
+const links = [
+  {
+    name: "OpenRefine",
+    url: "https://hub-paws.wmcloud.org/hub"
+  },
+  {
+    name: "Constructeur de Requête ",
+    url: "https://query.wikidata.org/"
+  },
+  {
+    name: "Wikidata",
+    url: "https://wikidata.org/"
+  }
+]
+
 onMounted(() => {
+  console.log(spql.value)
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {
       shownTags.value.push(tags[i])
     }, timeBetweenTags * i);
   }
   setTimeout(() => {
-    show.value = true
   }, timeBetweenTags * tags.length);
 })
 
@@ -91,3 +121,20 @@ useSeoMeta({
 
 </script>
 
+
+<style scoped>
+
+a:hover{
+  text-shadow:
+    0 0 7px rgba(0, 255, 170, 0.288),
+    0 0 10px rgba(0, 255, 170, 0.288),
+    0 0 21px rgba(0, 255, 170, 0.288),
+    0 0 42px rgba(0, 255, 170, 0.288),
+    0 0 82px rgba(0, 255, 170, 0.288),
+    0 0 92px rgba(0, 255, 170, 0.288),
+    0 0 102px rgba(0, 255, 170, 0.288),
+    0 0 151px rgba(0, 255, 170, 0.288);
+}
+
+
+</style>
