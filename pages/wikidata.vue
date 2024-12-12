@@ -21,6 +21,19 @@
       </div>
     </section>
 
+    <section v-if = "items?.results" class="border-blue-300 border-solid border-l-4 pl-3 animate-pulse">
+      <h3 class="text-lg mb-2">10 dernières pièces de théatre ajoutées sur Wikidata</h3>
+      <ul>
+        <li v-for = "play in items.results?.bindings">
+          {{play?.playLabel?.value}}
+        </li>
+      </ul>
+    </section>
+
+    <section class="hidden">
+      {{ items }}
+    </section>
+
     <section class="my-10">
       <ContentList path="/wikidatathon" v-slot="{ list }">
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
@@ -82,7 +95,6 @@ const links = [
 ]
 
 onMounted(() => {
-  console.log(spql.value)
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {
       shownTags.value.push(tags[i])
@@ -91,8 +103,6 @@ onMounted(() => {
   setTimeout(() => {
   }, timeBetweenTags * tags.length);
 })
-
-const spql = ref()
 
 const request = `
 SELECT ?theaterPlay ?theaterPlayLabel ?publicationDate WHERE { 
@@ -118,6 +128,35 @@ useSeoMeta({
   themeColor: "teal",
 });
 
+
+const lastPlays = `
+# Requête SPARQL pour les pièces de théâtre ajoutées/modifiées récemment
+
+SELECT ?play ?playLabel ?modified
+
+WHERE {
+
+  ?play wdt:P31 wd:Q25379;  # L'élément est une pièce de théâtre
+
+        schema:dateModified ?modified .
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+
+}
+
+ORDER BY DESC(?modified)
+
+LIMIT 10`
+
+const lp = computed(() => '#' +  Date(Date.now()).toString() + lastPlays)
+
+const endPoint = 'https://query.wikidata.org/sparql?query='
+const fullUrl = computed(() => endPoint + encodeURIComponent(lp.value))
+
+const headers = { 'Accept': 'application/json' };
+const { data: items, error: error, execute: refresh } = await useFetch(fullUrl, { headers: headers, server: false });
+
+setInterval(() => refresh(), 10000)
 
 </script>
 
