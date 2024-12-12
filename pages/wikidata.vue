@@ -15,6 +15,12 @@
     <!-- </section> -->
 
     <section class="border-teal-300 border-solid border-l-4 pl-3">
+      <p>Jeux de données</p>
+      <div class="text-teal-400 flex gap-10">
+        <a v-for="(link, i) in dataLinks" :href="link.url" target="_blank">{{ link.name }}</a>
+      </div>
+    </section>
+    <section class="border-teal-300 border-solid border-l-4 pl-3">
       <p>Liens utiles</p>
       <div class="text-teal-400 flex gap-10">
         <a v-for="(link, i) in links" :href="link.url" target="_blank">{{ link.name }}</a>
@@ -79,7 +85,22 @@ const logos = [
 
 
 
+const dataLinks = [
+  {
+    name: "Alsacien",
+    url: "https://docs.google.com/spreadsheets/d/1tx2hku5XqqYFqcJceB5DXlUZ0K9bnqf38dlz14W2yBw"
+  },
+  {
+    name: "Allemand",
+    url: "https://dx.doi.org/10.34847/nkl.ccb28f8t"
+  },
+  {
+    name: "Français",
+    url: "https://docs.google.com/spreadsheets/d/1AQpMDE-zPuIeBfRXHadiDKK8B8OpYBMnlKpu3DOOXXU"
+  }
+]
 const links = [
+
   {
     name: "OpenRefine",
     url: "https://hub-paws.wmcloud.org/hub"
