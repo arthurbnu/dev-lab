@@ -6,13 +6,11 @@
     </h1>
     <h2 class="opacity-75 h-5 text-lg">{{ description }}</h2>
 
-    <!-- <section> -->
     <transition-scale group tag="div" class="space-y-" :delay="200">
       <span v-for="(tag, id) in shownTags" :key="id" class="bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
         {{ tag }}
       </span>
     </transition-scale>
-    <!-- </section> -->
 
     <section class="border-teal-300 border-solid border-l-4 pl-3">
       <p>Jeux de données</p>
@@ -30,8 +28,13 @@
     <section v-if = "items?.results" class="border-blue-300 border-solid border-l-4 pl-3 animate-pulse">
       <h3 class="text-lg mb-2">10 dernières pièces de théatre ajoutées sur Wikidata</h3>
       <ul>
-        <li v-for = "play in items.results?.bindings">
-          {{play?.playLabel?.value}}
+        <li v-for = "play in items.results?.bindings" class = "flex gap-10">
+          <a class = "min-w-[300px]" :href= "play.play.value" target="_blank">
+            {{play?.playLabel?.value}}
+          </a>
+          <span class = "text-gray-500">
+            {{new Date(play?.modified?.value).toLocaleDateString() }}
+          </span>
         </li>
       </ul>
     </section>
@@ -132,7 +135,7 @@ SELECT ?theaterPlay ?theaterPlayLabel ?publicationDate WHERE {
                wdt:P577 ?publicationDate .  # Publication date (P577) 
    
   # Fetch the labels in the preferred language (e.g., English) 
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". } 
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". } 
 } `
 
 useSeoMeta({
@@ -161,7 +164,7 @@ WHERE {
 
         schema:dateModified ?modified .
 
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". }
 
 }
 
