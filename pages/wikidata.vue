@@ -6,7 +6,7 @@
     </h1>
     <h2 class="opacity-75 h-5 text-lg">{{ description }}</h2>
 
-    <transition-scale group tag="div" class="space-y-" :delay="200">
+    <transition-scale group tag="div" class="space-y-4" :delay="200">
       <span v-for="(tag, id) in shownTags" :key="id" class="bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
         {{ tag }}
       </span>
@@ -27,7 +27,7 @@
 
     <section v-if = "items?.results" class="border-blue-300 border-solid border-l-4 pl-3 ">
       <h3 class="text-lg mb-2">10 dernières pièces de théatre ajoutées sur Wikidata</h3>
-      <ul>
+      <ul v-auto-animate>
         <li v-for = "play in items.results?.bindings" class = "flex gap-10 justify-between">
           <a :href= "play.play.value" target="_blank">
             {{play?.playLabel?.value}}
@@ -46,13 +46,13 @@
           {{ maxChars }}
         </span>
       </h3>
-      <ul>
+      <ul v-auto-animate>
         <li v-for = "perso in itemCharacters.results?.bindings" class = "flex gap-10 justify-between">
-          <a :href= "perso.perso?.value" target="_blank">
+          <a :href= "perso.perso.value" target="_blank">
             {{perso.persoLabel?.value}}
           </a>
           <span class = "text-gray-500">
-            {{new Date(perso?.modified?.value).toLocaleDateString() }}
+            {{new Date(perso.modified?.value).toLocaleDateString() }}
           </span>
         </li>
       </ul>
@@ -85,8 +85,8 @@
 
 const baseUrl = 'https://dev-lab-one.vercel.app/'
 
-const title = "Atelier Wikidata-thon";
-const description = "Retrouvez les requêtes et les données en temps réel ";;
+const title = "Atelier Wikidata-thon"
+const description = "Retrouvez les requêtes et les données en temps réel "
 const imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Wikidata-logo-en.svg/1024px-Wikidata-logo-en.svg.png"
 
 const shownTags = ref([])
