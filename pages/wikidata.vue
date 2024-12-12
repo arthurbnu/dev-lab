@@ -39,6 +39,20 @@
       </ul>
     </section>
 
+    <section v-if = "itemCharacters?.results" class="border-blue-300 border-solid border-l-4 pl-3 animate-pulse">
+      <h3 class="text-lg mb-2">Derniers personnages de pièces de théatre</h3>
+      <ul>
+        <li v-for = "perso in itemCharacters.results?.bindings" class = "flex gap-10 justify-between">
+          <a :href= "perso.perso?.value" target="_blank">
+            {{perso.persoLabel?.value}}
+          </a>
+          <span class = "text-gray-500">
+            {{new Date(perso?.modified?.value).toLocaleDateString() }}
+          </span>
+        </li>
+      </ul>
+    </section>
+
     <section class="hidden">
       {{ items }}
     </section>
@@ -64,7 +78,6 @@
 
 <script setup>
 
-const indexRequest = ref(0)
 const baseUrl = 'https://dev-lab-one.vercel.app/'
 
 const title = "Atelier Wikidata-thon";
@@ -88,8 +101,6 @@ const logos = [
   // "bnu.fr",
 ]
 
-
-
 const dataLinks = [
   {
     name: "Alsacien",
@@ -104,6 +115,7 @@ const dataLinks = [
     url: "https://docs.google.com/spreadsheets/d/1AQpMDE-zPuIeBfRXHadiDKK8B8OpYBMnlKpu3DOOXXU"
   }
 ]
+
 const links = [
 
   {
@@ -158,15 +170,29 @@ WHERE {
 ORDER BY DESC(?modified)
 LIMIT 10`
 
+const lastCharacters = `
+# Requête SPARQL pour les personnages de théâtre de théâtre ajoutées/modifiées récemment
+SELECT ?perso ?persoLabel ?modified
+WHERE {
+  ?perso wdt:P31 wd:Q3375722;  # L'élément est une pièce de théâtre
+        schema:dateModified ?modified .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". }
+}
+ORDER BY DESC(?modified)
+LIMIT 20`
+
 const lp = computed(() => '#' +  Date(Date.now()).toString() + lastPlays)
+const lc = computed(() => '#' +  Date(Date.now()).toString() + lastCharacters)
 
 const endPoint = 'https://query.wikidata.org/sparql?query='
 const fullUrl = computed(() => endPoint + encodeURIComponent(lp.value))
+const fullUrlChars = computed(() => endPoint + encodeURIComponent(lc.value))
 
 const headers = { 'Accept': 'application/json' };
 const { data: items, error: error, execute: refresh } = await useFetch(fullUrl, { headers: headers, server: false });
+const { data: itemCharacters, execute: refreshChars } = await useFetch(fullUrlChars, { headers: headers, server: false });
 
-setInterval(() => refresh(), 10000)
+setInterval(() => {refresh(); refreshChars()}, 10000)
 
 </script>
 
