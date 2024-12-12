@@ -25,7 +25,7 @@
       </div>
     </section>
 
-    <section v-if = "items?.results" class="border-blue-300 border-solid border-l-4 pl-3 animate-pulse">
+    <section v-if = "items?.results" class="border-blue-300 border-solid border-l-4 pl-3 ">
       <h3 class="text-lg mb-2">10 dernières pièces de théatre ajoutées sur Wikidata</h3>
       <ul>
         <li v-for = "play in items.results?.bindings" class = "flex gap-10 justify-between">
@@ -39,8 +39,13 @@
       </ul>
     </section>
 
-    <section v-if = "itemCharacters?.results" class="border-blue-300 border-solid border-l-4 pl-3 animate-pulse">
-      <h3 class="text-lg mb-2">Derniers personnages de pièces de théatre</h3>
+    <section v-if = "itemCharacters?.results" class="border-blue-300 border-solid border-l-4 pl-3 ">
+      <h3 class="text-lg mb-2 flex gap-4 items-center">Derniers personnages de pièces de théatre
+        <URange v-model="maxChars" :min="10" :max="50" color="primary" size="sm" class="w-32 ml-4" />
+        <span class="text-primary">
+          {{ maxChars }}
+        </span>
+      </h3>
       <ul>
         <li v-for = "perso in itemCharacters.results?.bindings" class = "flex gap-10 justify-between">
           <a :href= "perso.perso?.value" target="_blank">
@@ -60,7 +65,7 @@
     <section class="my-10">
       <ContentList path="/wikidatathon" v-slot="{ list }" >
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
-          <ContentRenderer :value="data" >
+          <ContentRenderer :value="data">
             <a :href="'https://query.wikidata.org/#' + encodeURIComponent(data.body.children[0].props.code)" target="_blank" class=" flex items-center">
               <UAvatar :src="'https://logo.clearbit.com/wikidata.org'" class="mr-2 bg-white" size="xs" />
               Voir la Requête : 
@@ -179,10 +184,12 @@ WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". }
 }
 ORDER BY DESC(?modified)
-LIMIT 20`
+LIMIT `
+
+const maxChars = ref(20)
 
 const lp = computed(() => '#' +  Date(Date.now()).toString() + lastPlays)
-const lc = computed(() => '#' +  Date(Date.now()).toString() + lastCharacters)
+const lc = computed(() => '#' +  Date(Date.now()).toString() + lastCharacters + maxChars.value)
 
 const endPoint = 'https://query.wikidata.org/sparql?query='
 const fullUrl = computed(() => endPoint + encodeURIComponent(lp.value))
