@@ -28,8 +28,8 @@
     <section v-if = "items?.results" class="border-blue-300 border-solid border-l-4 pl-3 animate-pulse">
       <h3 class="text-lg mb-2">10 dernières pièces de théatre ajoutées sur Wikidata</h3>
       <ul>
-        <li v-for = "play in items.results?.bindings" class = "flex gap-10">
-          <a class = "min-w-[300px]" :href= "play.play.value" target="_blank">
+        <li v-for = "play in items.results?.bindings" class = "flex gap-10 justify-between">
+          <a :href= "play.play.value" target="_blank">
             {{play?.playLabel?.value}}
           </a>
           <span class = "text-gray-500">
@@ -44,15 +44,17 @@
     </section>
 
     <section class="my-10">
-      <ContentList path="/wikidatathon" v-slot="{ list }">
+      <ContentList path="/wikidatathon" v-slot="{ list }" >
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
-          <ContentRenderer :value="data">
+          <ContentRenderer :value="data" >
             <a :href="'https://query.wikidata.org/#' + encodeURIComponent(data.body.children[0].props.code)" target="_blank" class=" flex items-center">
-              <UAvatar :src="'https://logo.clearbit.com/wikidata.org'" class="mr-2 bg-white" size="sm" />
-              Voir la Requête
+              <UAvatar :src="'https://logo.clearbit.com/wikidata.org'" class="mr-2 bg-white" size="xs" />
+              Voir la Requête : 
+             <span class="text-blue-400 "> {{ data.title }}</span>
             </a>
-            <ContentRendererMarkdown :value="data" ref="md" class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7 mt-2" :class="{ 'hidden': indexRequest !== id }" />
+            <ContentRendererMarkdown :value="data" ref="md" class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7 mt-2" />
           </ContentRenderer>
+          <div class = "w-1 h-10"></div>
         </ContentQuery>
       </ContentList>
     </section>
@@ -105,6 +107,10 @@ const dataLinks = [
 const links = [
 
   {
+    name: "Pad",
+    url: "https://notes.wikimedia.fr/p/wikidatathon12decembre"
+  },
+  {
     name: "OpenRefine",
     url: "https://hub-paws.wmcloud.org/hub"
   },
@@ -128,21 +134,9 @@ onMounted(() => {
   }, timeBetweenTags * tags.length);
 })
 
-const request = `
-SELECT ?theaterPlay ?theaterPlayLabel ?publicationDate WHERE { 
-  ?theaterPlay wdt:P31 wd:Q7725634 ;  # Instance of theater play (Q7725634) 
-               wdt:P407 wd:Q8786 ;    # Language of work or name (P407) = Alsatian (Q8786) 
-               wdt:P577 ?publicationDate .  # Publication date (P577) 
-   
-  # Fetch the labels in the preferred language (e.g., English) 
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". } 
-} `
-
 useSeoMeta({
   title: title,
   description,
-  // author: "arthur.brody@bnu.fr",
-  // ogImage: baseUrl + "quizz/quizz-renaissance2.png",
   ogImage: imgUrl,
   ogUrl: baseUrl,
   ogType: "website",
@@ -155,21 +149,13 @@ useSeoMeta({
 
 const lastPlays = `
 # Requête SPARQL pour les pièces de théâtre ajoutées/modifiées récemment
-
 SELECT ?play ?playLabel ?modified
-
 WHERE {
-
   ?play wdt:P31 wd:Q25379;  # L'élément est une pièce de théâtre
-
         schema:dateModified ?modified .
-
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". }
-
 }
-
 ORDER BY DESC(?modified)
-
 LIMIT 10`
 
 const lp = computed(() => '#' +  Date(Date.now()).toString() + lastPlays)
