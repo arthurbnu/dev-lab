@@ -1,7 +1,7 @@
 <template>
   <main class="bg-teal-400/5 p-4 space-y-8">
     <h1 class="flex items-center gap-2 text-2xl">
-      <UAvatar v-for = "logo in logos" :src="'https://logo.clearbit.com/' + logo" class="w-12 h-12 mr-2 bg-white" size="md" />
+      <UAvatar v-for="logo in logos" :src="'https://logo.clearbit.com/' + logo" class="w-12 h-12 mr-2 bg-white" size="md" />
       {{ title }}
     </h1>
     <h2 class="opacity-75 h-5 text-lg">{{ description }}</h2>
@@ -25,21 +25,24 @@
       </div>
     </section>
 
-    <section v-if = "items?.results" class="border-blue-300 border-solid border-l-4 pl-3 ">
-      <h3 class="text-lg mb-2">10 dernières pièces de théatre ajoutées sur Wikidata</h3>
+    <section v-if="items" class="border-blue-300 border-solid border-l-4 pl-3 ">
+      <h3 class="text-lg mb-2">Dernières pièces de théatre ajoutées / modifiées sur Wikidata</h3>
       <ul v-auto-animate>
-        <li v-for = "play in items.results?.bindings" class = "flex gap-10 justify-between">
-          <a :href= "play.play.value" target="_blank">
-            {{play?.playLabel?.value}}
+        <li v-for="play in items" :key="play.play.value" class="flex gap-10 justify-between">
+          <a :href="play.play.value" target="_blank">
+            {{ play?.playLabel?.value }}
+            <span class="hidden">
+              {{ play?.date?.value }}
+            </span>
           </a>
-          <span class = "text-gray-500">
-            {{new Date(play?.modified?.value).toLocaleDateString() }}
+          <span class="text-gray-500">
+            {{ new Date(play?.modified?.value).toLocaleDateString() }}
           </span>
         </li>
       </ul>
     </section>
 
-    <section v-if = "itemCharacters?.results" class="border-blue-300 border-solid border-l-4 pl-3 ">
+    <section v-if="itemCharacters" class="border-blue-300 border-solid border-l-4 pl-3 ">
       <h3 class="text-lg mb-2 flex gap-4 items-center">Derniers personnages de pièces de théatre
         <URange v-model="maxChars" :min="10" :max="50" color="primary" size="sm" class="w-32 ml-4" />
         <span class="text-primary">
@@ -47,12 +50,12 @@
         </span>
       </h3>
       <ul v-auto-animate>
-        <li v-for = "perso in itemCharacters.results?.bindings" class = "flex gap-10 justify-between">
-          <a :href= "perso.perso.value" target="_blank">
-            {{perso.persoLabel?.value}}
+        <li v-for="perso in itemCharacters" :key="perso.perso.value" class="flex gap-10 justify-between">
+          <a :href="perso.perso.value" target="_blank">
+            {{ perso.persoLabel?.value }}
           </a>
-          <span class = "text-gray-500">
-            {{new Date(perso.modified?.value).toLocaleDateString() }}
+          <span class="text-gray-500">
+            {{ new Date(perso.modified?.value).toLocaleDateString() }}
           </span>
         </li>
       </ul>
@@ -63,17 +66,17 @@
     </section>
 
     <section class="my-10">
-      <ContentList path="/wikidatathon" v-slot="{ list }" >
+      <ContentList path="/wikidatathon" v-slot="{ list }">
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
           <ContentRenderer :value="data">
             <a :href="'https://query.wikidata.org/#' + encodeURIComponent(data.body.children[0].props.code)" target="_blank" class=" flex items-center">
               <UAvatar :src="'https://logo.clearbit.com/wikidata.org'" class="mr-2 bg-white" size="xs" />
-              Voir la Requête : 
-             <span class="text-blue-400 "> {{ data.title }}</span>
+              Voir la Requête :
+              <span class="text-blue-400 "> {{ data.title }}</span>
             </a>
             <ContentRendererMarkdown :value="data" ref="md" class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7 mt-2" />
           </ContentRenderer>
-          <div class = "w-1 h-10"></div>
+          <div class="w-1 h-10"></div>
         </ContentQuery>
       </ContentList>
     </section>
@@ -82,7 +85,6 @@
 </template>
 
 <script setup>
-
 const baseUrl = 'https://dev-lab-one.vercel.app/'
 
 const title = "Atelier Wikidata-thon"
@@ -163,50 +165,48 @@ useSeoMeta({
   themeColor: "teal",
 });
 
-
-const lastPlays = `
+const requestDate = ref('')
+const lastPlays = computed(() => `
 # Requête SPARQL pour les pièces de théâtre ajoutées/modifiées récemment
-SELECT ?play ?playLabel ?modified
+SELECT ?play ?playLabel ?modified ?date
 WHERE {
+bind('${requestDate.value}}' as ?date)
   ?play wdt:P31 wd:Q25379;  # L'élément est une pièce de théâtre
         schema:dateModified ?modified .
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". }
 }
-ORDER BY DESC(?modified)
-LIMIT 10`
+ORDER BY DESC(?modified) 
+LIMIT 10`)
 
-const lastCharacters = `
+const lastCharacters = computed(() => `
 # Requête SPARQL pour les personnages de théâtre de théâtre ajoutées/modifiées récemment
-SELECT ?perso ?persoLabel ?modified
+SELECT ?perso ?persoLabel ?modified ?date
 WHERE {
+bind('${requestDate.value}}' as ?date)
   ?perso wdt:P31 wd:Q3375722;  # L'élément est une pièce de théâtre
         schema:dateModified ?modified .
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,fr". }
 }
 ORDER BY DESC(?modified)
-LIMIT `
+LIMIT `)
 
 const maxChars = ref(20)
 
-const lp = computed(() => '#' +  Date(Date.now()).toString() + lastPlays)
-const lc = computed(() => '#' +  Date(Date.now()).toString() + lastCharacters + maxChars.value)
-
 const endPoint = 'https://query.wikidata.org/sparql?query='
-const fullUrl = computed(() => endPoint + encodeURIComponent(lp.value))
-const fullUrlChars = computed(() => endPoint + encodeURIComponent(lc.value))
+const fullUrl = computed(() => endPoint + encodeURIComponent(lastPlays.value))
+const fullUrlChars = computed(() => endPoint + encodeURIComponent(lastCharacters.value + maxChars.value))
 
 const headers = { 'Accept': 'application/json' };
-const { data: items, error: error, execute: refresh } = await useFetch(fullUrl, { headers: headers, server: false });
-const { data: itemCharacters, execute: refreshChars } = await useFetch(fullUrlChars, { headers: headers, server: false });
+const { data: items, execute: refresh } = await useFetch(fullUrl, { headers: headers, server: false, transform: res => res.results.bindings });
+const { data: itemCharacters, execute: refreshChars } = await useFetch(fullUrlChars, { headers: headers, server: false, transform: res => res.results.bindings });
 
-setInterval(() => {refresh(); refreshChars()}, 10000)
+setInterval(() =>  requestDate.value = new Date(Date.now()).toString(), 5000)
 
 </script>
 
 
 <style scoped>
-
-a:hover{
+a:hover {
   text-shadow:
     0 0 7px rgba(0, 255, 170, 0.288),
     0 0 10px rgba(0, 255, 170, 0.288),
@@ -217,6 +217,4 @@ a:hover{
     0 0 102px rgba(0, 255, 170, 0.288),
     0 0 151px rgba(0, 255, 170, 0.288);
 }
-
-
 </style>
