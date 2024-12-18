@@ -1,13 +1,15 @@
 <template>
   <main class="bg-teal-400/5 p-4 space-y-8">
     <h1 class="flex items-center gap-2 text-2xl">
-      <UAvatar v-for="logo in logos" :src="'https://logo.clearbit.com/' + logo" class="w-12 h-12 mr-2 bg-white" size="md" />
+      <UAvatar v-for="logo in logos" :src="'https://logo.clearbit.com/' + logo" class="w-12 h-12 mr-2 bg-white"
+        size="md" />
       {{ title }}
     </h1>
     <h2 class="opacity-75 h-5 text-lg">{{ description }}</h2>
 
     <transition-scale group tag="div" class="space-y-4" :delay="200">
-      <span v-for="(tag, id) in shownTags" :key="id" class="bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
+      <span v-for="(tag, id) in shownTags" :key="id"
+        class="bg-teal-800 text-white px-3 mr-2 inline-block hover:bg-teal-600 transition-all border-teal-950">
         {{ tag }}
       </span>
     </transition-scale>
@@ -69,12 +71,14 @@
       <ContentList path="/wikidatathon" v-slot="{ list }">
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
           <ContentRenderer :value="data">
-            <a :href="'https://query.wikidata.org/#' + encodeURIComponent(data.body.children[0].props.code)" target="_blank" class=" flex items-center">
+            <a :href="'https://query.wikidata.org/#' + encodeURIComponent(data.body.children[0].props.code)"
+              target="_blank" class=" flex items-center">
               <UAvatar :src="'https://logo.clearbit.com/wikidata.org'" class="mr-2 bg-white" size="xs" />
               Voir la Requête :
               <span class="text-blue-400 "> {{ data.title }}</span>
             </a>
-            <ContentRendererMarkdown :value="data" ref="md" class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7 mt-2" />
+            <ContentRendererMarkdown :value="data" ref="md"
+              class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7 mt-2" />
           </ContentRenderer>
           <div class="w-1 h-10"></div>
         </ContentQuery>
@@ -151,6 +155,9 @@ onMounted(() => {
   }
   setTimeout(() => {
   }, timeBetweenTags * tags.length);
+
+  setInterval(() => requestDate.value = new Date(Date.now()).toString(), 5000)
+
 })
 
 useSeoMeta({
@@ -200,7 +207,6 @@ const headers = { 'Accept': 'application/json' };
 const { data: items, execute: refresh } = await useFetch(fullUrl, { headers: headers, server: false, transform: res => res.results.bindings });
 const { data: itemCharacters, execute: refreshChars } = await useFetch(fullUrlChars, { headers: headers, server: false, transform: res => res.results.bindings });
 
-setInterval(() =>  requestDate.value = new Date(Date.now()).toString(), 5000)
 
 </script>
 
