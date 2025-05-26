@@ -30,7 +30,7 @@
 
     <section v-if="alsacianItems" class="">
       <h3 class="text-lg mb-2">Créatrices alsaciennes</h3>
-      <div class="grid grid-cols-3 gap-4 my-animate-children-appear">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 my-animate-children-appear">
         <div v-for="item in alsacianItems" :key="item.creatrice.value" class="bg-white p-4 rounded-lg shadow hover:scale-105 transition-transform">
 
           <a :href="item.article.value" target="_blank" class="text-blue-500 hover:underline">
