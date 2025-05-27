@@ -14,19 +14,12 @@
       </span>
     </transition-scale>
 
-    <!-- <section class="border-teal-300 border-solid border-l-4 pl-3">
-      <p>Jeux de données</p>
-      <div class="text-teal-400 flex gap-10">
-        <a v-for="(link, i) in dataLinks" :href="link.url" target="_blank">{{ link.name }}</a>
-      </div>
-    </section> -->
     <section class="border-teal-300 border-solid border-l-4 pl-3">
       <p>Liens utiles</p>
       <div class="text-teal-400 flex gap-10">
         <a v-for="(link, i) in links" :href="link.url" target="_blank">{{ link.name }}</a>
       </div>
     </section>
-
 
     <section v-if="alsacianItems" class="">
       <h3 class="text-lg mb-2">Créatrices alsaciennes</h3>
@@ -36,14 +29,7 @@
           <a :href="item.article.value" target="_blank" class="text-blue-500 hover:underline">
             {{ item.creatriceLabel?.value }} 
           </a>
-          <!-- <p class = "text-blue-900">
-            {{ item.apiUrlForLength }}
-          </p> -->
-          <!-- <p>
-            <span v-if="item.articleLength" class="text-sm text-gray-500">
-              Longueur de l'article: {{ item.articleLength }} caractères
-            </span>
-          </p> -->
+
           <p class="mt-2">
             <img :src="item.image?.value ?? 'https://logo.clearbit.com/wikipedia.org'" 
               :alt="item.creatriceLabel?.value"
@@ -82,15 +68,15 @@
       {{ items }}
     </section>
 
-    <!-- <section class="my-10">
-      <ContentList path="/wikidatathon" v-slot="{ list }">
+    <section class="my-10" v-if = "alsacianItems">
+      <ContentList path="/atelier" v-slot="{ list }">
         <ContentQuery v-for="(item, id) in list" :key="item._path" :path="item._path" find="one" v-slot="{ data }">
           <ContentRenderer :value="data">
             <a :href="'https://query.wikidata.org/#' + encodeURIComponent(data.body.children[0].props.code)"
               target="_blank" class=" flex items-center">
               <UAvatar :src="'https://logo.clearbit.com/wikidata.org'" class="mr-2 bg-white" size="xs" />
-              Voir la Requête :
-              <span class="text-blue-400 "> {{ data.title }}</span>
+              Voir la Requête sparql :
+              <span class="text-blue-400 ml-2"> {{ data.title }}</span>
             </a>
             <ContentRendererMarkdown :value="data" ref="md"
               class="max-w-full overflow-x-scroll bg-slate-800/50 px-5 pb-7 mt-2" />
@@ -98,7 +84,7 @@
           <div class="w-1 h-10"></div>
         </ContentQuery>
       </ContentList>
-    </section> -->
+    </section>
 
   </main>
 </template>
@@ -113,9 +99,10 @@ const imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Wikida
 const shownTags = ref([])
 const timeBetweenTags = 50
 const tags = [
-  'Atelier',
   "Wikipédia",
   "Wikidata",
+  "éditathon",
+  "créatrices",
   "BNU - Lab",
   "Urfist",
 ];
@@ -126,38 +113,9 @@ const logos = [
   // "bnu.fr",
 ]
 
-const dataLinks = [
-  // {
-  //   name: "Alsacien",
-  //   url: "https://docs.google.com/spreadsheets/d/1tx2hku5XqqYFqcJceB5DXlUZ0K9bnqf38dlz14W2yBw"
-  // },
-  // {
-  //   name: "Allemand",
-  //   url: "https://dx.doi.org/10.34847/nkl.ccb28f8t"
-  // },
-  // {
-  //   name: "Français",
-  //   url: "https://docs.google.com/spreadsheets/d/1AQpMDE-zPuIeBfRXHadiDKK8B8OpYBMnlKpu3DOOXXU"
-  // }
-]
-
 const links = [
-
-  // {
-  //   name: "Pad",
-  //   url: "https://notes.wikimedia.fr/p/wikidatathon12decembre"
-  // },
-  // {
-  //   name: "OpenRefine",
-  //   url: "https://hub-paws.wmcloud.org/hub"
-  // },
-  // {
-  //   name: "Constructeur de Requête ",
-  //   url: "https://query.wikidata.org/"
-  // },
-  // wikimedia et wikipedia
   {
-    name: "Pad de l'éditathon",
+    name: "Pad",
     url: "https://urls.fr/F79H3I"
   },
   {
