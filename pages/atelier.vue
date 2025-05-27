@@ -107,7 +107,7 @@
 const baseUrl = 'https://dev-lab-one.vercel.app/'
 
 const title = "Atelier Wikipédia"
-const description = "Retrouvez les requêtes et les données en temps réel "
+const description = "Femmes illustres et de science "
 const imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Wikidata-logo-en.svg/1024px-Wikidata-logo-en.svg.png"
 
 const shownTags = ref([])
@@ -156,6 +156,14 @@ const links = [
   //   url: "https://query.wikidata.org/"
   // },
   // wikimedia et wikipedia
+  {
+    name: "Pad de l'éditathon",
+    url: "https://urls.fr/F79H3I"
+  },
+  {
+    name: "Page projet",
+    url: "https://fr.wikipedia.org/wiki/Projet:Wikifier_la_science/Strasbourg/%C3%89ditathon_Bnu"
+  },
   {
     name: "Wikimedia",
     url: "https://wikimedia.org/"
