@@ -21,6 +21,19 @@
       </div>
     </section>
 
+    <section class = "bg-white/15 p-4 rounded-lg shadow backdrop-blur">
+      <h3 class="text-lg mb-2">Créatrices à mettre à jour</h3>
+      <ul class="list-disc pl-5">
+        <li v-for="scientist in scientists" :key="scientist.name" class="mb-2">
+          <a :href="scientist.url" target="_blank" class="text-blue-500 hover:underline">
+            {{ scientist.name }}
+          </a>
+          <span class="text-white/50"> - {{ scientist.field }}</span>
+          <p v-if="scientist.description" class="text-sm text-">{{ scientist.description }}</p>
+        </li>
+      </ul>
+    </section>
+
     <section v-if="alsacianItems" class="">
       <h3 class="text-lg mb-2">Créatrices alsaciennes</h3>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 my-animate-children-appear">
@@ -136,17 +149,63 @@ const links = [
 
 ]
 
+const scientists = [
+  {
+    name: "Catherine Tallon-Baudry",
+    field: "Neurosciences",
+    url : 'https://fr.wikipedia.org/wiki/Catherine_Tallon-Baudry'
+  },
+  {
+    name: "Janne Blichert-Toft",
+    field: "Géochimie",
+    description: "La page est quasi-vide, tout est à faire : biographie et travaux.",
+    url: 'https://fr.wikipedia.org/wiki/Janne_Blichert-Toft'
+  },
+  {
+    name: "Christiane Marchello-Nizia",
+    field: "Linguistique",
+    description: "Ajout des travaux, un peu d'ajout de sources",
+    url: 'https://fr.wikipedia.org/wiki/Christiane_Marchello-Nizia'
+  },
+  {
+    name: "Florence Ader",
+    field: "Médecine",
+    description: "Développement des travaux sur le COVID",
+    url: 'https://fr.wikipedia.org/wiki/Florence_Ader'
+  },
+  {
+    name: "Ingrid Daubechies",
+    field: "Physique",
+    description: "Sourçage, développement et vulgarisation des travaux.",
+    url: 'https://fr.wikipedia.org/wiki/Ingrid_Daubechies'
+  },
+  {
+    name: "Nina Léger",
+    field: "Littérature ; Histoire de l'art",
+    description: "Pour les personnes voulant une échappée scientifico-littéraire. Ajout des thèmes abordés par l'écrivaine (sexualité, écologie, États-Unis).",
+    url: 'https://fr.wikipedia.org/wiki/Nina_L%C3%A9ger'
+  
+  }
+]
+
+
+/*
+Catherine Tallon-Baudry	Neurosciences	Développement des travaux	Liste de travail
+Janne Blichert-Toft	Géochimie	La page est quasi-vide, tout est à faire : biographie et travaux.	Liste de travail
+Christiane Marchello-Nizia	Linguistique	Ajout des travaux, un peu d'ajout de sources	Liste de travail
+Florence Ader	Médecine	Développement des travaux sur le COVID	Liste de travail
+Ingrid Daubechies	Physique	Sourçage, développement et vulgarisation des travaux.	Liste de travail
+Nina Léger	Littérature ; Histoire de l'art	Pour les personnes voulant une échappée scientifico-littéraire. Ajout des thèmes abordés par l'écrivaine (sexualité, écologie, États-Unis).	Liste de travail
+*/
+
 onMounted(() => {
   for (let i = 0; i < tags.length; i++) {
     setTimeout(() => {
       shownTags.value.push(tags[i])
     }, timeBetweenTags * i);
   }
-  setTimeout(() => {
-  }, timeBetweenTags * tags.length);
 
   setInterval(() => requestDate.value = new Date(Date.now()).toString(), 5000)
-
 })
 
 useSeoMeta({
@@ -256,12 +315,6 @@ const { data: alsacianItems, execute: refreshAlsacian } = await useFetch(fullUrl
     return items
   }
 });
-
-
-// watch(alsacianItems, (newValue) => {
-//   console.log('Alsacian items updated:', newValue);
-// }, { immediate: true });
-
 
 
 </script>
