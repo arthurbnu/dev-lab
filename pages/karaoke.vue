@@ -1,7 +1,9 @@
 <template>
     <div class="karaoke-container">
         <div class="header-section">
-            <h1>🎤 Karaoké au Berthom</h1>
+            <h1>
+                <span class="mic-animated">🎤</span> Karaoké au Berthom
+            </h1>
             <p class="subtitle">
                 Le 08/12 avec Ambroise
                 <UIcon dynamic name="i-lucide-piano" size="32" />
@@ -14,9 +16,7 @@
         </div>
 
         <div class="list-section">
-            <h2>🎵 Liste des souhaits 
-                <!-- <span class="count">({{ songList.length }})</span> -->
-                </h2>
+            <h2>🎵 Liste des souhaits</h2>
             <ul v-if="songList.length > 0" class="song-list">
                 <li v-for="entry in songList" :key="entry.id" class="song-item">
                     <div class="song-info">
@@ -34,6 +34,7 @@
                 <div class="form-group">
                     <label for="prenom">Votre prénom :</label>
                     <input 
+                        ref="prenomInput"
                         v-model="newEntry.firstname" 
                         type="text" 
                         id="prenom" 
@@ -62,6 +63,11 @@
                 </button>
             </form>
         </div>
+
+        <!-- Bouton flottant arrondi -->
+        <button @click="scrollToForm" class="floating-btn">
+            <span class="plus-icon mb-2">+</span>
+        </button>
     </div>
 </template>
 
@@ -73,10 +79,17 @@ const newEntry = ref({
     song: ''
 })
 
+const prenomInput = ref(null)
 const songList = ref([])
 const isLoading = ref(false)
 const errorMessage = ref('')
 const API_URL = 'https://api.sheetbest.com/sheets/0d095aa9-ba7c-4230-8013-71a582e7a42a'
+
+// Scroll vers le formulaire et focus
+const scrollToForm = () => {
+  prenomInput.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  setTimeout(() => prenomInput.value?.focus(), 500)
+}
 
 // Récupère la liste depuis SheetDB
 const fetchSongs = async () => {
@@ -117,9 +130,8 @@ const addSong = async () => {
 
 onMounted(() => {
   fetchSongs()
-  setInterval(fetchSongs, 30000) // 30s pour limiter les 429
+  setInterval(fetchSongs, 30000)
 })
-
 
 const baseUrl = 'https://dev-lab-one.vercel.app/'
 const title  = "Karaoké au Berthom";
@@ -145,8 +157,8 @@ useSeoMeta({
     background-image: 
         url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Crect fill="%23164e2e" width="100" height="100"/%3E%3Cpath d="M0 50 Q25 30, 50 50 T100 50" stroke="%232d5a3d" stroke-width="2" fill="none" opacity="0.3"/%3E%3Ccircle cx="20" cy="20" r="3" fill="%233a7d4d" opacity="0.5"/%3E%3Ccircle cx="80" cy="80" r="3" fill="%233a7d4d" opacity="0.5"/%3E%3C/svg%3E');
     background-attachment: fixed;
-    padding: 20px 16px;          /* moins d’espace en haut */
-    border-radius: 16px;          /* bords plus ronds */
+    padding: 20px 16px;
+    border-radius: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: relative;
 }
@@ -163,22 +175,43 @@ h1 {
     margin: 0;
     font-weight: 800;
     letter-spacing: 2px;
-    animation: glow 2s ease-in-out infinite;
+}
+
+.mic-animated {
+    display: inline-block;
+    animation: micPulse 1.2s ease-in-out infinite, micBounce 0.9s ease-in-out infinite;
+}
+
+@keyframes micPulse {
+    0%, 100% { 
+        text-shadow: 0 0 0 rgba(74, 222, 128, 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        text-shadow: 0 0 12px rgba(74, 222, 128, 0.6), 0 0 24px rgba(74, 222, 128, 0.3);
+        transform: scale(1.08);
+    }
+}
+
+@keyframes micBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
 @media (max-width: 768px) {
     .karaoke-container { padding: 16px 14px; }
     h1 { font-size: 2.4rem; line-height: 1.12; }
 }
-@keyframes glow {
-    0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(74, 222, 128, 0.3); }
-    50% { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(74, 222, 128, 0.6); }
-}
+
 .subtitle {
     font-size: 1.5rem;
     color: #4ade80;
     margin: 10px 0 0 0;
     font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .list-section {
@@ -196,18 +229,6 @@ h1 {
     color: #166534;
     margin: 0 0 25px 0;
     font-size: 1.8rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.count {
-    background: linear-gradient(135deg, #22c55e, #4ade80);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
 }
 
 .song-list {
@@ -355,15 +376,45 @@ label {
     cursor: not-allowed;
 }
 
-.error-banner {
-    max-width: 900px;
-    margin: 0 auto 20px;
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #dc2626;
-    font-weight: 500;
+/* Bouton flottant */
+.floating-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border: none;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    animation: floatBtn 2s ease-in-out infinite;
+    padding: 0;
+}
+
+.plus-icon {
+    font-weight: bold;
+    font-size: 48px;
+    line-height: 1;
+    display: block;
+    height: 48px;
+}
+
+@keyframes floatBtn {
+    0%, 100% { 
+        transform: translateY(0);
+        box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
+    }
+    50% { 
+        transform: translateY(-12px);
+        box-shadow: 0 12px 32px rgba(34, 197, 94, 0.6);
+    }
 }
 
 @media (max-width: 768px) {
@@ -380,5 +431,28 @@ label {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .floating-btn {
+        bottom: 30px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .plus-icon {
+        font-size: 36px;
+        height: 36px;
+    }
+}
+
+.error-banner {
+    max-width: 900px;
+    margin: 0 auto 20px;
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #dc2626;
+    font-weight: 500;
 }
 </style>
