@@ -281,7 +281,7 @@ h1 {
 .list-section h2 {
     color: #166534;
     margin: 0;
-    font-size: 1.8rem;
+    /* font-size: 1.8rem; */
 }
 
 .list-section.animate-pulse {
@@ -366,7 +366,7 @@ h1 {
 .form-section h2 {
     color: #166534;
     margin: 0 0 25px 0;
-    font-size: 1.5rem;
+    /* font-size: 1.5rem; */
 }
 
 .form-group {
