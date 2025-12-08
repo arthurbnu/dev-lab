@@ -8,6 +8,12 @@
                 Le 08/12 avec Ambroise
                 <UIcon dynamic name="i-lucide-piano" size="32" />
             </p>
+            <!-- <p>
+                <button title = "Actualiser la liste" @click="fetchSongs" class="underline text-green-200 hover:text-white mt-2 opacity-60">
+                    <UIcon dynamic name="i-lucide-refresh-cw" size="20" class="inline-block mr-2 animate-spin-slow"/>
+                    Actualiser la liste
+                </button>
+                </p> -->
         </div>
 
         <!-- Message d'erreur -->
@@ -15,7 +21,7 @@
             ⚠️ {{ errorMessage }}
         </div>
 
-        <div class="list-section">
+        <div class="list-section" :class = "{'animate-pulse': isLoading}"> 
             <h2>🎵 Liste des souhaits</h2>
             <ul v-if="songList.length > 0" class="song-list">
                 <li v-for="entry in songList" :key="entry.id" class="song-item">
@@ -66,7 +72,7 @@
 
         <!-- Bouton flottant arrondi -->
         <button @click="scrollToForm" class="floating-btn">
-            <span class="plus-icon mb-2">+</span>
+             <UIcon dynamic name="i-lucide-plus" size="32" class="plus-icon"/>
         </button>
     </div>
 </template>
@@ -402,8 +408,12 @@ label {
     font-weight: bold;
     font-size: 48px;
     line-height: 1;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
     height: 48px;
+    margin: 0;
 }
 
 @keyframes floatBtn {
@@ -441,6 +451,7 @@ label {
     
     .plus-icon {
         font-size: 36px;
+        width: 36px;
         height: 36px;
     }
 }
