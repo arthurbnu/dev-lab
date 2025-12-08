@@ -126,6 +126,9 @@ const addSong = async () => {
     if (!res.ok) throw new Error(`Erreur serveur: ${res.status}`)
     newEntry.value.firstname = ''
     newEntry.value.song = ''
+    
+    // Attendre un peu que SheetDB mette à jour
+    await new Promise(resolve => setTimeout(resolve, 700))
     await fetchSongs()
   } catch (e: any) {
     errorMessage.value = `Erreur: ${e.message}`
