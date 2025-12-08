@@ -29,6 +29,9 @@
             {{ scientist.name }}
           </a>
           <span class="text-white/50"> - {{ scientist.field }}</span>
+          <span v-if="scientist.length" class="text-sm text-gray-500 mx-5" :class = "{'text-teal-400': scientist.length != scientist.initSize}">
+            {{ scientist.length }} octets</span>
+          <span v-if="scientist.initSize" class="text-sm text-gray-500"> (taille initiale : {{ scientist.initSize }} octets)</span>
           <p v-if="scientist.description" class="text-sm text-">{{ scientist.description }}</p>
         </li>
       </ul>
@@ -107,6 +110,7 @@ const baseUrl = 'https://dev-lab-one.vercel.app/'
 const title = "Atelier Wikipédia"
 const description = "Femmes illustres et de science "
 const imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Wikidata-logo-en.svg/1024px-Wikidata-logo-en.svg.png"
+const wikiApiUrl = 'https://fr.wikipedia.org/w/api.php?action=query&origin=*&prop=info&format=json&titles='
 
 const shownTags = ref([])
 const timeBetweenTags = 50
@@ -149,54 +153,63 @@ const links = [
 
 ]
 
+// créatrices à mettre à jour dans Wikipedia
 const scientists = [
   {
     name: "Catherine Tallon-Baudry",
     field: "Neurosciences",
-    url : 'https://fr.wikipedia.org/wiki/Catherine_Tallon-Baudry'
+    url : 'https://fr.wikipedia.org/wiki/Catherine_Tallon-Baudry',
+    initSize: 5329
   },
   {
     name: "Janne Blichert-Toft",
     field: "Géochimie",
     description: "La page est quasi-vide, tout est à faire : biographie et travaux.",
-    url: 'https://fr.wikipedia.org/wiki/Janne_Blichert-Toft'
+    url: 'https://fr.wikipedia.org/wiki/Janne_Blichert-Toft',
+    initSize: 4689
   },
   {
     name: "Christiane Marchello-Nizia",
     field: "Linguistique",
     description: "Ajout des travaux, un peu d'ajout de sources",
-    url: 'https://fr.wikipedia.org/wiki/Christiane_Marchello-Nizia'
+    url: 'https://fr.wikipedia.org/wiki/Christiane_Marchello-Nizia',
+    initSize: 6740
   },
   {
     name: "Florence Ader",
     field: "Médecine",
     description: "Développement des travaux sur le COVID",
-    url: 'https://fr.wikipedia.org/wiki/Florence_Ader'
+    url: 'https://fr.wikipedia.org/wiki/Florence_Ader',
+    initSize: 2700
   },
   {
     name: "Ingrid Daubechies",
     field: "Physique",
     description: "Sourçage, développement et vulgarisation des travaux.",
-    url: 'https://fr.wikipedia.org/wiki/Ingrid_Daubechies'
+    url: 'https://fr.wikipedia.org/wiki/Ingrid_Daubechies',
+    initSize: 16145
   },
   {
     name: "Nina Léger",
     field: "Littérature ; Histoire de l'art",
     description: "Pour les personnes voulant une échappée scientifico-littéraire. Ajout des thèmes abordés par l'écrivaine (sexualité, écologie, États-Unis).",
-    url: 'https://fr.wikipedia.org/wiki/Nina_L%C3%A9ger'
-  
+    url: 'https://fr.wikipedia.org/wiki/Nina_Leger',
+    initSize: 6500
   }
 ]
 
-
-/*
-Catherine Tallon-Baudry	Neurosciences	Développement des travaux	Liste de travail
-Janne Blichert-Toft	Géochimie	La page est quasi-vide, tout est à faire : biographie et travaux.	Liste de travail
-Christiane Marchello-Nizia	Linguistique	Ajout des travaux, un peu d'ajout de sources	Liste de travail
-Florence Ader	Médecine	Développement des travaux sur le COVID	Liste de travail
-Ingrid Daubechies	Physique	Sourçage, développement et vulgarisation des travaux.	Liste de travail
-Nina Léger	Littérature ; Histoire de l'art	Pour les personnes voulant une échappée scientifico-littéraire. Ajout des thèmes abordés par l'écrivaine (sexualité, écologie, États-Unis).	Liste de travail
-*/
+const getLengthFromWikiApi = async (url) => {
+  if (!url) {
+    return 0
+  }
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+  const data = await response.json()
+  const pageId = Object.keys(data.query.pages)[0]
+  return data.query.pages[pageId].length || 0
+}
 
 onMounted(() => {
   for (let i = 0; i < tags.length; i++) {
@@ -206,6 +219,11 @@ onMounted(() => {
   }
 
   setInterval(() => requestDate.value = new Date(Date.now()).toString(), 5000)
+
+  scientists.map(async s => {
+   let apiUrlForLength = wikiApiUrl + s.url.split('/').pop()
+    s.length = await getLengthFromWikiApi(apiUrlForLength)
+  })
 })
 
 useSeoMeta({
@@ -242,10 +260,6 @@ const fullUrl = computed(() => endPoint + encodeURIComponent(lastcreatrices.valu
 const headers = { 'Accept': 'application/json' };
 const { data: items, execute: refresh } = await useFetch(fullUrl, { headers: headers, server: false, transform: res => res.results.bindings });
 
-const wikiApiUrl = 'https://fr.wikipedia.org/w/api.php?action=query&origin=*&prop=info&titles='
-const wikiApiParams = '&format=json'
-
-
 const alsacianCreatrices = computed(() => `
 # Requête SPARQL pour les créatrices alsaciennes
 #title: Créatrices d'Alsace
@@ -278,19 +292,6 @@ ORDER BY (?statements)
 LIMIT 100
 `)
 
-const getLengthFromWikiApi = async (url) => {
-  if (!url) {
-    return 0; // Pas d'article, pas de longueur
-  }
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
-  const pageId = Object.keys(data.query.pages)[0];
-  return data.query.pages[pageId].length || 0;
-}
-
 const fullUrlAlsacian = computed(() => endPoint + encodeURIComponent(alsacianCreatrices.value))
 const { data: alsacianItems, execute: refreshAlsacian } = await useFetch(fullUrlAlsacian, {
   headers: headers,
@@ -299,7 +300,7 @@ const { data: alsacianItems, execute: refreshAlsacian } = await useFetch(fullUrl
     // On initialise articleLength à null
     const items = res.results.bindings.map(item => ({
       ...item,
-      apiUrlForLength: wikiApiUrl + item.article.value.split('/').pop().split(':').pop() + wikiApiParams,
+      apiUrlForLength: wikiApiUrl + item.article.value.split('/').pop().split(':').pop(),
       articleLength: null
     }));
 
