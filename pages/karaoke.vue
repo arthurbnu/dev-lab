@@ -135,9 +135,26 @@ const addSong = async () => {
 
 onMounted(() => {
   fetchSongs()
-  // Rafraîchir la liste toutes les 3 secondes
-  setInterval(fetchSongs, 3000)
+  // Rafraîchir la liste toutes les 30 secondes
+  setInterval(fetchSongs, 30000)
 })
+
+
+const baseUrl = 'https://dev-lab-one.vercel.app/'
+const title  = "Karaoké au Berthom";
+const description = "Ajoutez vos chansons préférées à la liste !" ;
+useSeoMeta({
+  title,
+  description,
+  author: "arthur.brody@bnu.fr",
+  ogImage: baseUrl + "karaoke.png",
+  ogUrl: baseUrl,
+  ogType: "website",
+  ogTitle:  "Karaoké - " + title,
+  ogDescription: description,
+  robots: "index, follow",
+  themeColor: "teal",
+});
 </script>
 
 <style scoped>
