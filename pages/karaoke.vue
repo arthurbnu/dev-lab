@@ -21,8 +21,18 @@
             ⚠️ {{ errorMessage }}
         </div>
 
-        <div class="list-section" :class = "{'animate-pulse': isLoading}"> 
-            <h2>🎵 Liste des souhaits</h2>
+        <div class="list-section"> 
+            <div class="list-header">
+                <h2 class="text-xl sm:text-2xl">🎵 Liste des souhaits</h2>
+                <button 
+                    @click="fetchSongs" 
+                    :disabled="isLoading"
+                    class="refresh-btn"
+                    title="Actualiser la liste"
+                >
+                    <UIcon dynamic name="i-lucide-refresh-cw" size="20" :class="{ 'animate-spin': isLoading }"/>
+                </button>
+            </div>
             <ul v-if="songList.length > 0" class="song-list">
                 <li v-for="entry in songList" :key="entry.id" class="song-item">
                     <div class="song-info">
@@ -35,10 +45,10 @@
         </div>
 
         <div class="form-section">
-            <h2>➕ Ajouter une chanson</h2>
+            <h2 class="text-xl sm:text-2xl">➕ Ajouter une chanson</h2>
             <form @submit.prevent="addSong">
                 <div class="form-group">
-                    <label for="prenom">Votre prénom :</label>
+                    <label for="prenom" class="text-sm sm:text-base">Votre prénom :</label>
                     <input 
                         ref="prenomInput"
                         v-model="newEntry.firstname" 
@@ -52,7 +62,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="chanson">Chanson :</label>
+                    <label for="chanson" class="text-sm sm:text-base">Chanson :</label>
                     <input 
                         v-model="newEntry.song" 
                         type="text" 
@@ -64,7 +74,7 @@
                     />
                 </div>
                 
-                <button type="submit" class="submit-btn" :disabled="isLoading">
+                <button type="submit" class="submit-btn text-sm sm:text-base" :disabled="isLoading">
                     {{ isLoading ? '⏳ Envoi...' : '🎤 Ajouter à la liste' }}
                 </button>
             </form>
@@ -189,6 +199,9 @@ h1 {
 .mic-animated {
     display: inline-block;
     animation: micPulse 1.2s ease-in-out infinite, micBounce 0.9s ease-in-out infinite;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    vertical-align: middle;
 }
 
 @keyframes micPulse {
@@ -234,10 +247,45 @@ h1 {
     border: 2px solid rgba(74, 222, 128, 0.3);
 }
 
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.refresh-btn {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.refresh-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    transform: scale(1.1);
+}
+
+.refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .list-section h2 {
     color: #166534;
-    margin: 0 0 25px 0;
+    margin: 0;
     font-size: 1.8rem;
+}
+
+.list-section.animate-pulse {
+    opacity: 0.8;
 }
 
 .song-list {
@@ -468,5 +516,18 @@ label {
     border-radius: 8px;
     border-left: 4px solid #dc2626;
     font-weight: 500;
+}
+
+/* Garder les tailles de base pour desktop, Tailwind gérera le responsive */
+.list-section h2 {
+    color: #166534;
+    margin: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #166534;
 }
 </style>
