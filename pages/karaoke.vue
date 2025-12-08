@@ -2,7 +2,10 @@
     <div class="karaoke-container">
         <div class="header-section">
             <h1>🎤 Karaoké au Berthom</h1>
-            <p class="subtitle">Strasbourg</p>
+            <p class="subtitle">
+                Le 08/12 avec Ambroise
+                <UIcon dynamic name="i-lucide-piano" size="32" />
+            </p>
         </div>
 
         <!-- Message d'erreur -->
@@ -11,7 +14,9 @@
         </div>
 
         <div class="list-section">
-            <h2>🎵 Liste des souhaits <span class="count">({{ songList.length }})</span></h2>
+            <h2>🎵 Liste des souhaits 
+                <!-- <span class="count">({{ songList.length }})</span> -->
+                </h2>
             <ul v-if="songList.length > 0" class="song-list">
                 <li v-for="entry in songList" :key="entry.id" class="song-item">
                     <div class="song-info">
@@ -71,22 +76,17 @@ const newEntry = ref({
 const songList = ref([])
 const isLoading = ref(false)
 const errorMessage = ref('')
-const SHEETDB_URL = 'https://sheetdb.io/api/v1/djxhdg0nbnfik'
+const API_URL = 'https://api.sheetbest.com/sheets/0d095aa9-ba7c-4230-8013-71a582e7a42a'
 
 // Récupère la liste depuis SheetDB
 const fetchSongs = async () => {
   try {
-    console.log('📡 Récupération des chansons...')
-    const response = await fetch(SHEETDB_URL)
-    if (!response.ok) {
-      throw new Error(`Erreur serveur: ${response.status}`)
-    }
-    songList.value = await response.json()
-    console.log('✅ Chansons récupérées:', songList.value)
+    const res = await fetch(API_URL)
+    if (!res.ok) throw new Error(`Erreur serveur: ${res.status}`)
+    songList.value = await res.json()
     errorMessage.value = ''
-  } catch (error) {
-    console.error('❌ Erreur lors du chargement:', error)
-    errorMessage.value = `Impossible de récupérer les chansons: ${error.message}`
+  } catch (e: any) {
+    errorMessage.value = `Impossible de récupérer les chansons: ${e.message}`
   }
 }
 
@@ -96,38 +96,20 @@ const addSong = async () => {
     errorMessage.value = 'Veuillez remplir tous les champs'
     return
   }
-  
   isLoading.value = true
   errorMessage.value = ''
-  
   try {
-    console.log('🎤 Ajout de la chanson...')
-    const response = await fetch(SHEETDB_URL, {
+    const res = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        data: {
-          firstname: newEntry.value.firstname,
-          song: newEntry.value.song
-        }
-      })
+      body: JSON.stringify(newEntry.value)
     })
-    
-    console.log('📊 Réponse:', response.status)
-    
-    if (response.ok) {
-      console.log('✅ Chanson ajoutée avec succès')
-      newEntry.value.firstname = ''
-      newEntry.value.song = ''
-      // Recharge la liste
-      await fetchSongs()
-    } else {
-      const errorData = await response.text()
-      throw new Error(errorData || 'Erreur lors de l\'ajout')
-    }
-  } catch (error) {
-    console.error('❌ Erreur:', error)
-    errorMessage.value = `Erreur: ${error.message}`
+    if (!res.ok) throw new Error(`Erreur serveur: ${res.status}`)
+    newEntry.value.firstname = ''
+    newEntry.value.song = ''
+    await fetchSongs()
+  } catch (e: any) {
+    errorMessage.value = `Erreur: ${e.message}`
   } finally {
     isLoading.value = false
   }
@@ -135,8 +117,7 @@ const addSong = async () => {
 
 onMounted(() => {
   fetchSongs()
-  // Rafraîchir la liste toutes les 30 secondes
-  setInterval(fetchSongs, 30000)
+  setInterval(fetchSongs, 30000) // 30s pour limiter les 429
 })
 
 
@@ -164,7 +145,8 @@ useSeoMeta({
     background-image: 
         url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Crect fill="%23164e2e" width="100" height="100"/%3E%3Cpath d="M0 50 Q25 30, 50 50 T100 50" stroke="%232d5a3d" stroke-width="2" fill="none" opacity="0.3"/%3E%3Ccircle cx="20" cy="20" r="3" fill="%233a7d4d" opacity="0.5"/%3E%3Ccircle cx="80" cy="80" r="3" fill="%233a7d4d" opacity="0.5"/%3E%3C/svg%3E');
     background-attachment: fixed;
-    padding: 40px 20px;
+    padding: 20px 16px;          /* moins d’espace en haut */
+    border-radius: 16px;          /* bords plus ronds */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: relative;
 }
@@ -184,11 +166,14 @@ h1 {
     animation: glow 2s ease-in-out infinite;
 }
 
+@media (max-width: 768px) {
+    .karaoke-container { padding: 16px 14px; }
+    h1 { font-size: 2.4rem; line-height: 1.12; }
+}
 @keyframes glow {
     0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(74, 222, 128, 0.3); }
     50% { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(74, 222, 128, 0.6); }
 }
-
 .subtitle {
     font-size: 1.5rem;
     color: #4ade80;
