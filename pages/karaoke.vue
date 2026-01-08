@@ -419,6 +419,8 @@ h1 {
     padding: 0 20px;
     position: relative;
     z-index: 1;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
 }
 
 .white-key:hover {
@@ -432,9 +434,9 @@ h1 {
 }
 
 .black-key {
-    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-    border-top: 2px solid #333;
-    border-bottom: 2px solid #000;
+    background: linear-gradient(145deg, #0f3b29, #0a2a1f);
+    border-top: 2px solid #145a3a;
+    border-bottom: 2px solid #0e3d2c;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     height: 42px;
     min-height: 0;
@@ -447,6 +449,8 @@ h1 {
     position: relative;
     z-index: 10;
     align-self: flex-start;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
 }
 
 .key-content {
