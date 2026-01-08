@@ -1,11 +1,16 @@
 <template>
     <div class="karaoke-container">
+        <!-- Flocons de neige -->
+        <div class="snowflakes" aria-hidden="true">
+            <div class="snowflake" v-for="i in 30" :key="i" :style="{ left: `${Math.random() * 100}%`, animationDelay: `${Math.random() * 10}s`, animationDuration: `${8 + Math.random() * 12}s` }">❄</div>
+        </div>
+        
         <div class="header-section">
             <h1>
                 <span class="mic-animated">🎤</span> Karaoké au Berthom
             </h1>
             <p class="subtitle">
-                Le 08/12 avec Ambroise
+                Le 12/01 avec Ambroise
                 <UIcon dynamic name="i-lucide-piano" size="32" />
             </p>
             <!-- <p>
@@ -21,7 +26,7 @@
             ⚠️ {{ errorMessage }}
         </div>
 
-        <div class="list-section"> 
+        <div class="list-section piano-section"> 
             <div class="list-header">
                 <h2 class="text-xl sm:text-2xl">🎵 Liste des souhaits</h2>
                 <button 
@@ -33,15 +38,20 @@
                     <UIcon dynamic name="i-lucide-refresh-cw" size="20" :class="{ 'animate-spin': isLoading }"/>
                 </button>
             </div>
-            <ul v-if="songList.length > 0" class="song-list">
-                <li v-for="entry in songList" :key="entry.id" class="song-item">
-                    <div class="song-info">
-                        <span class="prenom">{{ entry.firstname }}</span>
-                        <span class="chanson">{{ entry.song }}</span>
+            <div v-if="songList.length > 0" class="piano-keyboard">
+                <template v-for="(entry, index) in songList" :key="`${entry.id}-${index}`">
+                    <div :class="['piano-key', 'white-key']" @click="playNote(index, false)">
+                        <div class="key-content">
+                            <span class="prenom">{{ entry.firstname }}</span>
+                            <span class="chanson">{{ entry.song }}</span>
+                        </div>
                     </div>
-                </li>
-            </ul>
-            <p v-else class="empty-message">Aucune chanson pour le moment... 🎶</p>
+                    <div v-if="(index + 1) % 3 === 0" :key="`black-${index}`" class="piano-key black-key" @click="playNote(index, true)"></div>
+                </template>
+            </div>
+            <p v-else class="empty-message flex items-center justify-center gap-2">
+                Chargement de la liste ... <UIcon dynamic name="i-lucide-music-2" class="text-gray-400" size="24" />
+            </p>
         </div>
 
         <div class="form-section">
@@ -99,12 +109,45 @@ const prenomInput = ref(null)
 const songList = ref([])
 const isLoading = ref(false)
 const errorMessage = ref('')
-const API_URL = 'https://api.sheetbest.com/sheets/0d095aa9-ba7c-4230-8013-71a582e7a42a'
+const API_URL = 'https://api.sheetbest.com/sheets/2ac1731d-a6df-4152-b8c4-6444591a86a1'
+const audioCtx = ref<AudioContext | null>(null)
 
 // Scroll vers le formulaire et focus
 const scrollToForm = () => {
   prenomInput.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   setTimeout(() => prenomInput.value?.focus(), 500)
+}
+
+const ensureAudioContext = async () => {
+    if (audioCtx.value) return audioCtx.value
+    const ctx = new AudioContext()
+    await ctx.resume()
+    audioCtx.value = ctx
+    return ctx
+}
+
+const playNote = async (index: number, isBlack: boolean) => {
+    const ctx = await ensureAudioContext()
+    const baseFreq = 261.63 // C4
+    const offset = isBlack ? 1 : 0
+    const semitone = ((index + offset) % 12)
+    const freq = baseFreq * Math.pow(2, semitone / 12)
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = isBlack ? 'square' : 'sine'
+    osc.frequency.value = freq
+
+    const now = ctx.currentTime
+    gain.gain.setValueAtTime(0, now)
+    gain.gain.linearRampToValueAtTime(0.18, now + 0.02)
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.start(now)
+    osc.stop(now + 0.4)
 }
 
 // Récupère la liste depuis SheetDB
@@ -138,7 +181,7 @@ const addSong = async () => {
     newEntry.value.song = ''
     
     // Attendre un peu que SheetDB mette à jour
-    await new Promise(resolve => setTimeout(resolve, 700))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     await fetchSongs()
   } catch (e: any) {
     errorMessage.value = `Erreur: ${e.message}`
@@ -342,6 +385,115 @@ h1 {
     font-style: italic;
 }
 
+/* Styles du clavier de piano */
+.piano-section {
+    background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+    padding: 40px 20px;
+    border: 2px solid #111;
+    border-radius: 12px;
+}
+
+.piano-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 20px 0;
+    position: relative;
+}
+
+.piano-key {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    animation: slideIn 0.4s ease-out;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.white-key {
+    background: linear-gradient(145deg, #ffffff, #f9f9f9);
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.white-key:hover {
+    background: linear-gradient(145deg, #f5f5f5, #efefef);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.05), 
+                0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.white-key:active {
+    background: linear-gradient(145deg, #efefef, #e8e8e8);
+}
+
+.black-key {
+    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+    border-top: 2px solid #333;
+    border-bottom: 2px solid #000;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    height: 42px;
+    min-height: 0;
+    padding: 0;
+    width: 72%;
+    margin-left: auto;
+    margin-right: 0;
+    margin-top: -12px;
+    margin-bottom: -12px;
+    position: relative;
+    z-index: 10;
+    align-self: flex-start;
+}
+
+.key-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
+.white-key .prenom {
+    color: #666;
+    font-size: 0.95rem;
+    font-weight: 500;
+    min-width: 100px;
+}
+
+.white-key .chanson {
+    color: #1a1a1a;
+    font-size: 1.05rem;
+    font-weight: bold;
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .piano-key {
+        min-height: 60px;
+    }
+    
+    .key-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .white-key .prenom,
+    .white-key .chanson {
+        font-size: 0.9rem;
+    }
+}
+
+.piano-section h2 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .empty-message {
     text-align: center;
     color: #9ca3af;
@@ -529,5 +681,38 @@ label {
     margin-bottom: 8px;
     font-weight: 600;
     color: #166534;
+}
+
+/* Animation des flocons de neige */
+.snowflakes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10%;
+    color: white;
+    font-size: 1.5em;
+    opacity: 0.8;
+    animation: fall linear infinite;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.3;
+    }
 }
 </style>
