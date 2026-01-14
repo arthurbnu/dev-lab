@@ -6,7 +6,7 @@ description : "Trouvez le bon réalisateur"
 nbPics : 12
 answerLabel : "realLabel"
 badges : "cinéma"
-image : "oscar.jpg"
+image : "Las_Vegas,_Circus_Circus,_2018.11.22_(08).jpg"
 icon: "i-lucide-film"
 
 ---

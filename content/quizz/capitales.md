@@ -11,6 +11,7 @@ small : true
 badges : "culture, géographie"
 icon: "i-lucide-globe"
 timer: true
+image: "Flag_of_Cyprus.svg.png"
 ---
 
 

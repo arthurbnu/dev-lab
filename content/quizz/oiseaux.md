@@ -8,7 +8,7 @@ answerLabel : "itemLabel"
 small : true
 hideTitle : true
 badges : "biologie"
-image : "oiseaux2.png"
+image : "2014-05-25_Sanderling,_Paignton_Beach,_Devon_1.jpg"
 icon: "i-lucide-bird"
 ---
 

@@ -9,7 +9,7 @@ imageLabel : "flag"
 small : true
 hideTitle : true
 badges : "culture, géographie"
-image : "drapeaux.png"
+image : "Flag_of_Eswatini.svg.png"
 icon: "i-lucide-flag"
 ---
 
