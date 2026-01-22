@@ -9,7 +9,12 @@
         <!-- plus de liste de mouvements en haut -->
         <div class="flex justify-center items-center gap-4 mb-8">
           <button class="px-6 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition disabled:opacity-50 shadow-none" @click="validate" :disabled="!canValidate">Valider</button>
-          <button class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition shadow-none" @click="reset">Réinitialiser</button>
+          <button class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition shadow-none" @click="reset()">Réinitialiser</button>
+          <button class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition shadow-none" 
+            :disabled="replay === true"
+            @click="replay = true">
+              {{replay ? 'Chargement...' : 'Autres oeuvres'}}
+          </button>
           <button v-if="showResult" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition shadow-none" @click="showAnswers()">Afficher les réponses</button>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">

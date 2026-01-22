@@ -87,9 +87,6 @@ watchEffect(async () => {
 
 // let pics appear 
 const ready = ref(false)
-onMounted(() => {
-    date.value = new Date().toLocaleString()    // re-triggers fetch + avoid getting same results (cache)
-})
 watchEffect(() => {
   if (pics.value.length) {
     setTimeout(() => {
