@@ -38,7 +38,7 @@
     <!-- game won -->
     <div v-if="shuffled && youWin">
       <AppFires class="opacity-80"/>
-      <UModal v-model="youWin" prevent-close
+      <UModal v-model="youWin"
         :ui="{ background: 'bg-gray-500', base: '', padding: 'p-5', width: 'w-72 h-32', container: 'grid items-center' }">
         <div class="text-xl font-bold m-2 p-2">Bravo... défi réussi !</div>
         <div class="flex p-3 items-center justify-around">

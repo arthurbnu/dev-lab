@@ -9,7 +9,7 @@
         Le langage <NuxtLink to="https://fr.wikipedia.org/wiki/SPARQL" target="_blank">sparql</NuxtLink> 
         permet de faire des requêtes sur des bases de données rdf telles que 
         <NuxtLink to="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank">wikidata</NuxtLink>.
-        Chaque quizz est généré à partir d'une requête sparql, les données changent à chaque rechargement de la page.
+        Chaque quizz est généré à partir d'une requête sparql.
       </p>
     </section>
     <div class="my-4 text-center mb-4">

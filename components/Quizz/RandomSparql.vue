@@ -7,7 +7,9 @@
     <div v-if="pics.length">
       <QuizzChoice v-if="quizz.quizzTemplate === 'choice'" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': !ready }"
         :quizz="quizz" />
+      <QuizzDragMoveAnswers v-else-if="quizz.quizzTemplate === 'drag-move-answers'" :picsInit="pics" :class="{ 'opacity-0': !ready }" :swap="!quizz.no_swap" />
       <QuizzDrag v-else :picsInit="pics" :class="{ 'opacity-0': !ready }" :swap="!quizz.no_swap" />
+      <!-- <QuizzMyTemplate v-else :picsInit="pics" :class="{ 'opacity-0': !ready }" :swap="!quizz.no_swap" /> -->
     </div>
   </div>
 </template>
@@ -85,6 +87,9 @@ watchEffect(async () => {
 
 // let pics appear 
 const ready = ref(false)
+onMounted(() => {
+    date.value = new Date().toLocaleString()    // re-triggers fetch + avoid getting same results (cache)
+})
 watchEffect(() => {
   if (pics.value.length) {
     setTimeout(() => {

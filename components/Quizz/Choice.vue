@@ -1,30 +1,35 @@
-
 <template>
-    <section ref = "templateSection" class="scroll-mt-14">
+    <section ref="templateSection" class="scroll-mt-14">
         <div class="flex justify-center gap-3 mb-5 ">
             <div v-for="(pic, i) in picsRef" :key="i">
-                <div class="filter saturate-100 border-teal-600 border-solid" :class="{ 'border-b-2': currentIndex === i }">
+                <div class="filter saturate-100 border-teal-600 border-solid"
+                    :class="{ 'border-b-2': currentIndex === i }">
                     <UAvatar :src="pic.src" :alt="pic.answer" size="lg" :imgClass="getImgClass(pic)"
-                        @click="currentIndex = (quizz.timer && !end) ? currentIndex : i" />     <!-- click on avatar to change pic - only if no timer -->
+                        @click="currentIndex = (quizz.timer && !end) ? currentIndex : i" />
+                    <!-- click on avatar to change pic - only if no timer -->
                 </div>
             </div>
         </div>
         <!-- Questions -->
         <div class="max-w-2xl m-auto">
-            <transition-scale v-if="quizz.timer" group class="block h-2" >
-                <template v-for="(pic, i) in picsRef" :key="i" >
-                    <AppTimeProgress @end = "handleChoice(getChoices()[0])" v-if="currentIndex === i && ! alreadyAnswered(currentPic)"/>
+            <transition-scale v-if="quizz.timer" group class="block h-2">
+                <template v-for="(pic, i) in picsRef" :key="i">
+                    <AppTimeProgress @end="handleChoice(getChoices()[0])"
+                        v-if="currentIndex === i && !alreadyAnswered(currentPic)" />
                 </template>
             </transition-scale>
-            <div class="bg-slate-800/40 p-2 pt-3 w-full rounded-lg relative" :class="quizz.small ? 'h-[42vh]' : 'h-[62vh]' ">
+            <div class="bg-slate-800/40 p-2 pt-3 w-full rounded-lg relative"
+                :class="quizz.small ? 'h-[42vh]' : 'h-[62vh]'">
                 <div ref="imgContainer">
-                    <transition-slide :offset="['100%', 0]" group mode="in-out">                  
+                    <transition-slide :offset="['100%', 0]" group mode="in-out">
                         <div v-for="(pic, i) in picsRef" :key="i">
                             <div v-if="i === currentIndex">
-                                <cite class="text-center text-md mb-2 block w-full truncate min-h-[10px]" :class = "{'opacity-0' : quizz.hideTitle}" >
+                                <cite class="text-center text-md mb-2 block w-full truncate min-h-[10px]"
+                                    :class="{ 'opacity-0': quizz.hideTitle }">
                                     {{ pic.name }}
                                 </cite>
-                                <img :src="pic.src" class="rounded m-auto object-contain w-full" :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]' " />
+                                <img :src="pic.src" class="rounded m-auto object-contain w-full"
+                                    :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]'" />
                             </div>
                         </div>
                     </transition-slide>
@@ -43,33 +48,9 @@
                     {{ pic.answer }}
                 </button>
             </div>
-            <!-- Game over -->
-            <div v-if="end" ref = "wikiLinks" class="scroll-mt-3">
-                <UIcon name="trophy" class="text-9xl text-teal-700" />
-                <div class="text-lg mb-4 flex gap-6 ">Partie terminée ...
-                    <UButton v-if = "replay !=='no-replay'" :disabled="replay" variant="soft" @click="replay = true">
-                        {{ replay ? 'Chargement...' : 'Rejouer'}}
-                    </UButton>
-                    <NuxtLink to="/" class="text-teal-700 underline">Retour aux quizz</NuxtLink>
-                </div>
-                Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
-                <UProgress :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="animate-pulse" />
-                <div class="max-w-full my-5 bg-white/5 rounded-lg p-4 mb-40">
-                    <div class="text-xl mb-5">Liens Wikipédia</div>
-                    <ul class="my-animate-children-appear">
-                        <li v-for="(pic, i) in picsRef" :key="i"
-                            class="flex items-center gap-3 mb-2 text-md hover:!bg-slate-400/10 rounded-md odd:bg-gray-700/10 p-2">
-                            <span class="basis-40">
-                                {{ pic.answer }}
-                            </span>
-                            <UAvatar :src="pic.src" :alt="pic.answer" size="md" />
-                            <a :href="pic.article ?? pic.src.split('?width')[0]" target="_blank"
-                                class="text-primary underline truncate md:w-80 w-72">{{ pic.name ?? pic.answer }}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <!-- Réponses affichées en fin de partie -->
+            <QuizzAnswersTable v-if="end" ref="answersBlock" :pictures="picsRef" :score="picsRef.filter(pic => pic.found).length" :maxScore="picsRef.length" />
+            <div class="min-h-24 w-full"></div> <!-- espace en bas pour gérer l'anim scroll de QuizzAnswersTable -->
         </div>
     </section>
 </template>
@@ -80,7 +61,7 @@ const currentIndex = ref(0)
 const currentPic = computed(() => picsRef.value[currentIndex.value])
 const imgContainer = ref(null)
 const templateSection = ref(null)
-const wikiLinks = ref(null)
+const answersBlock = ref(null)
 const { isSwiping, direction } = useSwipe(imgContainer, {
     onSwipeEnd: () => {
         if (direction.value === 'left' && currentIndex.value < picsRef.value.length - 1) currentIndex.value++
@@ -89,7 +70,7 @@ const { isSwiping, direction } = useSwipe(imgContainer, {
 })
 
 const props = defineProps({
-    quizz : {
+    quizz: {
         type: Object,
         required: false
     },
@@ -139,9 +120,9 @@ const handleChoice = async answer => {
         currentIndex.value++
 }
 
-watchEffect(() => 
-    end.value && 
-    setTimeout(() => wikiLinks.value.scrollIntoView({ behavior: 'smooth' }), 1000)
+watchEffect(() =>
+    end.value &&
+    setTimeout(() => answersBlock.value.$el.scrollIntoView({ behavior: 'smooth' }), 1000)
 )
 
 // Replay : trigger refetch in parent
@@ -149,32 +130,33 @@ const replay = inject('replay', 'no-replay')
 watch(() => props.pics, () => {
     picsRef.value = getPics()
     currentIndex.value = 0
-    setTimeout(() => window.scrollTo({top : 30, behavior: 'smooth'}), 500)
+    setTimeout(() => window.scrollTo({ top: 30, behavior: 'smooth' }), 500)
 })
 
 </script>
 
 <style>
 @keyframes appear {
-  from {
-    opacity: 0;
-    scale: .8
-  }
-  to {
-    opacity: 1;
-    scale: 1
-  }
+    from {
+        opacity: 0;
+        scale: .8
+    }
+
+    to {
+        opacity: 1;
+        scale: 1
+    }
 }
 
 .my-animate-children-appear>* {
-  animation: appear linear both;
-  animation-timeline: view();
-  animation-range: entry 25% cover 50%;
-}
-@media (prefers-reduced-motion) {
-  .my-animate-children-appear>* {
-    animation: none;
-  }
+    animation: appear linear both;
+    animation-timeline: view();
+    animation-range: entry 25% cover 50%;
 }
 
+@media (prefers-reduced-motion) {
+    .my-animate-children-appear>* {
+        animation: none;
+    }
+}
 </style>

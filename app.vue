@@ -1,7 +1,7 @@
 <template>
   <NuxtLoadingIndicator color="#14b8a6" />
   <AppNavbar />
-  <div class="h-28 max-h-[10vh]"></div>
+  <div class="h-20 max-h-[10vh]"></div>
   <UContainer>
     <NuxtPage />
   </UContainer>
