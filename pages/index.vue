@@ -5,11 +5,13 @@
         <span class="text-teal-400 mr-4">WiQuizz</span>
         {{ title }}
       </h1>
-      <p class="text-left [&>a]:text-teal-400 [&>a]:underline">
-        Le langage <NuxtLink to="https://fr.wikipedia.org/wiki/SPARQL" target="_blank">sparql</NuxtLink> 
-        permet de faire des requêtes sur des bases de données rdf telles que 
+      <p class="text-justify [&>a]:text-teal-400 [&>a]:underline">
+        Les quizz ici ne sont pas statiques : ils sont générés dynamiquement en temps réel à partir de données ouvertes.
+        Nous utilisons <NuxtLink to="https://fr.wikipedia.org/wiki/SPARQL" target="_blank">sparql</NuxtLink>,
+          un langage de requête pour interroger les bases de connaissances en graphes comme 
         <NuxtLink to="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank">wikidata</NuxtLink>.
-        Chaque quizz est généré à partir d'une requête sparql.
+        <!-- <br>
+        Chaque quizz est généré à partir d'une requête sparql. -->
       </p>
     </section>
     <div class="my-4 text-center mb-4">

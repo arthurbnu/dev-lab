@@ -1,6 +1,16 @@
 <template>
 
     <main class="space-y-4">
+
+        <div class="px-4 fixed right-20 bottom-20">
+            <UChip :text="exportList.length" size="3xl" color="" class = "!text-red-500" >
+                <UButton color = "primary" variant="soft" class="px-4 border-teal-500 border-2" size="xl" icon="i-lucide-download" title = "Télécharger le csv" 
+                @click = "download">
+                </UButton>
+            </UChip>
+        </div>
+        
+
         <div class="flex items-baseline gap-3">
             <h1 class="text-2xl">Recherche Wikipédia
                 <span class="text-sm m-3 text-gray-400">Et vérifications des propriétés wikidata correspondantes</span>
@@ -29,8 +39,9 @@
         <ul v-auto-animate>
             <li v-for="item in result?.pages" :key="item.id" @click="selectedResult = { id: item.id, key: item.key }"
                 class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2 cursor-pointer">
-                <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'"
-                    class="w-12 h-12 mr-2 bg-white" size="md" />
+                <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'" class="w-12 h-12 mr-2 bg-white" size="md" />
+                <!--  bouton PLUS pour ajouter  -->
+                    <UButton @click.stop="exportList.push(item)" class="mt-4 absolute right-0" data-info = "btn-add" size="sm" icon="i-lucide-plus" color="primary" title = "Ajouter à la liste"></UButton>
                 <div>
                     <a :href="`https://${lang}.wikipedia.org/wiki/${item.key}`" target="_blank"
                         title="Voir l'article Wikipédia" class="hover:text-primary-500 hover:underline">
@@ -41,8 +52,8 @@
                     <!--  Propriétés wikidata trouvées pour le résultat cliqué -->
                     <div v-if="selectedResult.id === item.id" class="bg-slate-600/20 p-2 rounded-lg my-2"
                         :class="{ 'opacity-20': pendingSparql }">
-                        <label class="text-primary-300 flex items-center gap-2">
-                            <UAvatar size="xs" :src="`https://logo.clearbit.com/${baseUrl}`" />
+                        <label class="text-primary-300 flex items- gap-2">
+                            <!-- <UAvatar size="xs" :src="`https://logo.clearbit.com/${baseUrl}`" /> -->
                             Propriétés wikidata
                             <a :href="`${baseUrl}/#${encodeURIComponent(sparqlQuery)}`" target="_blank"
                                 class="text-white hover:text-primary-300 underline">
@@ -97,6 +108,25 @@
 import { refDebounced } from '@vueuse/core'
 import jsonProperties from "@/assets/properties.json"
 var {time: timeProperties, place:  placeProperties} = jsonProperties
+
+
+const exportList = ref([])
+
+
+const download = () => {
+    const csvContent = "data:text/csv;charset=utf-8,"
+        + exportList.value.map(e => `${e.id},${e.title},${e.description}`).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "export.csv");
+    document.body.appendChild(link); // Required for FF
+    link.click();
+    document.body.removeChild(link); // Clean up
+}
+
+
+
 // replace spaces in labels
 // function removeLabelSpaces(arr) {
 //     return arr.map(prop => ({ ...prop, label: prop.label.replace(/ /g, '_') }))
