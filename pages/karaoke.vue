@@ -10,7 +10,7 @@
                 <span class="mic-animated">🎤</span> Karaoké au Berthom
             </h1>
             <p class="subtitle">
-                Le 12/01 avec Ambroise
+                Le 13/04 avec Ambroise
                 <UIcon dynamic name="i-lucide-piano" size="32" />
             </p>
             <!-- <p>
