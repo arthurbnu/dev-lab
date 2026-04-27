@@ -37,11 +37,13 @@
         <!-- <h2 v-if="error" class="text-red-500">{{ error }}</h2> -->
         <!-- Résultats -->
         <ul v-auto-animate>
-            <li v-for="item in result?.pages" :key="item.id" @click="selectedResult = { id: item.id, key: item.key }"
+            <li v-for="item in result?.pages" :key="item.id" @click="selectedResult = { id: item.id, key: item.key, descr: item.description }"
                 class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2 cursor-pointer">
                 <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'" class="w-12 h-12 mr-2 bg-white" size="md" />
                 <!--  bouton PLUS pour ajouter  -->
-                    <UButton @click.stop="exportList.push(item)" class="mt-4 absolute right-0" data-info = "btn-add" size="sm" icon="i-lucide-plus" color="primary" title = "Ajouter à la liste"></UButton>
+                    <!-- <UButton @click.stop="exportList.push(item)" class="mt-4 absolute right-0" data-info = "btn-add" size="sm" icon="i-lucide-plus" color="primary" title = "Ajouter à la liste"></UButton> -->
+                    <UButton @click.stop="handleAddToList(item)" class="mt-4 absolute right-0" data-info = "btn-add" size="sm" icon="i-lucide-plus" color="primary" title = "Ajouter à la liste"></UButton>
+
                 <div>
                     <a :href="`https://${lang}.wikipedia.org/wiki/${item.key}`" target="_blank"
                         title="Voir l'article Wikipédia" class="hover:text-primary-500 hover:underline">
@@ -110,12 +112,77 @@ import jsonProperties from "@/assets/properties.json"
 var {time: timeProperties, place:  placeProperties} = jsonProperties
 
 
+/*
+--- mapping fichier import Octant et wikisearch
+lés séparateurs sont des pipes
+
+public ? --> Non (N)
+en cours ? Oui si date de fin
+provenance : wikidata
+sources : url de l'élt wikidata 
+id wikidata
+disciplines : faudrait de l'ia pour déduire
+type : pareil
+mots clés : je le remplis pas (ou je laisse à l'user la possibilité de remplir à la main)
+*/
+
+const defaultValue = {
+    language : 'fr',
+    public: 'N',
+    real: 'Y',
+    origin: 'wikidata',
+    disciplines: '',
+    type: '',
+    keywords : '',
+    nominatimRef: '',
+}
+
 const exportList = ref([])
 
 
+const header = "Langue,Titre,Description,Date début,Affichage date début,Date fin,Affichage date fin,Evénement en cours,Nom du lieu *,Référence Nominatim,Coordonnées Latitude,Coordonnées Longitude,Réel,Public,Provenance,Sources*,identifiantBddExterne,Discipline*,Type*,Mots-clefs*"
+
+// fusionne les valeurs par défaut (defaultValue) et l'elt sélectionné de exportList, et génère une ligne csv à partir des champs demandés
+const getCsvValue = e => {
+    console.log(e)
+    const value = { ...defaultValue, ...e }
+
+    // current item descrption
+    // console.log(wikiItem.value)
+    // console.log(wikiItem.value)
+    // console.log(wikiItem.value)
+    // console.log(wikiItem.value)
+    // console.log(wikiItem.value)
+
+    const csvLine = [
+        value.language,
+        `"${value.itemLabel?.value || ''}"`,
+        `"${selectedResult.value.description}"`,
+        value.debutLabels?.value || value.naissanceLabels?.value,
+        value.startDateDisplay,
+        value.finLabels?.value || value.mortLabels?.value,
+        value.endDateDisplay,
+        value.ongoingEvent,
+        `"${value.locationName}"`,
+        value.nominatimRef,
+        value.latitude,     // à rajouter dans sparql
+        value.longitude,    // à rajouter dans sparql
+        value.real,
+        value.public,
+        value.origin,
+        value.item.value,      // url wikidata
+        value.item.value?.split('http://www.wikidata.org/entity/')[1],
+        `"${value.disciplines}"`,
+        `"${value.type}"`,
+        `"${value.keywords}"`
+    ].join(',')
+    return csvLine
+}
+
 const download = () => {
     const csvContent = "data:text/csv;charset=utf-8,"
-        + exportList.value.map(e => `${e.id},${e.title},${e.description}`).join("\n");
+        + header + "\n"
+        + exportList.value.map(e => getCsvValue(e)).join("\n");
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -125,14 +192,6 @@ const download = () => {
     document.body.removeChild(link); // Clean up
 }
 
-
-
-// replace spaces in labels
-// function removeLabelSpaces(arr) {
-//     return arr.map(prop => ({ ...prop, label: prop.label.replace(/ /g, '_') }))
-// }
-// timeProperties = removeLabelSpaces(timeProperties)
-// placeProperties = removeLabelSpaces(placeProperties)
 
 const open = ref(false)
 
@@ -212,7 +271,7 @@ const sparqlQuery = computed(() =>
 
 const headers = { 'Accept': 'application/json' };
 const queryParams = computed(() => { return { query: sparqlQuery.value } })
-const { data: sparqlResult, error: sparqlError, pending: pendingSparql } =
+const { data: sparqlResult, error: sparqlError, pending: pendingSparql, refresh } =
     await useFetch(`${baseUrl}/sparql`, { immediate: false, headers: headers, params: queryParams })
 
 function toDate(date) {
@@ -221,6 +280,17 @@ function toDate(date) {
     }
     const stringDate = new Date(date).toLocaleDateString()
     return stringDate !== 'Invalid Date' ? stringDate : date
+}
+
+const wikidataItem = computed(() => sparqlResult.value?.results.bindings[0])
+
+const handleAddToList = async item => {
+    selectedResult.value = { id: item.id, key: item.key, description: item.description }
+    await refresh()
+    console.log('Selected result:', selectedResult.value)
+    console.log('wiki item:', wikidataItem.value)
+    // const newItem = { id: item.id, key: item.key, title: item.title, description: item.description }
+    exportList.value.push(wikidataItem.value)
 }
 
 const title = 'Recherche Wikipédia + propriétés wikidata'
