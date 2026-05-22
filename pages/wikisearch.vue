@@ -2,10 +2,12 @@
 
     <main class="space-y-4">
 
-        <div class="px-4 fixed right-20 bottom-20">
-            <UChip :text="exportList.length" size="3xl" color="" class = "!text-red-500" >
-                <UButton color = "primary" variant="soft" class="px-4 border-teal-500 border-2" size="xl" icon="i-lucide-download" title = "Télécharger le csv" 
-                @click = "download">
+        <div class="px-4 fixed right-20 bottom-20 animation-duration-1000 repeat-0" :class = "{'animate-bounce': toggling}">
+            <UChip :text="exportList.length" size="3xl" class = "!text-red-500"  >
+                <UButton color = "primary" variant="soft" 
+                    class="px-4 border-teal-500 border-2"
+                    size="xl" icon="i-lucide-download" title = "Télécharger le csv" 
+                    @click = "download">
                 </UButton>
             </UChip>
         </div>
@@ -18,8 +20,8 @@
         </div>
         <!-- Paramètres -->
         <div class="flex items-center gap-3 md:[&>label]:ml-6 [&>label]:text-gray-400 bg-slate-600/20 p-2 rounded-lg">
-            <UIcon name="i-lucide-settings" class="text-gray-500 text-xl" />
-            <fieldset>Paramètres</fieldset>
+            <!-- <UIcon name="i-lucide-settings" class="text-gray-500 text-xl" />
+            <fieldset>Paramètres</fieldset> -->
             <label>Langue</label>
             <USelect v-model="lang" :options="['fr', 'en', 'de', 'es', 'it']" color="primary" icon="i-lucide-globe"
                 size="sm" class="[&>*]:!text-primary-500 mr-4" />
@@ -40,10 +42,13 @@
             <li v-for="item in result?.pages" :key="item.id" @click="selectedResult = { id: item.id, key: item.key, descr: item.description }"
                 class="w-full flex items-center m-1 p-1 rounded hover:brightness-125 bg-slate-300/10 gap-2 cursor-pointer">
                 <UAvatar :src="item.thumbnail?.url || 'https://logo.clearbit.com/wikipedia.org'" class="w-12 h-12 mr-2 bg-white" size="md" />
-                <!--  bouton PLUS pour ajouter  -->
-                    <!-- <UButton @click.stop="exportList.push(item)" class="mt-4 absolute right-0" data-info = "btn-add" size="sm" icon="i-lucide-plus" color="primary" title = "Ajouter à la liste"></UButton> -->
-                    <UButton @click.stop="handleAddToList(item)" class="mt-4 absolute right-0" data-info = "btn-add" size="sm" icon="i-lucide-plus" color="primary" title = "Ajouter à la liste"></UButton>
-
+                    <!--  bouton Toggle pour ajouter / retirer de la liste -->
+                    <UButton @click.stop="handleToggleList(item)" 
+                        class="mt-4 absolute right-0 border-teal-400/25 border-2 transition-all" 
+                        data-info = "btn-toggle" size="sm" 
+                        :icon="isAlreadyInList(item) ? 'i-lucide-check' : 'i-lucide-plus'" 
+                        :color="isAlreadyInList(item) ? 'primary' : ''" 
+                        :title="isAlreadyInList(item) ? 'Retirer de la liste' : 'Ajouter à la liste'"></UButton>
                 <div>
                     <a :href="`https://${lang}.wikipedia.org/wiki/${item.key}`" target="_blank"
                         title="Voir l'article Wikipédia" class="hover:text-primary-500 hover:underline">
@@ -69,7 +74,7 @@
                                 <UIcon name="i-lucide-map" />Lieux
                             </label>
                             <template v-for="prop in placeProperties">
-                                <label v-if="!!wikiItem[prop.label + 'Labels']?.value">
+                                <label v-if="!!wikiItem[prop.label + 'Labels']?.value" class = "max-w-48">
                                     {{ prop.label }} : {{ wikiItem[prop.label + 'Labels']?.value }}
                                 </label>
                             </template>
@@ -147,20 +152,13 @@ const getCsvValue = e => {
     console.log(e)
     const value = { ...defaultValue, ...e }
 
-    // current item descrption
-    // console.log(wikiItem.value)
-    // console.log(wikiItem.value)
-    // console.log(wikiItem.value)
-    // console.log(wikiItem.value)
-    // console.log(wikiItem.value)
-
     const csvLine = [
         value.language,
         `"${value.itemLabel?.value || ''}"`,
-        `"${selectedResult.value.description}"`,
-        value.debutLabels?.value || value.naissanceLabels?.value,
+        `"${value.description || ''}"`,     // provient de l'api rest de wikipedia, pas de wikidata
+        toDate(value.debutLabels?.value || value.naissanceLabels?.value),
         value.startDateDisplay,
-        value.finLabels?.value || value.mortLabels?.value,
+        toDate(value.finLabels?.value || value.mortLabels?.value),
         value.endDateDisplay,
         value.ongoingEvent,
         `"${value.locationName}"`,
@@ -284,14 +282,25 @@ function toDate(date) {
 
 const wikidataItem = computed(() => sparqlResult.value?.results.bindings[0])
 
-const handleAddToList = async item => {
+const toggling = ref(false)
+
+const handleToggleList = async item => {
+    toggling.value = true
+    if (isAlreadyInList(item)) {
+        exportList.value = exportList.value.filter(e => e.key !== item.key)
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        toggling.value = false
+        return
+    }
     selectedResult.value = { id: item.id, key: item.key, description: item.description }
     await refresh()
-    console.log('Selected result:', selectedResult.value)
-    console.log('wiki item:', wikidataItem.value)
-    // const newItem = { id: item.id, key: item.key, title: item.title, description: item.description }
-    exportList.value.push(wikidataItem.value)
+    exportList.value.push({...wikidataItem.value, description : item.description, key: item.key})
+    console.log('Export list:', exportList.value)
+    await new Promise(resolve => setTimeout(resolve, 900))
+    toggling.value = false
 }
+
+const isAlreadyInList = item => exportList.value.some(e => e.key === item.key)
 
 const title = 'Recherche Wikipédia + propriétés wikidata'
 const description = 'Interface de recherche pour Wikipédia et affichage des propriétés wikidata correspondantes - dates et lieux'
