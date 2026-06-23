@@ -2,7 +2,7 @@
 
     <main class="space-y-4">
 
-        <div class="px-4 fixed right-20 bottom-20 animation-duration-1000 repeat-0" :class = "{'animate-bounce': toggling}">
+        <div class="px-4 fixed right-20 bottom-20 animation-duration-1000 repeat-0 flex items-end gap-3" :class = "{'animate-bounce': toggling}">
             <UChip :text="exportList.length" size="3xl" class = "!text-red-500"  >
                 <UButton color = "primary" variant="soft" 
                     class="px-4 border-teal-500 border-2"
@@ -10,6 +10,8 @@
                     @click = "download">
                 </UButton>
             </UChip>
+            <UButton color="primary" variant="soft" class="px-4 border-teal-500 border-2" size="xl" icon="i-lucide-table-2" title="Éditer le tableau avant export" @click="openExportEditor">
+            </UButton>
         </div>
         
 
@@ -73,6 +75,9 @@
                             <label class="text-primary-500 flex items-center gap-2">
                                 <UIcon name="i-lucide-map" />Lieux
                             </label>
+                            <label v-if="wikiItem.geoloc?.value" class="text-primary-400 text-sm">
+                                📍 {{ parseWKTPoint(wikiItem.geoloc.value).latitude }}, {{ parseWKTPoint(wikiItem.geoloc.value).longitude }}
+                            </label>
                             <template v-for="prop in placeProperties">
                                 <label v-if="!!wikiItem[prop.label + 'Labels']?.value" class = "max-w-48">
                                     {{ prop.label }} : {{ wikiItem[prop.label + 'Labels']?.value }}
@@ -108,6 +113,8 @@
                 </div>
             </div>
         </UModal>
+
+        <ExportCsvEditor v-model:open="exportEditorOpen" v-model:rows="exportList" />
     </main>
 </template>
 
@@ -133,46 +140,65 @@ mots clés : je le remplis pas (ou je laisse à l'user la possibilité de rempli
 
 const defaultValue = {
     language : 'fr',
+    title: '',
     public: 'N',
     real: 'Y',
     origin: 'wikidata',
+    dateStart: '',
+    startDateDisplay: '',
+    dateEnd: '',
+    endDateDisplay: '',
+    ongoingEvent: '',
+    locationName: '',
+    source: '',
+    externalId: '',
     disciplines: '',
     type: '',
     keywords : '',
     nominatimRef: '',
+    latitude: '',
+    longitude: '',
 }
 
 const exportList = ref([])
+const exportEditorOpen = ref(false)
+
+function openExportEditor() {
+    console.log('[wikisearch] clic bouton édition export', {
+        exportListLength: exportList.value.length,
+        currentValue: exportEditorOpen.value
+    })
+    exportEditorOpen.value = true
+}
 
 
 const header = "Langue,Titre,Description,Date début,Affichage date début,Date fin,Affichage date fin,Evénement en cours,Nom du lieu *,Référence Nominatim,Coordonnées Latitude,Coordonnées Longitude,Réel,Public,Provenance,Sources*,identifiantBddExterne,Discipline*,Type*,Mots-clefs*"
 
 // fusionne les valeurs par défaut (defaultValue) et l'elt sélectionné de exportList, et génère une ligne csv à partir des champs demandés
 const getCsvValue = e => {
-    console.log(e)
-    const value = { ...defaultValue, ...e }
+    const value = { ...defaultValue, ...(e.csv || {}), ...e }
 
     const csvLine = [
         value.language,
-        `"${value.itemLabel?.value || ''}"`,
+        `"${value.title || value.itemLabel?.value || ''}"`,
         `"${value.description || ''}"`,     // provient de l'api rest de wikipedia, pas de wikidata
-        toDate(value.debutLabels?.value || value.naissanceLabels?.value),
+        value.dateStart || toDate(value.debutLabels?.value || value.naissanceLabels?.value),
         value.startDateDisplay,
-        toDate(value.finLabels?.value || value.mortLabels?.value),
+        value.dateEnd || toDate(value.finLabels?.value || value.mortLabels?.value),
         value.endDateDisplay,
         value.ongoingEvent,
-        `"${value.locationName}"`,
+        `"${value.locationName || ''}"`,
         value.nominatimRef,
-        value.latitude,     // à rajouter dans sparql
-        value.longitude,    // à rajouter dans sparql
+        value.latitude,
+        value.longitude,
         value.real,
         value.public,
         value.origin,
-        value.item.value,      // url wikidata
-        value.item.value?.split('http://www.wikidata.org/entity/')[1],
-        `"${value.disciplines}"`,
-        `"${value.type}"`,
-        `"${value.keywords}"`
+        value.source || value.item?.value,      // url wikidata
+        value.externalId || value.item?.value?.split('http://www.wikidata.org/entity/')[1],
+        `"${value.disciplines || ''}"`,
+        `"${value.type || ''}"`,
+        `"${value.keywords || ''}"`
     ].join(',')
     return csvLine
 }
@@ -237,7 +263,7 @@ const select = timeAndPlace(selectProps)
 // wikidata props from page id
 const sparqlQuery = computed(() =>
     `#title: Requête pour la page ${selectedResult.value.key} - langue ${lang.value}
-    SELECT ?item ?itemLabel
+    SELECT ?item ?itemLabel ?geoloc
     (GROUP_CONCAT(DISTINCT ?notEmpty;separator=" | ") as ?notEmptyValue)
     # dates
     ${group.time.join(' ')} 
@@ -254,6 +280,9 @@ const sparqlQuery = computed(() =>
 
             ${optional.time.join('\n')}
             ${optional.place.join('\n')}
+
+
+            OPTIONAL{ ?item wdt:P625 ?geoloc}
             
             SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang.value}". }
             SERVICE wikibase:label {
@@ -263,7 +292,7 @@ const sparqlQuery = computed(() =>
             }
             BIND( COALESCE(${select.time.join(', ')}, ${select.place.join(', ')}) as ?notEmpty)
         }
-    GROUP BY ?item ?itemLabel
+    GROUP BY ?item ?itemLabel ?geoloc
     `
 )
 
@@ -273,6 +302,9 @@ const { data: sparqlResult, error: sparqlError, pending: pendingSparql, refresh 
     await useFetch(`${baseUrl}/sparql`, { immediate: false, headers: headers, params: queryParams })
 
 function toDate(date) {
+    if (!date) {
+        return ''
+    }
     if (date.includes('|')) {
         return date.split(' | ').map(d => toDate(d)).join(' | ')
     }
@@ -280,7 +312,49 @@ function toDate(date) {
     return stringDate !== 'Invalid Date' ? stringDate : date
 }
 
+function parseWKTPoint(wktPoint) {
+    // Format: Point(longitude latitude)
+    if (!wktPoint) return { latitude: null, longitude: null }
+    const match = wktPoint.match(/Point\(([-\d.]+)\s+([-\d.]+)\)/)
+    if (!match) return { latitude: null, longitude: null }
+    return { longitude: parseFloat(match[1]), latitude: parseFloat(match[2]) }
+}
+
 const wikidataItem = computed(() => sparqlResult.value?.results.bindings[0])
+
+function buildCsvRow(item, wikidata = {}) {
+    const coords = parseWKTPoint(wikidata?.geoloc?.value)
+
+    return {
+        ...wikidata,
+        description: item.description,
+        key: item.key,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        csv: {
+            language: lang.value,
+            title: item.title || wikidata?.itemLabel?.value || '',
+            description: item.description || '',
+            dateStart: toDate(wikidata?.debutLabels?.value || wikidata?.naissanceLabels?.value),
+            startDateDisplay: wikidata?.startDateDisplay || '',
+            dateEnd: toDate(wikidata?.finLabels?.value || wikidata?.mortLabels?.value),
+            endDateDisplay: wikidata?.endDateDisplay || '',
+            ongoingEvent: wikidata?.ongoingEvent || '',
+            locationName: wikidata?.locationName || '',
+            nominatimRef: wikidata?.nominatimRef || '',
+            latitude: coords.latitude ?? '',
+            longitude: coords.longitude ?? '',
+            real: 'Y',
+            public: 'N',
+            origin: 'wikidata',
+            source: wikidata?.item?.value || '',
+            externalId: wikidata?.item?.value?.split('http://www.wikidata.org/entity/')[1] || '',
+            disciplines: '',
+            type: '',
+            keywords: ''
+        }
+    }
+}
 
 const toggling = ref(false)
 
@@ -294,8 +368,7 @@ const handleToggleList = async item => {
     }
     selectedResult.value = { id: item.id, key: item.key, description: item.description }
     await refresh()
-    exportList.value.push({...wikidataItem.value, description : item.description, key: item.key})
-    console.log('Export list:', exportList.value)
+    exportList.value.push(buildCsvRow(item, wikidataItem.value))
     await new Promise(resolve => setTimeout(resolve, 900))
     toggling.value = false
 }
