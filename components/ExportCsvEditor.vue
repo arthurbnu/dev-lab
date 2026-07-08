@@ -4,7 +4,7 @@
             <div class="absolute inset-0 bg-black/70" @click="isOpen = false"></div>
 
             <div class="relative z-[101] flex max-h-[92vh] w-full max-w-[96vw] flex-col overflow-hidden rounded-2xl border border-slate-500/20 bg-slate-950 text-white shadow-2xl">
-                <div class="flex flex-col gap-3 border-b border-slate-500/20 p-4 md:flex-row md:items-center md:justify-between">
+                <div class="flex flex-col gap-3 border-b border-slate-500/20 p-4 md:flex-row md:items-center md:justify-between w-min">
                     <div>
                         <h2 class="text-2xl font-semibold">Édition avant export CSV</h2>
                         <p class="text-sm text-gray-400">
@@ -23,9 +23,9 @@
                 </div>
 
                 <div class="overflow-hidden flex-1 flex flex-col gap-3 min-h-0">
-                    <div class="overflow-x-auto overflow-y-auto flex-1 p-4 min-h-0 max-h-[calc(92vh-200px)]">
-                        <div class="rounded-xl border border-slate-500/20 bg-slate-950/40">
-                            <table class="min-w-[2200px] w-full border-collapse text-sm">
+                    <div class="flex-1 min-h-0 p-4 overflow-hidden flex flex-col">
+                        <div class="overflow-x-scroll w-[90vw] overflow-y-auto rounded-xl border border-slate-500/20 bg-slate-950/40">
+                            <table class="min-w-[2400px] border-collapse text-sm">
                             <thead class="sticky top-0 z-10 bg-slate-950/95 backdrop-blur border-b border-slate-500/20">
                                 <tr>
                                     <th v-for="field in fields" :key="field.key" class="px-3 py-3 text-left font-medium text-gray-300 whitespace-nowrap">

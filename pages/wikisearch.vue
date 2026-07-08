@@ -16,8 +16,8 @@
         
 
         <div class="flex items-baseline gap-3">
-            <h1 class="text-2xl">Recherche Wikipédia
-                <span class="text-sm m-3 text-gray-400">Et vérifications des propriétés wikidata correspondantes</span>
+            <h1 class="text-2xl">Octant : assistant Wikidata
+                <span class="text-sm m-3 text-gray-400">Exportez vos données pour les exploiter avec Octant</span>
             </h1>
         </div>
         <!-- Paramètres -->
@@ -375,8 +375,8 @@ const handleToggleList = async item => {
 
 const isAlreadyInList = item => exportList.value.some(e => e.key === item.key)
 
-const title = 'Recherche Wikipédia + propriétés wikidata'
-const description = 'Interface de recherche pour Wikipédia et affichage des propriétés wikidata correspondantes - dates et lieux'
+const title = 'Interface de recherche Wikidata pour Octant'
+const description = 'Octant : assistant Wikidata - recherche Wikipédia et export CSV'
 useSeoMeta({
     title: title,
     description,
