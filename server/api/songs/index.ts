@@ -22,6 +22,8 @@ export default defineEventHandler(async (event) => {
     const { data, error } = await supabase
       .from('songs')
       .select('id, firstname, song, created_at')
+      // only visible true
+      .eq('visible', true)
       .order('created_at', { ascending: true })
 
     if (error) {
