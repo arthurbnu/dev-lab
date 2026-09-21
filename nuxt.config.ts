@@ -42,6 +42,11 @@ export default defineNuxtConfig({
    pageTransition: { name: "page", mode: "out-in" },
  },
 
+ runtimeConfig: {
+   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+   supabaseUrl: process.env.SUPABASE_URL,
+ },
+
  content: {
    highlight: {
      theme: "github-dark",

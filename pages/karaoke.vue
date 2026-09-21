@@ -109,7 +109,6 @@ const prenomInput = ref(null)
 const songList = ref([])
 const isLoading = ref(false)
 const errorMessage = ref('')
-const API_URL = 'https://api.sheetbest.com/sheets/350ef5cd-5b25-4872-9370-339cf63919ac'
 const audioCtx = ref<AudioContext | null>(null)
 
 // Scroll vers le formulaire et focus
@@ -150,12 +149,10 @@ const playNote = async (index: number, isBlack: boolean) => {
     osc.stop(now + 0.4)
 }
 
-// Récupère la liste depuis SheetDB
+// Récupère la liste depuis l'API serveur - Supabase
 const fetchSongs = async () => {
   try {
-    const res = await fetch(API_URL)
-    if (!res.ok) throw new Error(`Erreur serveur: ${res.status}`)
-    songList.value = await res.json()
+        songList.value = await $fetch('/api/songs')
     errorMessage.value = ''
   } catch (e: any) {
     errorMessage.value = `Impossible de récupérer les chansons: ${e.message}`
@@ -171,17 +168,12 @@ const addSong = async () => {
   isLoading.value = true
   errorMessage.value = ''
   try {
-    const res = await fetch(API_URL, {
+        await $fetch('/api/songs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newEntry.value)
+            body: newEntry.value,
     })
-    if (!res.ok) throw new Error(`Erreur serveur: ${res.status}`)
     newEntry.value.firstname = ''
     newEntry.value.song = ''
-    
-    // Attendre un peu que SheetDB mette à jour
-    await new Promise(resolve => setTimeout(resolve, 1000))
     await fetchSongs()
   } catch (e: any) {
     errorMessage.value = `Erreur: ${e.message}`
