@@ -1,5 +1,5 @@
 <template>
-    <div class="karaoke-container">
+    <div class="karaoke-container mt-[-15px]">
         <!-- Flocons de neige -->
         <div class="snowflakes" aria-hidden="true">
             <div class="snowflake" v-for="i in 30" :key="i" :style="{ left: `${Math.random() * 100}%`, animationDelay: `${Math.random() * 10}s`, animationDuration: `${8 + Math.random() * 12}s` }">❄</div>
@@ -9,16 +9,14 @@
             <h1>
                 <span class="mic-animated">🎤</span> Karaoké au Berthom
             </h1>
-            <p class="subtitle">
-                Le 21/09 avec Ambroise et Ysé
+            <p class="subtitle flex">
+                <span>Le 21/09</span>
+                 <br>
+                 <span>
+                     avec Ambroise et Ysé
+                 </span> 
                 <UIcon dynamic name="i-lucide-piano" size="32" />
             </p>
-            <!-- <p>
-                <button title = "Actualiser la liste" @click="fetchSongs" class="underline text-green-200 hover:text-white mt-2 opacity-60">
-                    <UIcon dynamic name="i-lucide-refresh-cw" size="20" class="inline-block mr-2 animate-spin-slow"/>
-                    Actualiser la liste
-                </button>
-                </p> -->
         </div>
 
         <!-- Message d'erreur -->
