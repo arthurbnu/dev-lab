@@ -7,11 +7,11 @@
         
         <div class="header-section">
             <h1>
-                <span class="mic-animated">🎤</span> Karaoké au Berthom
+                <span class="mic-animated">🎤</span> Karaoké
             </h1>
             <p class="subtitle flex">
-                <span>Le 21/09</span>
-                 <br>
+                <!-- <span>Le 21/09</span>
+                 <br> -->
                  <span>
                      avec Ambroise et Ysé
                  </span> 
