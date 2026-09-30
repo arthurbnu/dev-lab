@@ -19,11 +19,11 @@
             </p>
         </div>
 
-        <!-- Message d'erreur -->
+        <!-- Message d'erreur 
         <div v-if="errorMessage" class="error-banner">
             ⚠️ {{ errorMessage }}
         </div>
-
+-->
         <div class="list-section piano-section"> 
             <div class="list-header">
                 <h2 class="text-xl sm:text-2xl">🎵 Liste des souhaits</h2>
