@@ -186,8 +186,8 @@ onMounted(() => {
 })
 
 const baseUrl = 'https://dev-lab-one.vercel.app/'
-const title  = "Karaoké au Berthom";
-const description = "Ajoutez vos chansons préférées à la liste !" ;
+const title  = "Karaoké - proposez votre chanson ! ";
+const description = "Ajoutez vos chansons préférées à la liste pour les jouer avec Ambroise !" ;
 useSeoMeta({
   title,
   description,
